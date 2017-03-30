@@ -3,6 +3,7 @@ package edu.salleurl.ls30394.foodfinderapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -20,5 +21,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         startActivity(nextActivity);
         finish();
+    }
+
+    public void OnImageSelect(View view) {
+    }
+
+    public void OnRegisterComplete(View view) {
     }
 }
