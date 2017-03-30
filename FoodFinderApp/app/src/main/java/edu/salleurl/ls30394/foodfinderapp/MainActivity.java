@@ -1,5 +1,6 @@
 package edu.salleurl.ls30394.foodfinderapp;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     private TextInputLayout tilPassword;
 
     private Button btnLogin;
+
+    private Intent nextActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,5 +78,10 @@ public class MainActivity extends AppCompatActivity {
      * @param view Button view
      */
     public void OnRegister(View view) {
+
+        nextActivity = new Intent(MainActivity.this, RegisterActivity.class);
+
+        startActivity(nextActivity);
+        finish();
     }
 }
