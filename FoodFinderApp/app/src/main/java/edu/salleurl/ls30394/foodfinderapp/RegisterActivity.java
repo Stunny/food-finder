@@ -24,8 +24,23 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void OnImageSelect(View view) {
+
+        //TODO: image select functionality
+
     }
 
     public void OnRegisterComplete(View view) {
+
+        //TODO: comprobacion de campos de registro
+
+    }
+
+    public void OnRegisterSuccess(){
+        //TODO: almacenar datos de usuario
+
+        //TODO: change MainActivity by first app activity
+        nextActivity = new Intent(RegisterActivity.this, MainActivity.class);
+        startActivity(nextActivity);
+        finish();
     }
 }

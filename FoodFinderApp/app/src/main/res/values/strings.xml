@@ -14,4 +14,6 @@
     <string name="other">Other</string>
     <string name="accept_terms"><![CDATA[Accept Terms & Conditions]]></string>
     <string name="description">Description</string>
+    <string name="favorites">Favorites</string>
+    <string name="profile">Profile</string>
 </resources>
