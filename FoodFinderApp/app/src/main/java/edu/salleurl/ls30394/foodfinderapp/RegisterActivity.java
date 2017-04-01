@@ -32,14 +32,14 @@ public class RegisterActivity extends AppCompatActivity {
     public void OnRegisterComplete(View view) {
 
         //TODO: comprobacion de campos de registro
-
+        OnRegisterSuccess();
     }
 
     public void OnRegisterSuccess(){
         //TODO: almacenar datos de usuario
 
         //TODO: change MainActivity by first app activity
-        nextActivity = new Intent(RegisterActivity.this, MainActivity.class);
+        nextActivity = new Intent(RegisterActivity.this, SearchActivity.class);
         startActivity(nextActivity);
         finish();
     }
