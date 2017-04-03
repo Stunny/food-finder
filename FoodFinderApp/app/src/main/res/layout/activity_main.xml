@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true"
-        tools:context="edu.salleurl.ls30394.foodfinderapp.MainActivity">
+        tools:context="edu.salleurl.ls30394.foodfinderapp.Activities.MainActivity">
 
         <!-- ImageView del Logo -->
         <ImageView

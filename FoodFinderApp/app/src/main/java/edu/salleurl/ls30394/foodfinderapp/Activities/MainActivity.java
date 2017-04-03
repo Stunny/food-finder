@@ -1,7 +1,6 @@
-package edu.salleurl.ls30394.foodfinderapp;
+package edu.salleurl.ls30394.foodfinderapp.Activities;
 
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +10,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import edu.salleurl.ls30394.foodfinderapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
