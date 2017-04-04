@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * TODO: login check
      * Method executed when the login button on the activity is pressed.
      * It executes all the functionalities that define a proper user login
      * @param view Button view
