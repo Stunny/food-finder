@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="edu.salleurl.ls30394.foodfinderapp.SearchActivity">
+    tools:context="edu.salleurl.ls30394.foodfinderapp.Activities.SearchActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/searchactivity_toolbar"

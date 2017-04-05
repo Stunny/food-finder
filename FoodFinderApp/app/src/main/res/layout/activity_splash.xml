@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.salleurl.ls30394.foodfinderapp.SplashActivity">
+    tools:context="edu.salleurl.ls30394.foodfinderapp.Activities.SplashActivity">
 
     <ImageView
         android:id="@+id/splashLogo"

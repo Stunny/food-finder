@@ -1,9 +1,11 @@
-package edu.salleurl.ls30394.foodfinderapp;
+package edu.salleurl.ls30394.foodfinderapp.Activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import edu.salleurl.ls30394.foodfinderapp.R;
 
 public class RegisterActivity extends AppCompatActivity {
 

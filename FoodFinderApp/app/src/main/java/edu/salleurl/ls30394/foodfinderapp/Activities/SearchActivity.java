@@ -1,10 +1,12 @@
-package edu.salleurl.ls30394.foodfinderapp;
+package edu.salleurl.ls30394.foodfinderapp.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import edu.salleurl.ls30394.foodfinderapp.R;
 
 public class SearchActivity extends AppCompatActivity {
 
