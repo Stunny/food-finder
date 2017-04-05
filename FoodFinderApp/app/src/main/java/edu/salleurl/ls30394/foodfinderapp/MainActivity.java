@@ -69,7 +69,16 @@ public class MainActivity extends AppCompatActivity {
      * @param view Button view
      */
     public void OnLogin(View view) {
-        Toast.makeText(this, "LOGIN", Toast.LENGTH_SHORT).show();
+        OnLoginSuccess();
+    }
+
+    /**
+     * Executed when user login has been successful
+     */
+    public void OnLoginSuccess(){
+        nextActivity = new Intent(MainActivity.this, SearchActivity.class);
+        startActivity(nextActivity);
+        finish();
     }
 
     /**
