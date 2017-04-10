@@ -4,4 +4,11 @@
 
     <string name="accept_terms"><![CDATA[Accept Terms & Conditions]]></string>
     <string name="km_seek_text">%1$d km</string>
+    <string name="error_name">El campo del nombre no puede estar vacio!</string>
+    <string name="error_title">Mensage de error...</string>
+    <string name="error_surname">El campo del apellido no puede estar vacio!</string>
+    <string name="error_email">El campo del email no puede estar vacio!</string>
+    <string name="error_password">El campo de la contraseña no puede estar vacio!</string>
+    <string name="error_confirmPassword">El campo de confirmar contraseña no puede estar vacio!</string>
+    <string name="error_passwordValidation">Las contraseñas deben coincidir!</string>
 </resources>
