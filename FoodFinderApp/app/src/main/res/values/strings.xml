@@ -25,4 +25,5 @@
     <string name="error_password">Password field can\'t be empty!</string>
     <string name="error_confirmPassword">Field confirm password can\'t be empty!</string>
     <string name="error_passwordValidation">Password and confirm password must match!</string>
+    <string name="error_terms"><![CDATA[Terms & Conditions must be accepted]]></string>
 </resources>

@@ -11,4 +11,5 @@
     <string name="error_password">El campo de la contraseña no puede estar vacio!</string>
     <string name="error_confirmPassword">El campo de confirmar contraseña no puede estar vacio!</string>
     <string name="error_passwordValidation">Las contraseñas deben coincidir!</string>
+    <string name="error_terms"><![CDATA[Se debe aceptar los terminos y condiciones]]></string>
 </resources>

@@ -1,13 +1,16 @@
 package edu.salleurl.ls30394.foodfinderapp.Activities;
 
 import android.content.Intent;
-import android.os.StrictMode;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+
 import edu.salleurl.ls30394.foodfinderapp.R;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -18,17 +21,24 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout email;
     private TextInputLayout password;
     private TextInputLayout confirmPassword;
+    private ImageView profilePicture;
+    private CheckBox terms;
+    private Bitmap imageBitmap;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        profilePicture = (ImageView) findViewById(R.id.register_user_picture);
         name = (TextInputLayout)findViewById(R.id.register_nameWrapper);
         surname = (TextInputLayout)findViewById(R.id.register_surnameWrapper);
         email = (TextInputLayout)findViewById(R.id.register_emailWrapper);
         password = (TextInputLayout)findViewById(R.id.register_passwdWrapper);
         confirmPassword = (TextInputLayout)findViewById(R.id.register_passwdConfWrapper);
+        terms = (CheckBox) findViewById(R.id.register_terms);
     }
 
     @Override
@@ -39,9 +49,27 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
+    private void dispatchTakePictureIntent(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            this.imageBitmap = imageBitmap;
+        }
+    }
+
     public void OnImageSelect(View view) {
 
         //TODO: image select functionality
+        dispatchTakePictureIntent();
+        profilePicture.setImageBitmap(imageBitmap);
 
     }
 
@@ -49,18 +77,20 @@ public class RegisterActivity extends AppCompatActivity {
 
         //TODO: comprobacion de campos de registro
         if (String.valueOf(name.getEditText().getText()).equals("")){
-            mostraError(getString(R.string.error_name), getString(R.string.error_title));
+            showError(getString(R.string.error_name), getString(R.string.error_title));
         }else if (String.valueOf(surname.getEditText().getText()).equals("")) {
-            mostraError(getString(R.string.error_surname), getString(R.string.error_title));
+            showError(getString(R.string.error_surname), getString(R.string.error_title));
         }else if (String.valueOf(email.getEditText().getText()).equals("")) {
-            mostraError(getString(R.string.error_email), getString(R.string.error_title));
+            showError(getString(R.string.error_email), getString(R.string.error_title));
             //}else if (apacheEmailValidator){
         }else if(String.valueOf(password.getEditText().getText()).equals("")) {
-            mostraError(getString(R.string.error_password), getString(R.string.error_title));
+            showError(getString(R.string.error_password), getString(R.string.error_title));
         }else if(String.valueOf(confirmPassword.getEditText().getText()).equals("")) {
-            mostraError(getString(R.string.error_confirmPassword), getString(R.string.error_title));
-        }else if(!String.valueOf(password.getEditText().getText()).equals(String.valueOf(confirmPassword.getEditText().getText()))){
-            mostraError(getString(R.string.error_passwordValidation), getString(R.string.error_title));
+            showError(getString(R.string.error_confirmPassword), getString(R.string.error_title));
+        }else if(!String.valueOf(password.getEditText().getText()).equals(String.valueOf(confirmPassword.getEditText().getText()))) {
+            showError(getString(R.string.error_passwordValidation), getString(R.string.error_title));
+        }else if (!terms.isChecked()){
+            showError(getString(R.string.error_terms), getString(R.string.error_title));
         }else{
             OnRegisterSuccess();
         }
@@ -75,9 +105,13 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
-    private void mostraError (String message, String titol){
-        Log.i("angel", "entro a mostrar el nom");
-        //ventana emergente de error
+    /**
+     * Shows pop-up window with a message error
+     * @param message body of the message
+     * @param titol header of the message
+     */
+
+    private void showError (String message, String titol){
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
         dlgAlert.setMessage(message);
         dlgAlert.setTitle(titol);
