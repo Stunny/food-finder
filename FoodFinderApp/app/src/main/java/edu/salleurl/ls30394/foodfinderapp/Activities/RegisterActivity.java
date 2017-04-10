@@ -2,6 +2,8 @@ package edu.salleurl.ls30394.foodfinderapp.Activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
@@ -10,6 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
 
@@ -26,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Bitmap imageBitmap;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int PICK_IMAGE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,19 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
+/*
+Opcional de seleccionar la imagen de la galeria. Necesita de onActivityresult tambien.
+source: http://stackoverflow.com/a/5086706/7060082
+    public void OnGallerySelect(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+    }
+*/
+    /**
+     * Selects default camera and takes picture
+     */
     private void dispatchTakePictureIntent(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -56,21 +75,25 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Transforms the picture taken into a bitmap
+     * @param requestCode image code
+     * @param resultCode checking if OK
+     * @param data bitmap in the extras, corresponding to our image
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             this.imageBitmap = imageBitmap;
+            profilePicture.setImageBitmap(imageBitmap);
         }
     }
 
     public void OnImageSelect(View view) {
-
         //TODO: image select functionality
         dispatchTakePictureIntent();
-        profilePicture.setImageBitmap(imageBitmap);
-
     }
 
     public void OnRegisterComplete(View view) {

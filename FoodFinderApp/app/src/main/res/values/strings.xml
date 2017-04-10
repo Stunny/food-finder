@@ -5,6 +5,7 @@
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="take_picture">Take Picture</string>
+    <string name="select_from_gallerie">Select from gallery</string>
     <string name="name">Name</string>
     <string name="surname">Surname</string>
     <string name="email">Email</string>

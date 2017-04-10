@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-
-    <string name="accept_terms"><![CDATA[Accept Terms & Conditions]]></string>
+    <string name="app_name">FoodFinderApp</string>
+    <string name="username">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="login">Iniciar sesion</string>
+    <string name="register">Registrarse</string>
+    <string name="take_picture">Hacer foto</string>
+    <string name="select_from_gallerie">Seleccionar de la galeria</string>
+    <string name="name">Nombre</string>
+    <string name="surname">Apellido</string>
+    <string name="email">Email</string>
+    <string name="confirm_password">Confirmar Contraseña</string>
+    <string name="male">Hombre</string>
+    <string name="female">Mujer</string>
+    <string name="other">Otro</string>
+    <string name="accept_terms"><![CDATA[Aceptar terminos y condiciones]]></string>
+    <string name="description">Descripcion</string>
+    <string name="favorites">favoritos</string>
+    <string name="profile">Perfil</string>
     <string name="km_seek_text">%1$d km</string>
+    <string name="search">Buscar</string>
+
     <string name="error_name">El campo del nombre no puede estar vacio!</string>
     <string name="error_title">Mensage de error...</string>
     <string name="error_surname">El campo del apellido no puede estar vacio!</string>
