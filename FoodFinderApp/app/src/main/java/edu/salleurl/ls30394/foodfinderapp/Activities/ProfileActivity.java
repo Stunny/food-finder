@@ -1,13 +1,19 @@
 package edu.salleurl.ls30394.foodfinderapp.Activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -29,6 +35,9 @@ public class ProfileActivity extends AppCompatActivity {
     private TextInputLayout description;
     private ImageView profilePicture;
     private RadioGroup gender;
+    private Bitmap imageBitmap;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +47,11 @@ public class ProfileActivity extends AppCompatActivity {
         configWidgets();
     }
 
+    /**
+     * Sets initial basic configurations
+     */
     private void configWidgets() {
-        setSupportActionBar((Toolbar) findViewById(R.id.searchactivity_toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.profile_activity_toolbar));
         takePicture = (Button) findViewById(R.id.profile_take_picture);
         save = (Button) findViewById(R.id.profile_save);
         profilePicture = (ImageView) findViewById(R.id.profile_user_picture);
@@ -48,24 +60,94 @@ public class ProfileActivity extends AppCompatActivity {
         description = (TextInputLayout) findViewById(R.id.profile_descWrapper);
         gender = (RadioGroup) findViewById(R.id.profile_selectGender);
 
-        takePicture.setVisibility(View.INVISIBLE);
-        save.setVisibility(View.INVISIBLE);
-
-        name.getEditText().setEnabled(false);
-        surname.getEditText().setEnabled(false);
-        description.getEditText().setEnabled(false);
-        gender.setEnabled(false);
+        setVisibilityColour(View.INVISIBLE, false);
 
         populateData();
     }
 
-    private void populateData() {
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        name.getEditText().setText("angel");
-        surname.getEditText().setText("farre");
-        description.getEditText().setText("test text" + System.lineSeparator() + "with line separaTHOR :D");
+    /**
+     * Sets widgets visibility, EditText editability and EditText colour
+     * @param visibility set visibility of the widgets
+     * @param b sets EditText to editable/not editable
+     */
+    private void setVisibilityColour(int visibility, boolean b){
+        takePicture.setVisibility(visibility);
+        save.setVisibility(visibility);
+
+        name.getEditText().setEnabled(b);
+        surname.getEditText().setEnabled(b);
+        description.getEditText().setEnabled(b);
+        gender.setEnabled(b);
+
+        name.getEditText().setTextColor(Color.BLACK);
+        surname.getEditText().setTextColor(Color.BLACK);
+        description.getEditText().setTextColor(Color.BLACK);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_profile_menu, menu);
+        return true;
+    }
+
+    private void populateData() {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        //load data from database
+
+        name.getEditText().setText("angel");
+        surname.getEditText().setText("farre");
+        description.getEditText().setText("text test" + System.lineSeparator() + "with line separaTHOR :D");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.activity_profile_edit){
+            editContent();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void editContent() {
+        setVisibilityColour(View.VISIBLE, true);
+    }
+
+
+    /**
+     * Selects default camera and takes picture
+     */
+    private void dispatchTakePictureIntent(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    /**
+     * Transforms the picture taken into a bitmap
+     * @param requestCode image code
+     * @param resultCode checking if OK
+     * @param data bitmap in the extras, corresponding to our image
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            this.imageBitmap = imageBitmap;
+            profilePicture.setImageBitmap(imageBitmap);
+        }
+    }
+
+    public void OnImageSelect(View view) {
+        //TODO: image select functionality
+        dispatchTakePictureIntent();
+    }
+
+    public void OnProfileSave(){
+        Log.i("angel", "wtf");
+        //save data to databse
+        setVisibilityColour(View.INVISIBLE, false);
+    }
 
 }
 

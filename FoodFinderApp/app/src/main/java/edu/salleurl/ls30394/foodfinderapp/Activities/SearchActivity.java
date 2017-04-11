@@ -35,7 +35,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initWidgets() {
-        setSupportActionBar((Toolbar) findViewById(R.id.searchactivity_toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.search_activity_toolbar));
     }
 
     @Override
