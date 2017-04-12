@@ -78,6 +78,7 @@ public class ProfileActivity extends AppCompatActivity {
         surname.getEditText().setEnabled(b);
         description.getEditText().setEnabled(b);
         gender.setEnabled(b);
+        profilePicture.setClickable(b);
 
         name.getEditText().setTextColor(Color.BLACK);
         surname.getEditText().setTextColor(Color.BLACK);
@@ -143,9 +144,12 @@ public class ProfileActivity extends AppCompatActivity {
         dispatchTakePictureIntent();
     }
 
-    public void OnProfileSave(){
-        Log.i("angel", "wtf");
+    public void OnProfileSave(View view){
         //save data to databse
+        name.getEditText().clearFocus();
+        surname.getEditText().clearFocus();
+        description.getEditText().clearFocus();
+
         setVisibilityColour(View.INVISIBLE, false);
     }
 
