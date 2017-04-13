@@ -2,9 +2,7 @@ package edu.salleurl.ls30394.foodfinderapp.Model;
 
 import android.media.Image;
 
-/**
- * Created by David GN on 03/04/2017.
- */
+
 
 public class User {
     private String  userName;
@@ -84,5 +82,5 @@ public class User {
     public void setUserDescription(String userDescription) {
         this.userDescription = userDescription;
     }
-    
+
 }
