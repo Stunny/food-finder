@@ -1,13 +1,11 @@
-package edu.salleurl.ls30394.foodfinderapp.Activities;
+package edu.salleurl.ls30394.foodfinderapp.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
 
@@ -30,12 +28,10 @@ public class SearchActivity extends AppCompatActivity {
 
     private void configWidgets() {
         initWidgets();
-
-        getSupportActionBar().setTitle("");
     }
 
     private void initWidgets() {
-        setSupportActionBar((Toolbar) findViewById(R.id.search_activity_toolbar));
+
     }
 
     @Override

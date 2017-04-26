@@ -8,7 +8,7 @@
     android:id="@+id/mainLayout"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
-    tools:context="edu.salleurl.ls30394.foodfinderapp.Activities.RegisterActivity">
+    tools:context="edu.salleurl.ls30394.foodfinderapp.activities.RegisterActivity">
 
     <ScrollView
         android:layout_width="match_parent"

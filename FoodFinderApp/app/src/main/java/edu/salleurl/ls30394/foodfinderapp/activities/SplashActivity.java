@@ -1,4 +1,4 @@
-package edu.salleurl.ls30394.foodfinderapp.Activities;
+package edu.salleurl.ls30394.foodfinderapp.activities;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -15,6 +15,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        getSupportActionBar().hide();
 
         new Handler().postDelayed(new Runnable() {
             @Override

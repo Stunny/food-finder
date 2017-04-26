@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
-
+<!--
     <android.support.v7.widget.Toolbar
         android:id="@+id/profile_activity_toolbar"
         android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize">
-    </android.support.v7.widget.Toolbar>
+    </android.support.v7.widget.Toolbar>-->
 
     <ScrollView
         android:layout_margin="16dp"

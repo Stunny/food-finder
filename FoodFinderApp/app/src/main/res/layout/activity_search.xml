@@ -6,14 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="edu.salleurl.ls30394.foodfinderapp.Activities.SearchActivity">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/search_activity_toolbar"
-        android:background="@color/colorPrimary"
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize">
-    </android.support.v7.widget.Toolbar>
+    tools:context="edu.salleurl.ls30394.foodfinderapp.activities.SearchActivity">
 
     <ScrollView
         android:layout_margin="16dp"

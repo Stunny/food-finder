@@ -1,4 +1,4 @@
-package edu.salleurl.ls30394.foodfinderapp.Activities;
+package edu.salleurl.ls30394.foodfinderapp.activities;
 
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
 

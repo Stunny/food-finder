@@ -1,9 +1,7 @@
-package edu.salleurl.ls30394.foodfinderapp.Activities;
+package edu.salleurl.ls30394.foodfinderapp.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
@@ -12,9 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
 

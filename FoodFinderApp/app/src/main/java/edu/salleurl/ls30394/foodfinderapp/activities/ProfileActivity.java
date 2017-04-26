@@ -1,23 +1,17 @@
-package edu.salleurl.ls30394.foodfinderapp.Activities;
+package edu.salleurl.ls30394.foodfinderapp.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
@@ -51,7 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
      * Sets initial basic configurations
      */
     private void configWidgets() {
-        setSupportActionBar((Toolbar) findViewById(R.id.profile_activity_toolbar));
+        //setSupportActionBar((Toolbar) findViewById(R.id.profile_activity_toolbar));
         takePicture = (Button) findViewById(R.id.profile_take_picture);
         save = (Button) findViewById(R.id.profile_save);
         profilePicture = (ImageView) findViewById(R.id.profile_user_picture);
