@@ -6,14 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.EdgeEffect;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.List;
 
-import edu.salleurl.ls30394.foodfinderapp.Model.Restaurante;
+import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 import edu.salleurl.ls30394.foodfinderapp.R;
 
 

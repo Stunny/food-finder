@@ -1,4 +1,4 @@
-package edu.salleurl.ls30394.foodfinderapp.Model;
+package edu.salleurl.ls30394.foodfinderapp.model;
 
 
 
