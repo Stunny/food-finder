@@ -1,5 +1,6 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
+import edu.salleurl.ls30394.foodfinderapp.repositories.UserDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -97,10 +99,15 @@ source: http://stackoverflow.com/a/5086706/7060082
     }
 
     public void OnRegisterComplete(View view) {
-
+        //esto para obtner el indice del radio button seleccionado en el ragio group (-1 si no hay ninguno seleccionado)
         int radioButtonID = radioGroup.getCheckedRadioButtonId();
         View radioButton = radioGroup.findViewById(radioButtonID);
         int indx = radioGroup.indexOfChild(radioButton);
+
+        /*Si queremos saber el string del radio button seleccionado del radio group:
+            RadioButton r = (RadioButton)  radioButton .getChildAt(indx);
+            String selectedtext = r.getText().toString();
+        */
 
         //TODO: comprobacion de campos de registro
         if (String.valueOf(name.getEditText().getText()).equals("")){
@@ -127,6 +134,7 @@ source: http://stackoverflow.com/a/5086706/7060082
 
     public void OnRegisterSuccess(){
         //TODO: almacenar datos de usuario
+        UserDatabase userDatabase = new UserDatabase(this);
 
         //TODO: change MainActivity by first app activity
         nextActivity = new Intent(RegisterActivity.this, SearchActivity.class);
