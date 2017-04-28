@@ -28,4 +28,5 @@
     <string name="error_passwordValidation">Password and confirm password must match!</string>
     <string name="error_terms"><![CDATA[Terms & Conditions must be accepted]]></string>
     <string name="save">Save</string>
+    <string name="error_gender">You must select a gender</string>
 </resources>

@@ -7,9 +7,12 @@ import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
 
@@ -23,6 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout confirmPassword;
     private ImageView profilePicture;
     private CheckBox terms;
+    private RadioGroup radioGroup;
     private Bitmap imageBitmap;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -40,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
         password = (TextInputLayout)findViewById(R.id.register_passwdWrapper);
         confirmPassword = (TextInputLayout)findViewById(R.id.register_passwdConfWrapper);
         terms = (CheckBox) findViewById(R.id.register_terms);
+        radioGroup = (RadioGroup) findViewById(R.id.register_selectGender);
     }
 
     @Override
@@ -93,6 +98,10 @@ source: http://stackoverflow.com/a/5086706/7060082
 
     public void OnRegisterComplete(View view) {
 
+        int radioButtonID = radioGroup.getCheckedRadioButtonId();
+        View radioButton = radioGroup.findViewById(radioButtonID);
+        int indx = radioGroup.indexOfChild(radioButton);
+
         //TODO: comprobacion de campos de registro
         if (String.valueOf(name.getEditText().getText()).equals("")){
             showError(getString(R.string.error_name), getString(R.string.error_title));
@@ -109,6 +118,8 @@ source: http://stackoverflow.com/a/5086706/7060082
             showError(getString(R.string.error_passwordValidation), getString(R.string.error_title));
         }else if (!terms.isChecked()){
             showError(getString(R.string.error_terms), getString(R.string.error_title));
+        }else if(indx == -1){
+            showError(getString(R.string.error_gender), getString(R.string.error_title));
         }else{
             OnRegisterSuccess();
         }

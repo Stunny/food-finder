@@ -30,4 +30,5 @@
     <string name="error_passwordValidation">Las contraseñas deben coincidir!</string>
     <string name="error_terms"><![CDATA[Se debe aceptar los terminos y condiciones]]></string>
     <string name="save">Guardar</string>
+    <string name="error_gender">Debes seleccionar un genero!</string>
 </resources>

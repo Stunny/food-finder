@@ -136,18 +136,21 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/register_male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/male"/>
 
                 <RadioButton
+                    android:id="@+id/register_female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/female"/>
 
                 <RadioButton
+                    android:id="@+id/register_other"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
