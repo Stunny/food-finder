@@ -1,5 +1,6 @@
 package edu.salleurl.ls30394.foodfinderapp.model;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 
 
@@ -9,20 +10,18 @@ public class User {
     private String  userSurname;
     private String  userMail;
     private String  userPassword;
-    private boolean male;
-    private boolean female;
+    private int genderIndex;
     private String userDescription;
-    private Image userImage;
+    private Bitmap userImage;
 
 
     public User(String userName, String userSurname, String userMail, String userPassword,
-                boolean male, boolean female, String userDescription,Image userImage) {
+                int genderIndex, String userDescription, Bitmap userImage) {
         this.userName = userName;
         this.userSurname = userSurname;
         this.userMail = userMail;
         this.userPassword = userPassword;
-        this.male = male;
-        this.female = female;
+        this.genderIndex = genderIndex;
         this.userDescription = userDescription;
         this.userImage = userImage;
     }
@@ -59,20 +58,12 @@ public class User {
         this.userPassword = userPassword;
     }
 
-    public boolean isMale() {
-        return male;
+    public int getGenderIndex() {
+        return genderIndex;
     }
 
-    public void setMale(boolean male) {
-        this.male = male;
-    }
-
-    public boolean isFemale() {
-        return female;
-    }
-
-    public void setFemale(boolean female) {
-        this.female = female;
+    public void setGenderIndex(int genderIndex) {
+        this.genderIndex = genderIndex;
     }
 
     public String getUserDescription() {
@@ -81,6 +72,14 @@ public class User {
 
     public void setUserDescription(String userDescription) {
         this.userDescription = userDescription;
+    }
+
+    public Bitmap getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(Bitmap userImage) {
+        this.userImage = userImage;
     }
 
 }

@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
+import edu.salleurl.ls30394.foodfinderapp.model.User;
 import edu.salleurl.ls30394.foodfinderapp.repositories.UserDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -27,6 +28,8 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout password;
     private TextInputLayout confirmPassword;
     private ImageView profilePicture;
+    private int genderIndex;
+    private TextInputLayout description;
     private CheckBox terms;
     private RadioGroup radioGroup;
     private Bitmap imageBitmap;
@@ -47,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
         confirmPassword = (TextInputLayout)findViewById(R.id.register_passwdConfWrapper);
         terms = (CheckBox) findViewById(R.id.register_terms);
         radioGroup = (RadioGroup) findViewById(R.id.register_selectGender);
+        description = (TextInputLayout) findViewById(R.id.register_descWrapper);
     }
 
     @Override
@@ -102,12 +106,7 @@ source: http://stackoverflow.com/a/5086706/7060082
         //esto para obtner el indice del radio button seleccionado en el ragio group (-1 si no hay ninguno seleccionado)
         int radioButtonID = radioGroup.getCheckedRadioButtonId();
         View radioButton = radioGroup.findViewById(radioButtonID);
-        int indx = radioGroup.indexOfChild(radioButton);
-
-        /*Si queremos saber el string del radio button seleccionado del radio group:
-            RadioButton r = (RadioButton)  radioButton .getChildAt(indx);
-            String selectedtext = r.getText().toString();
-        */
+        genderIndex = radioGroup.indexOfChild(radioButton);
 
         //TODO: comprobacion de campos de registro
         if (String.valueOf(name.getEditText().getText()).equals("")){
@@ -123,10 +122,10 @@ source: http://stackoverflow.com/a/5086706/7060082
             showError(getString(R.string.error_confirmPassword), getString(R.string.error_title));
         }else if(!String.valueOf(password.getEditText().getText()).equals(String.valueOf(confirmPassword.getEditText().getText()))) {
             showError(getString(R.string.error_passwordValidation), getString(R.string.error_title));
+        }else if(genderIndex == -1){
+            showError(getString(R.string.error_gender), getString(R.string.error_title));
         }else if (!terms.isChecked()){
             showError(getString(R.string.error_terms), getString(R.string.error_title));
-        }else if(indx == -1){
-            showError(getString(R.string.error_gender), getString(R.string.error_title));
         }else{
             OnRegisterSuccess();
         }
@@ -134,7 +133,11 @@ source: http://stackoverflow.com/a/5086706/7060082
 
     public void OnRegisterSuccess(){
         //TODO: almacenar datos de usuario
+        User user = new User(String.valueOf(name), String.valueOf(surname), String.valueOf(email), String.valueOf(password), genderIndex, String.valueOf(description), imageBitmap);
         UserDatabase userDatabase = new UserDatabase(this);
+        if (userDatabase.existsUser(String.valueOf(name), String.valueOf(surname), String.valueOf(email), String.valueOf(password))){
+            userDatabase.addUser(user);
+        }
 
         //TODO: change MainActivity by first app activity
         nextActivity = new Intent(RegisterActivity.this, SearchActivity.class);
