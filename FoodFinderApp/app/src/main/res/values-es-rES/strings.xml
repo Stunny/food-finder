@@ -31,4 +31,7 @@
     <string name="error_terms"><![CDATA[Se debe aceptar los terminos y condiciones]]></string>
     <string name="save">Guardar</string>
     <string name="error_gender">Debes seleccionar un genero!</string>
+    <string name="search_radius">Search Radius</string>
+    <string name="km_seek_text_default">0 km</string>
+    <string name="recent_searches">Recent Searches</string>
 </resources>
