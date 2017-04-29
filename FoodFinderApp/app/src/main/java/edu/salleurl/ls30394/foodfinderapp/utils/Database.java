@@ -38,11 +38,10 @@ public class Database extends SQLiteOpenHelper {
         return instance;
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase db) {
-        executeSQLScript(db, R.raw.database_creation);
         Log.i("angelDBCreation", "sup");
+        executeSQLScript(db, R.raw.database_creation);
     }
 
     @Override

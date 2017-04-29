@@ -1,9 +1,6 @@
 package edu.salleurl.ls30394.foodfinderapp.model;
 
 import android.graphics.Bitmap;
-import android.media.Image;
-
-
 
 public class User {
     private String  userName;
@@ -13,7 +10,6 @@ public class User {
     private int genderIndex;
     private String userDescription;
     private Bitmap userImage;
-
 
     public User(String userName, String userSurname, String userMail, String userPassword,
                 int genderIndex, String userDescription, Bitmap userImage) {

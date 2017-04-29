@@ -26,7 +26,6 @@ public class UserDatabase {
 
     private Context context;
 
-
     public UserDatabase(Context context){
         this.context = context;
     }

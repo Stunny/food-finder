@@ -115,7 +115,6 @@ source: http://stackoverflow.com/a/5086706/7060082
             showError(getString(R.string.error_surname), getString(R.string.error_title));
         }else if (String.valueOf(email.getEditText().getText()).equals("")) {
             showError(getString(R.string.error_email), getString(R.string.error_title));
-            //}else if (apacheEmailValidator){
         }else if(String.valueOf(password.getEditText().getText()).equals("")) {
             showError(getString(R.string.error_password), getString(R.string.error_title));
         }else if(String.valueOf(confirmPassword.getEditText().getText()).equals("")) {
@@ -134,7 +133,7 @@ source: http://stackoverflow.com/a/5086706/7060082
     public void OnRegisterSuccess(){
         //TODO: almacenar datos de usuario
         User user = new User(String.valueOf(name), String.valueOf(surname), String.valueOf(email), String.valueOf(password), genderIndex, String.valueOf(description), imageBitmap);
-        UserDatabase userDatabase = new UserDatabase(this);
+        UserDatabase userDatabase = new UserDatabase(getApplicationContext());
         if (userDatabase.existsUser(String.valueOf(name), String.valueOf(surname), String.valueOf(email), String.valueOf(password))){
             userDatabase.addUser(user);
         }

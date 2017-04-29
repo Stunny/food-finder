@@ -29,6 +29,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextInputLayout description;
     private ImageView profilePicture;
     private RadioGroup gender;
+    private Intent nextActivity;
     private Bitmap imageBitmap;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -145,6 +146,14 @@ public class ProfileActivity extends AppCompatActivity {
         description.getEditText().clearFocus();
 
         setVisibilityColour(View.INVISIBLE, false);
+    }
+
+    @Override
+    public void onBackPressed() {
+        nextActivity = new Intent(ProfileActivity.this, SearchActivity.class);
+
+        startActivity(nextActivity);
+        finish();
     }
 
 }
