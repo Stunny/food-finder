@@ -66,6 +66,7 @@ public class UserDatabase {
 
         SQLiteDatabase sqLiteOpenHelper = database.getReadableDatabase();
 
+        // sqLiteOpenHelper = /data/user/0/edu.salleurl.ls30394.foodfinderapp/databases/users_db
         long count = DatabaseUtils.queryNumEntries(sqLiteOpenHelper, TABLE_NAME, whereClause, whereArgs);
 
         Log.i("angelTest", String.valueOf(count));
