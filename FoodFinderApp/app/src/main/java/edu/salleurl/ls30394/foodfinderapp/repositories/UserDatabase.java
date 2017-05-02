@@ -16,7 +16,7 @@ import edu.salleurl.ls30394.foodfinderapp.utils.Database;
 
 public class UserDatabase {
     // Contantes con los nombres de la tabla y de las columnas de la tabla.
-    private static final String TABLE_NAME = "user_";
+    private static final String TABLE_NAME = "userInfo";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_SURNAME = "surname";
     private static final String COLUMN_EMAIL = "email";
@@ -44,7 +44,6 @@ public class UserDatabase {
         contentValues.put(COLUMN_DESCRIPTION, u.getUserDescription());
         //inserimos los datos a la base de datos. query del INSERT INTO
         database.getWritableDatabase().insert(TABLE_NAME, null, contentValues);
-
     }
 
     public void removeUser(User u){
@@ -60,13 +59,11 @@ public class UserDatabase {
         //instancia de la base de datos para poder acceder a la misma
         Database database = Database.getInstance(context);
         //query del WHERE
-        String whereClause = COLUMN_NAME + "=? and " + COLUMN_SURNAME + "=? and " + COLUMN_EMAIL+ "=? and " + COLUMN_PASSWORD + "=?";
-
+        String whereClause = COLUMN_NAME + "=? and " + COLUMN_SURNAME + "=? and " + COLUMN_EMAIL + "=? and " + COLUMN_PASSWORD + "=?";
         String[] whereArgs = {name, surname, email, password};
 
         SQLiteDatabase sqLiteOpenHelper = database.getReadableDatabase();
 
-        // sqLiteOpenHelper = /data/user/0/edu.salleurl.ls30394.foodfinderapp/databases/users_db
         long count = DatabaseUtils.queryNumEntries(sqLiteOpenHelper, TABLE_NAME, whereClause, whereArgs);
 
         Log.i("angelTest", String.valueOf(count));
