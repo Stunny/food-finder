@@ -10,6 +10,8 @@ import android.util.Log;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
 
@@ -18,6 +20,9 @@ import edu.salleurl.ls30394.foodfinderapp.R;
  */
 
 public class Database extends SQLiteOpenHelper {
+
+    public static final String SQLITE_COMMENT_REGEX = "/\\/\\*.*?\\*\\/|--.*?\\n/gs";
+
     private Context context;
     private static Database instance;
     private static final String name = "users_db";
@@ -60,6 +65,9 @@ public class Database extends SQLiteOpenHelper {
         int len;
         InputStream inputStream = null;
 
+        Pattern p = Pattern.compile(SQLITE_COMMENT_REGEX);
+        Matcher m;
+
         try{
             inputStream = context.getResources().openRawResource(scriptFile);
             while ((len = inputStream.read(buf)) != -1) {
@@ -71,7 +79,11 @@ public class Database extends SQLiteOpenHelper {
             String[] createScript = outputStream.toString().split(";");
             for (int i = 0; i < createScript.length; i++) {
                 String sqlStatement = createScript[i].trim();
-                // TODO You may want to parse out comments here
+                m = p.matcher(sqlStatement);
+
+                if(m.find())
+                    sqlStatement = sqlStatement.substring(0, m.end());
+
                 if (sqlStatement.length() > 0) {
                     database.execSQL(sqlStatement + ";");
                 }

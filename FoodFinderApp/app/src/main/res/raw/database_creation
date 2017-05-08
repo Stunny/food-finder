@@ -26,7 +26,6 @@ CREATE TABLE recent_places(
     _id INTEGER PRIMARY KEY AUTOINCREMENT,
     restaurantID INTEGER NOT NULL,
     userID INTEGER NOT NULL,
-
     -- Formato de fecha ISO8601:"YYYY-MM-DD HH:MM:SS.SSS"
     date TEXT NOT NULL
 );
