@@ -5,18 +5,22 @@ package edu.salleurl.ls30394.foodfinderapp.model;
 
 public class Restaurante {
     private String name;
-    private String localization;
-    private String image_restaurant; // he pensado que aquí podríamos guardar el directiorio de la
+    private String imageURI; // he pensado que aquí podríamos guardar el directiorio de la
                                     // imagen, ya que en la base de datos no se pueden guardar imagenes
+
+    private double latitude;
+    private double longitude;
+
     private int rating;
     private String description;
     private String[] comments;
 
-    public Restaurante(String name, String localization, String image_restaurant, int rating,
+    private Restaurante(String name, double lat, double lng, String imageURI, int rating,
                        String description, String[] comments) {
         this.name = name;
-        this.localization = localization;
-        this.image_restaurant = image_restaurant;
+        this.imageURI = imageURI;
+        this.latitude = lat;
+        this.longitude = lng;
         this.rating = rating;
         this.description = description;
         this.comments = comments;
@@ -30,20 +34,12 @@ public class Restaurante {
         this.name = name;
     }
 
-    public String getLocalization() {
-        return localization;
+    public String getImageURI() {
+        return imageURI;
     }
 
-    public void setLocalization(String localization) {
-        this.localization = localization;
-    }
-
-    public String getImage_restaurant() {
-        return image_restaurant;
-    }
-
-    public void setImage_restaurant(String image_restaurant) {
-        this.image_restaurant = image_restaurant;
+    public void setImageURI(String imageURI) {
+        this.imageURI = imageURI;
     }
 
     public int getRating() {
@@ -68,5 +64,21 @@ public class Restaurante {
 
     public void setComments(String[] comments) {
         this.comments = comments;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

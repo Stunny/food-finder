@@ -6,3 +6,25 @@ CREATE TABLE userInfo(
     password TEXT NOT NULL,
     gender TEXT NOT NULL
 );
+
+CREATE TABLE restaurant(
+    _id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    imgURI TEXT,
+    lat DOUBLE NOT NULL,
+    lng DOUBLE NOT NULL,
+    rating INTEGER,
+    description TEXT
+);
+
+CREATE TABLE favorite_restaurants(
+    userID INTEGER PRIMARY KEY,
+    restaurantID INTEGER PRIMARY KEY
+);
+
+CREATE TABLE comment(
+    _id INTEGER PRIMARY KEY AUTOINCREMENT,
+    restaurantID INTEGER NOT NULL,
+    userID INTEGER NOT NULL,
+    content TEXT NOT NULL
+);

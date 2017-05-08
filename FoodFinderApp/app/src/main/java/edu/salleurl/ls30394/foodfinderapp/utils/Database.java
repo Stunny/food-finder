@@ -24,7 +24,7 @@ public class Database extends SQLiteOpenHelper {
     private static final int version = 1;
     private static SQLiteDatabase.CursorFactory factory;
 
-    public Database(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    private Database(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         this.context = context;
     }
