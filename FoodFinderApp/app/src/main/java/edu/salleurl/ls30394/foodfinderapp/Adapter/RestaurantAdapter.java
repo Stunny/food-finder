@@ -16,12 +16,12 @@ import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 import edu.salleurl.ls30394.foodfinderapp.R;
 
 
-public class RestaurantListViewAdapter extends BaseAdapter
+public class RestaurantAdapter extends BaseAdapter
         implements AdapterView.OnItemClickListener {
     private Context context;
     private List<Restaurante> restaurantes;
 
-    public RestaurantListViewAdapter(Context context,List<Restaurante> restaurantes){
+    public RestaurantAdapter(Context context, List<Restaurante> restaurantes){
         this.context = context;
         this.restaurantes = restaurantes;
     }
@@ -46,7 +46,7 @@ public class RestaurantListViewAdapter extends BaseAdapter
 
         LayoutInflater inflater =
                 (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View itemView = inflater.inflate(R.layout.layout_restaurant_listview,parent,false);
+        View itemView = inflater.inflate(R.layout.layout_restaurant_listview, parent, false);
 
         Restaurante restaurante = restaurantes.get(position);
 
@@ -54,7 +54,7 @@ public class RestaurantListViewAdapter extends BaseAdapter
         nameRestaurant.setText(restaurante.getName());
 
         TextView localization = (TextView) itemView.findViewById(R.id.localization_restaurant);
-        localization.setText(restaurante.getLocalization());
+        localization.setText(restaurante.getAddress());
 
         RatingBar ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
         ratingBar.setRating(restaurante.getRating());

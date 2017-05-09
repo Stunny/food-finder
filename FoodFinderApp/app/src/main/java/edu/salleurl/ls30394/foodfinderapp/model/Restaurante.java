@@ -7,15 +7,18 @@ public class Restaurante {
     private String name;
     private String imageURI; // he pensado que aquí podríamos guardar el directiorio de la
                                     // imagen, ya que en la base de datos no se pueden guardar imagenes
-
+    private String address;
     private double latitude;
     private double longitude;
 
-    private int rating;
+    private float rating;
     private String description;
     private String[] comments;
 
-    private Restaurante(String name, double lat, double lng, String imageURI, int rating,
+    private String openingTime; //HH:mm
+    private String closingTime; //HH:mm
+
+    private Restaurante(String name, double lat, double lng, String imageURI, float rating,
                        String description, String[] comments) {
         this.name = name;
         this.imageURI = imageURI;
@@ -42,11 +45,11 @@ public class Restaurante {
         this.imageURI = imageURI;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 
@@ -80,5 +83,29 @@ public class Restaurante {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getOpeningTime() {
+        return openingTime;
+    }
+
+    public void setOpeningTime(String openingTime) {
+        this.openingTime = openingTime;
+    }
+
+    public String getClosingTime() {
+        return closingTime;
+    }
+
+    public void setClosingTime(String closingTime) {
+        this.closingTime = closingTime;
     }
 }

@@ -11,9 +11,14 @@ CREATE TABLE restaurant(
     _id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     imgURI TEXT,
+    address TEXT NOT NULL,
     lat DOUBLE NOT NULL,
     lng DOUBLE NOT NULL,
-    rating INTEGER,
+    -- Formato de tiempo HH:mm
+    openingTime TEXT NOT NULL,
+    closingTime TEXT NOT NULL,
+
+    rating FLOAT,
     description TEXT
 );
 

@@ -65,9 +65,6 @@ public class Database extends SQLiteOpenHelper {
         int len;
         InputStream inputStream = null;
 
-        Pattern p = Pattern.compile(SQLITE_COMMENT_REGEX);
-        Matcher m;
-
         try{
             inputStream = context.getResources().openRawResource(scriptFile);
             while ((len = inputStream.read(buf)) != -1) {
@@ -79,10 +76,8 @@ public class Database extends SQLiteOpenHelper {
             String[] createScript = outputStream.toString().split(";");
             for (int i = 0; i < createScript.length; i++) {
                 String sqlStatement = createScript[i].trim();
-                m = p.matcher(sqlStatement);
 
-                if(m.find())
-                    sqlStatement = sqlStatement.substring(0, m.end());
+                sqlStatement = sqlStatement.replaceAll(SQLITE_COMMENT_REGEX, " ");
 
                 if (sqlStatement.length() > 0) {
                     database.execSQL(sqlStatement + ";");
