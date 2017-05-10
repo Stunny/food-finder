@@ -1,6 +1,7 @@
 package edu.salleurl.ls30394.foodfinderapp.repositories.impl;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -29,7 +30,7 @@ public class RestaurantsWebService implements RestaurantsRepo {
 
     private static RestaurantsWebService instance;
 
-    private RestaurantsWebService(Context context){
+    public RestaurantsWebService(Context context){
         this.context = context;
     }
 
@@ -45,7 +46,7 @@ public class RestaurantsWebService implements RestaurantsRepo {
     public List<Restaurante> getRestaurants(String search) {
         String requestURL = "";
         try {
-            requestURL = WS_BASE_URL+"&s="+ URLEncoder.encode(search.trim(), "utf-8");
+            requestURL = WS_BASE_URL + "&s=" + URLEncoder.encode(search.trim(), "utf-8");
         } catch (UnsupportedEncodingException e) {}
 
         searchRestaurants(requestURL);
@@ -54,8 +55,9 @@ public class RestaurantsWebService implements RestaurantsRepo {
 
     @Override
     public List<Restaurante> getRestaurants(double lat, double lng, int radius) {
-        String requestURL = WS_BASE_URL+"&lat="+Double.toString(lat)+"&lon="+Double.toString(lng)
-                +"&dist="+Integer.toString(radius);
+        Log.i("angel", "getRestaurants");
+        String requestURL = WS_BASE_URL + "&lat=" + Double.toString(lat) + "&lon=" + Double.toString(lng)
+                + "&dist=" + Integer.toString(radius);
 
         searchRestaurants(requestURL);
         return null;
@@ -68,12 +70,14 @@ public class RestaurantsWebService implements RestaurantsRepo {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        Log.i("angel", "response");
                         //TODO: Notify data is changed on serach result activity
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Log.i("angel", "ErrorResponse");
                         //TODO: Dont show anything
                     }
                 }

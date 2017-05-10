@@ -1,6 +1,9 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -17,13 +20,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
+import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RestaurantsWebService;
 
 public class SearchActivity extends AppCompatActivity {
     private Intent nextActivity;
     private EditText searchField;
     private android.widget.SeekBar seekBar;
     private TextView seekBarValue;
-    private SeekBar.OnSeekBarChangeListener s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,55 +48,45 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initWidgets() {
+        //declaro los componentes
         seekBar = (android.widget.SeekBar) findViewById(R.id.seek_bar);
         seekBarValue = (TextView) findViewById(R.id.search_slider_kms);
-
-        s = new SeekBar.OnSeekBarChangeListener() {
+        seekBarValue.setText("0 km");
+        //creo el listener
+        SeekBar.OnSeekBarChangeListener seekBarListener = new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                seekBarValue.setText(String.valueOf(progress));
+                seekBarValue.setText(String.valueOf(progress) + " km");
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                displaySeekBarValue(true);
-                Log.i("angel", "start");
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                displaySeekBarValue(false);
-                Log.i("angel", "stop");
+
             }
-/*
-            private void displaySeekBarValue(boolean b) {
-                while (b){
-                    onProgressChanged(seekBar,seekBar.getProgress(), true);
-                }
-            }*/
         };
-
+        //asigno el listener al seekBar
+        seekBar.setOnSeekBarChangeListener(seekBarListener);
     }
-
-    private void displaySeekBarValue(boolean b) {
-        while (b){
-            s.onProgressChanged(seekBar,seekBar.getProgress(), true);
-        }
-
-    }
-
 
     public void clearSearch(View view) {
         searchField.setText("");
     }
 
     public void locationSearch(View view) {
-
-
-
+        String aux = (String) seekBarValue.getText();
+        String [] radius = aux.split(" ");
+        Log.i("angel", radius[0]);
+        //comprueva si tienes los permisos de localizacion en el manifest
         LocationManager lm = (LocationManager) getSystemService(this.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
+
+                // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -102,23 +95,26 @@ public class SearchActivity extends AppCompatActivity {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+        Log.i("angel", "estas viu?");
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();
+
+        RestaurantsWebService r = new RestaurantsWebService(getApplicationContext());
+        r.getRestaurants(latitude, longitude, Integer.parseInt(radius[0]));
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.activity_search_goProfile:
-                Log.i("angel: ", "profile selected");
                 nextActivity = new Intent(this, ProfileActivity.class);
                 startActivity(nextActivity);
                 finish();
                 return true;
 
             case R.id.activity_search_goFavorites:
-                Log.i("angel: ", "Favourite selected");
                 return true;
 
             default:
