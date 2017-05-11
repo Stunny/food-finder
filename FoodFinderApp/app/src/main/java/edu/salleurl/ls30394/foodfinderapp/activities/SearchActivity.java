@@ -4,12 +4,15 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +21,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
 import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RestaurantsWebService;
@@ -79,12 +84,11 @@ public class SearchActivity extends AppCompatActivity {
     public void locationSearch(View view) {
         String aux = (String) seekBarValue.getText();
         String [] radius = aux.split(" ");
-        Log.i("angel", radius[0]);
+        /*
         //comprueva si tienes los permisos de localizacion en el manifest
         LocationManager lm = (LocationManager) getSystemService(this.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
 
                 // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -95,14 +99,100 @@ public class SearchActivity extends AppCompatActivity {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        Log.i("angel", "estas viu?");
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Log.i("angel", String.valueOf(location));
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();
+*/
+
+        Location l = getLastKnownLocation();
+        checkGPS();
+        double latitude = l.getLatitude();
+        double longitude = l.getLongitude();
+        Log.i("angelLatitutde", String.valueOf(latitude));
+        Log.i("angelLongitude", String.valueOf(longitude));
 
         RestaurantsWebService r = new RestaurantsWebService(getApplicationContext());
         r.getRestaurants(latitude, longitude, Integer.parseInt(radius[0]));
 
+    }
+
+    private void checkGPS() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Log.i("angelTest", String.valueOf(manager.isProviderEnabled(LocationManager.GPS_PROVIDER)));
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+            builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new android.content.DialogInterface.OnClickListener() {
+                        public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            dialog.cancel();
+                        }
+                    });
+            final AlertDialog alert = builder.create();
+            alert.show();
+        }
+    }
+
+/*
+    public static void checkGPS(final Activity activity) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        final String action = Settings.ACTION_LOCATION_SOURCE_SETTINGS;
+        final String message = "Enable either GPS or any other location"
+                + " service to find current location.  Click OK to go to"
+                + " location services settings to let you do so.";
+
+        Log.i("angel", "halp");
+        builder.setMessage(message)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface d, int id) {
+                                activity.startActivity(new Intent(action));
+                                d.dismiss();
+                            }
+                        });
+
+        builder.create().show();
+    }
+*/
+    private Location getLastKnownLocation() {
+        LocationManager mLocationManager;
+
+        mLocationManager = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            //comprueva si tienes los permisos de localizacion en el manifest
+            LocationManager lm = (LocationManager) getSystemService(this.LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+            }
+
+            Location l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        Log.i("angelLocation", String.valueOf(bestLocation));
+        return bestLocation;
     }
 
     @Override
