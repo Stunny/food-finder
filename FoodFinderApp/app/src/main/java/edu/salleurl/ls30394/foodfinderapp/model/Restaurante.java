@@ -1,7 +1,7 @@
 package edu.salleurl.ls30394.foodfinderapp.model;
 
 
-import android.graphics.Bitmap;
+
 
 public class Restaurante {
     private String name;
@@ -11,26 +11,21 @@ public class Restaurante {
     private String address;
     private String openingTime; //HH:mm
     private String closingTime; //HH:mm
-    private float rating;
+    private float review;
     private String description;
 
 
 
-
-    private Bitmap image;
-    private String[] comments;
-
-    //constructor para el json
-    public Restaurante(String name, String type, double latitude, double longitude, String address,
-                       String openingTime, String closingTime, float rating, String description) {
+    public Restaurante(String name,String type, double lat, double lng, String address,
+                       String openingTime, String closingTime, float review, String description) {
         this.name = name;
         this.type = type;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.latitude = lat;
+        this.longitude = lng;
         this.address = address;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
-        this.rating = rating;
+        this.review = review;
         this.description = description;
     }
 
@@ -90,12 +85,12 @@ public class Restaurante {
         this.closingTime = closingTime;
     }
 
-    public float getRating() {
-        return rating;
+    public float getReview() {
+        return review;
     }
 
-    public void setRating(float rating) {
-        this.rating = rating;
+    public void setReview(float review) {
+        this.review = review;
     }
 
     public String getDescription() {
@@ -104,21 +99,5 @@ public class Restaurante {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Bitmap getImage() {
-        return image;
-    }
-
-    public void setImage(Bitmap image) {
-        this.image = image;
-    }
-
-    public String[] getComments() {
-        return comments;
-    }
-
-    public void setComments(String[] comments) {
-        this.comments = comments;
     }
 }

@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -84,43 +85,21 @@ public class SearchActivity extends AppCompatActivity {
     public void locationSearch(View view) {
         String aux = (String) seekBarValue.getText();
         String [] radius = aux.split(" ");
-        /*
-        //comprueva si tienes los permisos de localizacion en el manifest
-        LocationManager lm = (LocationManager) getSystemService(this.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-                // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        Log.i("angel", String.valueOf(location));
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
-*/
 
         Location l = getLastKnownLocation();
         checkGPS();
         double latitude = l.getLatitude();
         double longitude = l.getLongitude();
-        Log.i("angelLatitutde", String.valueOf(latitude));
-        Log.i("angelLongitude", String.valueOf(longitude));
 
         RestaurantsWebService r = new RestaurantsWebService(getApplicationContext());
         r.getRestaurants(latitude, longitude, Integer.parseInt(radius[0]));
 
     }
 
+
     private void checkGPS() {
         final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        Log.i("angelTest", String.valueOf(manager.isProviderEnabled(LocationManager.GPS_PROVIDER)));
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
             builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")

@@ -8,6 +8,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -55,23 +57,45 @@ public class RestaurantsWebService implements RestaurantsRepo {
 
     @Override
     public List<Restaurante> getRestaurants(double lat, double lng, int radius) {
-        Log.i("angel", "getRestaurants");
         String requestURL = WS_BASE_URL + "&lat=" + Double.toString(lat) + "&lon=" + Double.toString(lng)
                 + "&dist=" + Integer.toString(radius);
-
         searchRestaurants(requestURL);
         return null;
     }
 
     private void searchRestaurants(String url){
+        final String NAME = "name";
+        final String TYPE = "type";
+        final String LOCATION = "location";
+        final String ADDRESS = "address";
+        final String OPENING = "opening";
+        final String CLOSING = "closing";
+        final String REVIEW = "review";
+        final String DESCRIPTION = "description";
 
         JsonArrayRequest request = new JsonArrayRequest(
                 url,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.i("angel", "response");
+                        Log.i("angel", "response ok");
+                        parseInfo(response);
                         //TODO: Notify data is changed on serach result activity
+                    }
+
+                    private void parseInfo(JSONArray response) {
+                        try {
+                            for (int i = 0; i < response.length(); i++){
+                                JSONObject jObject = (JSONObject) response.get(i);
+
+                                JSONObject location = (JSONObject) jObject.get(LOCATION);
+
+                                Restaurante r = new Restaurante(String.valueOf(jObject.get(NAME)), jObject.get(TYPE), location.get("lat"), location.get("lng"), jObject.get(ADDRESS), jObject.get(OPENING), jObject.get(CLOSING), jObject.get(REVIEW), jObject.get(DESCRIPTION));
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
