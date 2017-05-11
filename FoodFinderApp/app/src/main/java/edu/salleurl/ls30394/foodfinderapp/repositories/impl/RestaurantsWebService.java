@@ -90,7 +90,15 @@ public class RestaurantsWebService implements RestaurantsRepo {
 
                                 JSONObject location = (JSONObject) jObject.get(LOCATION);
 
-                                Restaurante r = new Restaurante(String.valueOf(jObject.get(NAME)), jObject.get(TYPE), location.get("lat"), location.get("lng"), jObject.get(ADDRESS), jObject.get(OPENING), jObject.get(CLOSING), jObject.get(REVIEW), jObject.get(DESCRIPTION));
+                                Restaurante r = new Restaurante(String.valueOf(jObject.get(NAME)),
+                                        String.valueOf(jObject.get(TYPE)),
+                                        Double.parseDouble(String.valueOf(location.get("lat"))),
+                                        Double.parseDouble(String.valueOf(location.get("lng"))),
+                                        String.valueOf(jObject.get(ADDRESS)),
+                                        String.valueOf(jObject.get(OPENING)),
+                                        String.valueOf(jObject.get(CLOSING)),
+                                        Float.parseFloat(String.valueOf(jObject.get(REVIEW))),
+                                        String.valueOf(jObject.get(DESCRIPTION)));
 
                             }
                         } catch (JSONException e) {

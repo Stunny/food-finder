@@ -1,8 +1,5 @@
 package edu.salleurl.ls30394.foodfinderapp.model;
 
-
-
-
 public class Restaurante {
     private String name;
     private String type;
@@ -13,8 +10,6 @@ public class Restaurante {
     private String closingTime; //HH:mm
     private float review;
     private String description;
-
-
 
     public Restaurante(String name,String type, double lat, double lng, String address,
                        String openingTime, String closingTime, float review, String description) {
