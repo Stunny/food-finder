@@ -1,32 +1,37 @@
 package edu.salleurl.ls30394.foodfinderapp.model;
 
 
-
+import android.graphics.Bitmap;
 
 public class Restaurante {
     private String name;
-    private String imageURI; // he pensado que aquí podríamos guardar el directiorio de la
-                                    // imagen, ya que en la base de datos no se pueden guardar imagenes
-    private String address;
+    private String type;
     private double latitude;
     private double longitude;
-
-    private float rating;
-    private String description;
-    private String[] comments;
-
+    private String address;
     private String openingTime; //HH:mm
     private String closingTime; //HH:mm
+    private float rating;
+    private String description;
 
-    private Restaurante(String name, double lat, double lng, String imageURI, float rating,
-                       String description, String[] comments) {
+
+
+
+    private Bitmap image;
+    private String[] comments;
+
+    //constructor para el json
+    public Restaurante(String name, String type, double latitude, double longitude, String address,
+                       String openingTime, String closingTime, float rating, String description) {
         this.name = name;
-        this.imageURI = imageURI;
-        this.latitude = lat;
-        this.longitude = lng;
+        this.type = type;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.address = address;
+        this.openingTime = openingTime;
+        this.closingTime = closingTime;
         this.rating = rating;
         this.description = description;
-        this.comments = comments;
     }
 
     public String getName() {
@@ -37,36 +42,12 @@ public class Restaurante {
         this.name = name;
     }
 
-    public String getImageURI() {
-        return imageURI;
+    public String getType() {
+        return type;
     }
 
-    public void setImageURI(String imageURI) {
-        this.imageURI = imageURI;
-    }
-
-    public float getRating() {
-        return rating;
-    }
-
-    public void setRating(float rating) {
-        this.rating = rating;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String[] getComments() {
-        return comments;
-    }
-
-    public void setComments(String[] comments) {
-        this.comments = comments;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public double getLatitude() {
@@ -107,5 +88,37 @@ public class Restaurante {
 
     public void setClosingTime(String closingTime) {
         this.closingTime = closingTime;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
+    public String[] getComments() {
+        return comments;
+    }
+
+    public void setComments(String[] comments) {
+        this.comments = comments;
     }
 }

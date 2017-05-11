@@ -60,8 +60,8 @@ public class RestaurantAdapter extends BaseAdapter
         ratingBar.setRating(restaurante.getRating());
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.list_restaurant_image);
-        //imageView.setImageResource(restaurante.getImage_restaurant());
-        //TODO: poner la imagen en el adapter
+        imageView.setImageBitmap(restaurante.getImage());
+
 
         return itemView;
     }
