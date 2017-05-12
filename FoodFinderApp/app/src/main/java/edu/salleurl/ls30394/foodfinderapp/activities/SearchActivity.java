@@ -26,6 +26,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
+import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RestaurantsWebService;
 
 public class SearchActivity extends AppCompatActivity {
@@ -82,20 +83,29 @@ public class SearchActivity extends AppCompatActivity {
         searchField.setText("");
     }
 
-    public void locationSearch(View view) {
+    public void geolocationSearch(View view) {
         String aux = (String) seekBarValue.getText();
         String [] radius = aux.split(" ");
 
-        Location l = getLastKnownLocation();
         checkGPS();
+        Location l = getLastKnownLocation();
         double latitude = l.getLatitude();
         double longitude = l.getLongitude();
 
         RestaurantsWebService r = new RestaurantsWebService(getApplicationContext());
-        r.getRestaurants(latitude, longitude, Integer.parseInt(radius[0]));
+        List<Restaurante> restaurantList = r.getRestaurants(latitude, longitude, Integer.parseInt(radius[0]));
 
+        nextActivity = new Intent(SearchActivity.this, SearchResultActivity.class);
+        startActivity(nextActivity);
+        finish();
     }
 
+    public void locationSearch(View view){
+
+        nextActivity = new Intent(SearchActivity.this, SearchResultActivity.class);
+        startActivity(nextActivity);
+        finish();
+    }
 
     private void checkGPS() {
         final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -127,7 +137,6 @@ public class SearchActivity extends AppCompatActivity {
                 + " service to find current location.  Click OK to go to"
                 + " location services settings to let you do so.";
 
-        Log.i("angel", "halp");
         builder.setMessage(message)
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {

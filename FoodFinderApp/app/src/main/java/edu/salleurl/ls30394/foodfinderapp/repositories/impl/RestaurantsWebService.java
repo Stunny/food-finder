@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.app.AppController;
@@ -63,7 +64,7 @@ public class RestaurantsWebService implements RestaurantsRepo {
         return null;
     }
 
-    private void searchRestaurants(String url){
+    private List<Restaurante> searchRestaurants(String url){
         final String NAME = "name";
         final String TYPE = "type";
         final String LOCATION = "location";
@@ -72,6 +73,7 @@ public class RestaurantsWebService implements RestaurantsRepo {
         final String CLOSING = "closing";
         final String REVIEW = "review";
         final String DESCRIPTION = "description";
+        final List<Restaurante> restaurantList = new ArrayList<>();
 
         JsonArrayRequest request = new JsonArrayRequest(
                 url,
@@ -100,6 +102,7 @@ public class RestaurantsWebService implements RestaurantsRepo {
                                         Float.parseFloat(String.valueOf(jObject.get(REVIEW))),
                                         String.valueOf(jObject.get(DESCRIPTION)));
 
+                                restaurantList.add(r);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -115,5 +118,6 @@ public class RestaurantsWebService implements RestaurantsRepo {
                 }
         );
         AppController.getInstance().addToRequestQueue(request, REQ_TAG);
+        return restaurantList;
     }
 }

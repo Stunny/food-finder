@@ -11,6 +11,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Random;
 
 import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 import edu.salleurl.ls30394.foodfinderapp.R;
@@ -43,6 +44,7 @@ public class RestaurantAdapter extends BaseAdapter
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        final Random rnd = new Random();
 
         LayoutInflater inflater =
                 (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -57,12 +59,15 @@ public class RestaurantAdapter extends BaseAdapter
         localization.setText(restaurante.getAddress());
 
         RatingBar ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
-        ratingBar.setRating(restaurante.getRating());
+        ratingBar.setRating(restaurante.getReview());
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.list_restaurant_image);
-        imageView.setImageBitmap(restaurante.getImage());
 
+        /*
+        final String str = "img_" + rnd.nextInt(2);
+        imageView.setImageDrawable(getResources().getDrawable(getResourceID(str, "drawable", getApplicationContext())));
 
+*/
         return itemView;
     }
 
