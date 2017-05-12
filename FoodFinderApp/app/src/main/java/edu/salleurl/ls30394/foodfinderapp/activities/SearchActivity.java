@@ -85,16 +85,42 @@ public class SearchActivity extends AppCompatActivity {
 
     public void geolocationSearch(View view) {
         String aux = (String) seekBarValue.getText();
-        String [] radius = aux.split(" ");
+        final String [] radius = aux.split(" ");
 
-        if (checkGPS()){
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+            builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new android.content.DialogInterface.OnClickListener() {
+                        public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                            while (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                onPause();
+                            }
+                            Location l = getLastKnownLocation();
+                            double latitude = l.getLatitude();
+                            double longitude = l.getLongitude();
+                            nextActivity = new Intent(SearchActivity.this, SearchResultActivity.class);
+                            nextActivity.putExtra("lat", latitude);
+                            nextActivity.putExtra("lng", longitude);
+                            nextActivity.putExtra("rad", radius[0]);
+                            startActivity(nextActivity);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            dialog.cancel();
+                        }
+                    });
+            final AlertDialog alert = builder.create();
+            alert.show();
+        }else{
             Location l = getLastKnownLocation();
             double latitude = l.getLatitude();
             double longitude = l.getLongitude();
-/*
-            RestaurantsWebService r = new RestaurantsWebService(getApplicationContext());
-            List<Restaurante> restaurantList = r.getRestaurants(latitude, longitude, Integer.parseInt(radius[0]));
-*/
             nextActivity = new Intent(SearchActivity.this, SearchResultActivity.class);
             nextActivity.putExtra("lat", latitude);
             nextActivity.putExtra("lng", longitude);
@@ -102,6 +128,7 @@ public class SearchActivity extends AppCompatActivity {
             startActivity(nextActivity);
             finish();
         }
+
     }
 
     public void locationSearch(View view){
@@ -111,31 +138,6 @@ public class SearchActivity extends AppCompatActivity {
         finish();
     }
 
-    private boolean checkGPS() {
-        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final boolean[] flag = new boolean[1];
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
-            builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes", new android.content.DialogInterface.OnClickListener() {
-                        public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                            flag[0] = true;
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                            dialog.cancel();
-                            flag[0] = false;
-                        }
-                    });
-            final AlertDialog alert = builder.create();
-            alert.show();
-        }
-        return flag[0];
-    }
 
     private Location getLastKnownLocation() {
         LocationManager mLocationManager;

@@ -30,6 +30,7 @@ public class RestaurantsWebService implements RestaurantsRepo {
     public static final String REQ_TAG = "restaurant_search";
 
     private Context context;
+    private List<Restaurante> r;
 
     private static RestaurantsWebService instance;
 
@@ -60,8 +61,8 @@ public class RestaurantsWebService implements RestaurantsRepo {
     public List<Restaurante> getRestaurants(double lat, double lng, int radius) {
         String requestURL = WS_BASE_URL + "&lat=" + Double.toString(lat) + "&lon=" + Double.toString(lng)
                 + "&dist=" + Integer.toString(radius);
-        searchRestaurants(requestURL);
-        return null;
+        List<Restaurante> aux = searchRestaurants(requestURL);
+        return aux;
     }
 
     private List<Restaurante> searchRestaurants(String url){
@@ -81,11 +82,11 @@ public class RestaurantsWebService implements RestaurantsRepo {
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.i("angel", "response ok");
-                        parseInfo(response);
+                         r = parseInfo(response);
                         //TODO: Notify data is changed on serach result activity
                     }
 
-                    private void parseInfo(JSONArray response) {
+                    private List<Restaurante> parseInfo(JSONArray response) {
                         try {
                             for (int i = 0; i < response.length(); i++){
                                 JSONObject jObject = (JSONObject) response.get(i);
@@ -104,9 +105,11 @@ public class RestaurantsWebService implements RestaurantsRepo {
 
                                 restaurantList.add(r);
                             }
+                            Log.i("mecagondios", String.valueOf(restaurantList.size()));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        return restaurantList;
                     }
                 },
                 new Response.ErrorListener() {
@@ -118,6 +121,7 @@ public class RestaurantsWebService implements RestaurantsRepo {
                 }
         );
         AppController.getInstance().addToRequestQueue(request, REQ_TAG);
-        return restaurantList;
+        Log.i("angelTest", String.valueOf(r.size()));
+        return r;
     }
 }
