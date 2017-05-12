@@ -87,17 +87,21 @@ public class SearchActivity extends AppCompatActivity {
         String aux = (String) seekBarValue.getText();
         String [] radius = aux.split(" ");
 
-        checkGPS();
-        Location l = getLastKnownLocation();
-        double latitude = l.getLatitude();
-        double longitude = l.getLongitude();
-
-        RestaurantsWebService r = new RestaurantsWebService(getApplicationContext());
-        List<Restaurante> restaurantList = r.getRestaurants(latitude, longitude, Integer.parseInt(radius[0]));
-
-        nextActivity = new Intent(SearchActivity.this, SearchResultActivity.class);
-        startActivity(nextActivity);
-        finish();
+        if (checkGPS()){
+            Location l = getLastKnownLocation();
+            double latitude = l.getLatitude();
+            double longitude = l.getLongitude();
+/*
+            RestaurantsWebService r = new RestaurantsWebService(getApplicationContext());
+            List<Restaurante> restaurantList = r.getRestaurants(latitude, longitude, Integer.parseInt(radius[0]));
+*/
+            nextActivity = new Intent(SearchActivity.this, SearchResultActivity.class);
+            nextActivity.putExtra("lat", latitude);
+            nextActivity.putExtra("lng", longitude);
+            nextActivity.putExtra("rad", radius[0]);
+            startActivity(nextActivity);
+            finish();
+        }
     }
 
     public void locationSearch(View view){
@@ -107,9 +111,10 @@ public class SearchActivity extends AppCompatActivity {
         finish();
     }
 
-    private void checkGPS() {
+    private boolean checkGPS() {
         final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final boolean[] flag = new boolean[1];
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
             builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
@@ -117,38 +122,21 @@ public class SearchActivity extends AppCompatActivity {
                     .setPositiveButton("Yes", new android.content.DialogInterface.OnClickListener() {
                         public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                             startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                            flag[0] = true;
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                             dialog.cancel();
+                            flag[0] = false;
                         }
                     });
             final AlertDialog alert = builder.create();
             alert.show();
         }
+        return flag[0];
     }
 
-/*
-    public static void checkGPS(final Activity activity) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        final String action = Settings.ACTION_LOCATION_SOURCE_SETTINGS;
-        final String message = "Enable either GPS or any other location"
-                + " service to find current location.  Click OK to go to"
-                + " location services settings to let you do so.";
-
-        builder.setMessage(message)
-                .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface d, int id) {
-                                activity.startActivity(new Intent(action));
-                                d.dismiss();
-                            }
-                        });
-
-        builder.create().show();
-    }
-*/
     private Location getLastKnownLocation() {
         LocationManager mLocationManager;
 
