@@ -12,14 +12,13 @@ public class User {
     private Bitmap userImage;
 
     public User(String userName, String userSurname, String userMail, String userPassword,
-                int genderIndex, String userDescription, Bitmap userImage) {
+                int genderIndex, String userDescription) {
         this.userName = userName;
         this.userSurname = userSurname;
         this.userMail = userMail;
         this.userPassword = userPassword;
         this.genderIndex = genderIndex;
         this.userDescription = userDescription;
-        this.userImage = userImage;
     }
 
     public String getUserName() {

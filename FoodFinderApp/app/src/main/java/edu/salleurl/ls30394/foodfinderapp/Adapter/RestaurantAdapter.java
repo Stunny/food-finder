@@ -67,7 +67,7 @@ public class RestaurantAdapter extends BaseAdapter
         final String str = "img_" + rnd.nextInt(2);
         imageView.setImageDrawable(getResources().getDrawable(getResourceID(str, "drawable", getApplicationContext())));
 
-*/
+        */
         return itemView;
     }
 

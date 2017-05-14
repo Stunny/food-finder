@@ -1,6 +1,5 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -8,16 +7,14 @@ import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
 import edu.salleurl.ls30394.foodfinderapp.model.User;
-import edu.salleurl.ls30394.foodfinderapp.repositories.UserDatabase;
+import edu.salleurl.ls30394.foodfinderapp.repositories.impl.UserDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -132,9 +129,11 @@ source: http://stackoverflow.com/a/5086706/7060082
 
     public void OnRegisterSuccess(){
         //TODO: almacenar datos de usuario
-        User user = new User(String.valueOf(name), String.valueOf(surname), String.valueOf(email), String.valueOf(password), genderIndex, String.valueOf(description), imageBitmap);
+        User user = new User(String.valueOf(name), String.valueOf(surname), String.valueOf(email),
+                String.valueOf(password), genderIndex, String.valueOf(description), imageBitmap);
         UserDatabase userDatabase = new UserDatabase(getApplicationContext());
-        if (userDatabase.existsUser(String.valueOf(name), String.valueOf(surname), String.valueOf(email), String.valueOf(password))){
+        if (userDatabase.existsUser(String.valueOf(name), String.valueOf(surname),
+                String.valueOf(email), String.valueOf(password))){
             userDatabase.addUser(user);
         }
 

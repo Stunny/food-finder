@@ -4,7 +4,7 @@ CREATE TABLE userInfo(
     surname TEXT NOT NULL,
     email TEXT NOT NULL,
     password TEXT NOT NULL,
-    gender TEXT NOT NULL
+    gender INT NOT NULL
 );
 
 CREATE TABLE restaurant(

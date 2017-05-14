@@ -18,13 +18,12 @@ import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 
 public class RecentSearchAdapter extends BaseAdapter {
     private Context context;
-    private List<Restaurante> recent;
+    private List<String> recent;
     /*
-        La lista tiene que ser la lista de busquedas recientes, la pregunta es si la de recent
-        search, se guarda el Restaurante o el nombre nada mas.
-        Si es la segunda se debe modificar poco.
+        La lista tiene que ser la lista de las últimos criterios de búsqueda para que pueda volver
+        a buscarlas
      */
-    public RecentSearchAdapter (Context context,List<Restaurante> recent){
+    public RecentSearchAdapter (Context context,List<String> recent){
         this.context = context;
         this.recent = recent;
     }
@@ -51,10 +50,10 @@ public class RecentSearchAdapter extends BaseAdapter {
 
         View itemView  = inflater.inflate(R.layout.layout_favorite_listview,parent,false);
 
-        Restaurante restaurante = recent.get(position);
+        String recent_search = recent.get(position);
 
         TextView textView = (TextView) itemView.findViewById(R.id.textViewFavorite);
-        textView.setText(restaurante.getName());
+        textView.setText(recent_search);
 
 
         return itemView;
