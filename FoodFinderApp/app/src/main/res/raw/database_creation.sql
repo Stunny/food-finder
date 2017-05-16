@@ -11,16 +11,15 @@ CREATE TABLE userInfo(
 CREATE TABLE restaurant(
     _id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    imgURI TEXT,
     address TEXT NOT NULL,
     lat DOUBLE NOT NULL,
     lng DOUBLE NOT NULL,
     -- Formato de tiempo HH:mm
     openingTime TEXT NOT NULL,
     closingTime TEXT NOT NULL,
-
     rating FLOAT,
-    description TEXT
+    description TEXT NOT NULL,
+    type TEXT NOT NULL
 );
 
 CREATE TABLE favorite_restaurants(

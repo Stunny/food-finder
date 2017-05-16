@@ -27,7 +27,7 @@ public class UserDatabase implements UserRepo {
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_PASSWORD = "password";
     private static final String COLUMN_GENDER = "gender";
-        private static final String COLUMN_DESCRIPTION = "description";
+    private static final String COLUMN_DESCRIPTION = "description";
 
     private Context context;
 
