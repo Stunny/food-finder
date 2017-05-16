@@ -11,9 +11,11 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
 import edu.salleurl.ls30394.foodfinderapp.model.User;
+import edu.salleurl.ls30394.foodfinderapp.repositories.UserRepo;
 import edu.salleurl.ls30394.foodfinderapp.repositories.impl.UserDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -30,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
     private CheckBox terms;
     private RadioGroup radioGroup;
     private Bitmap imageBitmap;
+    private UserRepo userRepo;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int PICK_IMAGE = 100;
@@ -38,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        userRepo = new UserDatabase(getApplicationContext());
         profilePicture = (ImageView) findViewById(R.id.register_user_picture);
         name = (TextInputLayout)findViewById(R.id.register_nameWrapper);
         surname = (TextInputLayout)findViewById(R.id.register_surnameWrapper);
@@ -129,18 +132,25 @@ source: http://stackoverflow.com/a/5086706/7060082
 
     public void OnRegisterSuccess(){
         //TODO: almacenar datos de usuario
-        User user = new User(String.valueOf(name), String.valueOf(surname), String.valueOf(email),
-                String.valueOf(password), genderIndex, String.valueOf(description), imageBitmap);
-        UserDatabase userDatabase = new UserDatabase(getApplicationContext());
-        if (userDatabase.existsUser(String.valueOf(name), String.valueOf(surname),
+        User user = new User(name.getEditText().getText().toString(),
+                surname.getEditText().getText().toString(),
+                email.getEditText().getText().toString(),
+                password.getEditText().getText().toString(), genderIndex,
+                description.getEditText().getText().toString());
+        user.setUserImage(imageBitmap);
+
+        if (!userRepo.existsUser(String.valueOf(name), String.valueOf(surname),
                 String.valueOf(email), String.valueOf(password))){
-            userDatabase.addUser(user);
+
+            userRepo.addUser(user);
+            Toast.makeText(this,"Register successfully", Toast.LENGTH_SHORT).show();
+            //TODO: change MainActivity by first app activity
+            nextActivity = new Intent(RegisterActivity.this, MainActivity.class);
+            startActivity(nextActivity);
+            finish();
         }
 
-        //TODO: change MainActivity by first app activity
-        nextActivity = new Intent(RegisterActivity.this, SearchActivity.class);
-        startActivity(nextActivity);
-        finish();
+
     }
 
     /**
@@ -157,4 +167,6 @@ source: http://stackoverflow.com/a/5086706/7060082
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
     }
+
+
 }

@@ -27,7 +27,7 @@ public class UserDatabase implements UserRepo {
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_PASSWORD = "password";
     private static final String COLUMN_GENDER = "gender";
-    private static final String COLUMN_DESCRIPTION = "description";
+        private static final String COLUMN_DESCRIPTION = "description";
 
     private Context context;
 
@@ -35,6 +35,8 @@ public class UserDatabase implements UserRepo {
         this.context = context;
     }
 
+
+    @Override
     public void addUser(User u){
 
         //instancia de la base de datos para poder acceder a la misma
@@ -45,16 +47,17 @@ public class UserDatabase implements UserRepo {
         contentValues.put(COLUMN_SURNAME, u.getUserSurname());
         contentValues.put(COLUMN_EMAIL, u.getUserMail());
         contentValues.put(COLUMN_PASSWORD, u.getUserPassword());
-        contentValues.put(COLUMN_GENDER, u.getGenderIndex());
         contentValues.put(COLUMN_DESCRIPTION, u.getUserDescription());
+        contentValues.put(COLUMN_GENDER, u.getGenderIndex());
+
         //inserimos los datos a la base de datos. query del INSERT INTO
         database.getWritableDatabase().insert(TABLE_NAME, null, contentValues);
     }
-
+    @Override
     public void removeUser(User u){
         //se necesita esta funcionalidad?
     }
-
+    @Override
     public void updateUser(User u){
         //solo hace update del user, comprobación de que si existe o no el usuario se hace en la
         //actividad
@@ -66,14 +69,15 @@ public class UserDatabase implements UserRepo {
         contentValues.put(COLUMN_SURNAME, u.getUserSurname());
         contentValues.put(COLUMN_EMAIL, u.getUserMail());
         contentValues.put(COLUMN_PASSWORD, u.getUserPassword());
-        contentValues.put(COLUMN_GENDER, u.getGenderIndex());
         contentValues.put(COLUMN_DESCRIPTION, u.getUserDescription());
+        contentValues.put(COLUMN_GENDER, u.getGenderIndex());
+
 
 
         // Preparamos la cláusula del where. Su formato es: "<nombre columna> = ?" donde ? se
         // sustituirá por el valor añadido en los argumentos.
-        String whereClause = COLUMN_NAME + "=?" + COLUMN_SURNAME + "=?" + COLUMN_EMAIL + "=?" +
-                COLUMN_PASSWORD + "=?" + COLUMN_GENDER + "=?" + COLUMN_DESCRIPTION + "=?";
+        String whereClause = COLUMN_NAME + "=? and " + COLUMN_SURNAME + "=? and " + COLUMN_EMAIL + "=? and " +
+                COLUMN_PASSWORD + "=? and " +  COLUMN_DESCRIPTION + "=? and " +COLUMN_GENDER+ "=?";
         String[] whereArgs = {u.getUserName(),u.getUserSurname(),u.getUserMail(),u.getUserPassword(),
                 String.valueOf(u.getGenderIndex()),u.getUserDescription()};
 
@@ -85,7 +89,7 @@ public class UserDatabase implements UserRepo {
 
 
     }
-
+    @Override
     public boolean existsUser(String name, String surname, String email, String password){
         //instancia de la base de datos para poder acceder a la misma
         Database database = Database.getInstance(context);
@@ -103,8 +107,9 @@ public class UserDatabase implements UserRepo {
         return count>0;//es lo mismo que el if que habia antes
 
     }
-
-    public User getUser(String name, String username){
+    @Override
+    public List<User> getUser(String name, String password,boolean email){
+        List<User> users = new ArrayList<>();
         //Retorna el usuario con el nombre y apellido especificado, se ha echo en caso de que no se
         //puede dar el caso de dos usuarios con el mismo nombre
 
@@ -116,9 +121,15 @@ public class UserDatabase implements UserRepo {
 
         // Preparamos la cláusula del where. Su formato es: "<nombre columna> = ?" donde ? se
         // sustituirá por el valor añadido en los argumentos.
-        String whereClause = COLUMN_NAME + "=?" + COLUMN_SURNAME + "=?";
+        String whereClause;
+        if(email){
+            whereClause = COLUMN_NAME + "=? and " + COLUMN_EMAIL + "=?";
 
-        String[] whereArgs = {name,username};
+        }else{
+            whereClause = COLUMN_NAME + "=? and " + COLUMN_PASSWORD + "=?";
+        }
+
+        String[] whereArgs = {name,password};
 
         Cursor cursor = database.getReadableDatabase().
                 query(TABLE_NAME, selectColumns, whereClause, whereArgs, null, null, null);
@@ -135,9 +146,11 @@ public class UserDatabase implements UserRepo {
                     String userSurname = cursor.getString(cursor.getColumnIndex(COLUMN_SURNAME));
                     String userMail = cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL));
                     String userPassword = cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD));
-                    int userGender = cursor.getInt(cursor.getColumnIndex(COLUMN_GENDER));
                     String userDescription = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
+                    int userGender = cursor.getInt(cursor.getColumnIndex(COLUMN_GENDER));
+
                     user = new User(userName,userSurname,userMail,userPassword,userGender,userDescription);
+                    users.add(user);
 
                 } while (cursor.moveToNext());
             }
@@ -145,7 +158,7 @@ public class UserDatabase implements UserRepo {
             cursor.close();
         }
 
-        return user;
+        return users;
 
 
     }
@@ -175,8 +188,9 @@ public class UserDatabase implements UserRepo {
                     String userSurname = cursor.getString(cursor.getColumnIndex(COLUMN_SURNAME));
                     String userMail = cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL));
                     String userPassword = cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD));
-                    int userGender = cursor.getInt(cursor.getColumnIndex(COLUMN_GENDER));
                     String userDescription = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
+                    int userGender = cursor.getInt(cursor.getColumnIndex(COLUMN_GENDER));
+
                     User user = new User(userName,userSurname,userMail,userPassword,userGender,userDescription);
 
                     list.add(user);

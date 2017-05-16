@@ -8,24 +8,43 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
+import edu.salleurl.ls30394.foodfinderapp.model.User;
+import edu.salleurl.ls30394.foodfinderapp.repositories.UserRepo;
+import edu.salleurl.ls30394.foodfinderapp.repositories.impl.UserDatabase;
 
 public class MainActivity extends AppCompatActivity {
+
 
     private TextInputLayout tilUsername;
 
     private TextInputLayout tilPassword;
 
+    private EditText passwordText;
+
+    private EditText userNameText;
+
     private Button btnLogin;
 
     private Intent nextActivity;
+
+    private UserRepo userRepo;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        userRepo = new UserDatabase(getApplicationContext());
 
         configWidgets();
     }
@@ -59,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
         tilUsername = (TextInputLayout)findViewById(R.id.tilUsername);
         tilPassword = (TextInputLayout)findViewById(R.id.tilPassword);
 
+        userNameText = (EditText) findViewById(R.id.userName_text);
+        passwordText = (EditText) findViewById(R.id.password_text);
+
         btnLogin = (Button) findViewById(R.id.btnLogin);
 
     }
@@ -70,9 +92,39 @@ public class MainActivity extends AppCompatActivity {
      * @param view Button view
      */
     public void OnLogin(View view) {
-        OnLoginSuccess();
+        String userName = userNameText.getText().toString();
+        String userPassword = passwordText.getText().toString();
+        if(userName.equals("")){
+            Toast.makeText(this,"Username field is empty.", Toast.LENGTH_SHORT).show();
+        } else{
+            if(userPassword.equals("")){
+                Toast.makeText(this,"Password field is empty.", Toast.LENGTH_SHORT).show();
+
+            }else{
+                //la aplicación peta en la linia de debajo, no se como solucionarlo
+                List<User> user = userRepo.getUser(userName,userPassword,isEmail(userName));
+
+                if(user.size() > 0 ){
+                    OnLoginSuccess();
+                }else{
+                    Toast.makeText(this,"Invalid user",Toast.LENGTH_LONG).show();
+                }
+            }
+        }
     }
 
+    public boolean isEmail(String usertText){
+        char[] charSequence = usertText.toCharArray();
+        int size = charSequence.length;
+        boolean isEmail = false;
+        for(int i= 0 ; i<size;i++){
+            if(charSequence[i] == '@'){
+                isEmail  = true;
+                break;
+            }
+        }
+        return  isEmail;
+    }
     /**
      * Executed when user login has been successful
      */
@@ -90,8 +142,11 @@ public class MainActivity extends AppCompatActivity {
     public void OnRegister(View view) {
 
         nextActivity = new Intent(MainActivity.this, RegisterActivity.class);
-
         startActivity(nextActivity);
+
         finish();
+    }
+    public  UserRepo getUserRepo(){
+        return userRepo;
     }
 }

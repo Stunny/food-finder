@@ -11,6 +11,6 @@ public interface UserRepo {
     void removeUser(User u);
     void updateUser(User u);
     boolean existsUser(String name, String surname, String email, String password);
-    User getUser(String name, String username);
+    List<User> getUser(String name, String password,boolean email);
     List<User> getAllUsers();
 }

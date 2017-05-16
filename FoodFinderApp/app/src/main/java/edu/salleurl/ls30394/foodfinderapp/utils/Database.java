@@ -54,7 +54,7 @@ public class Database extends SQLiteOpenHelper {
         //TODO: Implementar los cambios cuando el usuario modifica su perfil
         Log.i("angel", "updateDone");
         // Destruir DB.
-        executeSQLScript(db, R.raw.database_removal);
+        executeSQLScript(db,R.raw.database_removal);
         // Crear DB.
         executeSQLScript(db, R.raw.database_creation);
     }
@@ -84,9 +84,11 @@ public class Database extends SQLiteOpenHelper {
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
             // TODO Handle Script Failed to Load
         } catch (SQLException e) {
-            // TODO Handle Script Failed to Execute
+            e.printStackTrace();
+                // TODO Handle Script Failed to Execute
         }
     }
 
