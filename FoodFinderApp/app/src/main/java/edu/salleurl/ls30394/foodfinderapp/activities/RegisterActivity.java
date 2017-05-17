@@ -1,17 +1,30 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
 import edu.salleurl.ls30394.foodfinderapp.model.User;
@@ -33,9 +46,12 @@ public class RegisterActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
     private Bitmap imageBitmap;
     private UserRepo userRepo;
+    private String mCurrentPhotoPath;
+    private Bitmap bitmap;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int PICK_IMAGE = 100;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +90,34 @@ source: http://stackoverflow.com/a/5086706/7060082
     /**
      * Selects default camera and takes picture
      */
+
+    public boolean saveImageToInternalStorage(Bitmap image,String name) {
+
+        try {
+            // Use the compress method on the Bitmap object to write image to
+            // the OutputStream
+            FileOutputStream fos =
+                    this.openFileOutput( name + "_profile.png", Context.MODE_PRIVATE);
+
+            // Writing the bitmap to the output stream
+            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+            return true;
+        } catch (Exception e) {
+            Log.e("saveToInternalStorage()", e.getMessage());
+            return false;
+        }
+    }
+
     private void dispatchTakePictureIntent(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
+        bitmap = ((BitmapDrawable) profilePicture.getDrawable()).getBitmap();
     }
+
 
     /**
      * Transforms the picture taken into a bitmap
@@ -137,12 +175,13 @@ source: http://stackoverflow.com/a/5086706/7060082
                 email.getEditText().getText().toString(),
                 password.getEditText().getText().toString(), genderIndex,
                 description.getEditText().getText().toString());
-        user.setUserImage(imageBitmap);
 
         if (!userRepo.existsUser(String.valueOf(name), String.valueOf(surname),
                 String.valueOf(email), String.valueOf(password))){
 
             userRepo.addUser(user);
+            imageBitmap = ((BitmapDrawable)profilePicture.getDrawable()).getBitmap();
+            saveImageToInternalStorage(imageBitmap,user.getUserName());
             Toast.makeText(this,"Register successfully", Toast.LENGTH_SHORT).show();
             //TODO: change MainActivity by first app activity
             nextActivity = new Intent(RegisterActivity.this, MainActivity.class);

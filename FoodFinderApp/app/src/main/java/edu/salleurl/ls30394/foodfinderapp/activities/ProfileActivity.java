@@ -1,12 +1,17 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
@@ -38,9 +45,6 @@ public class ProfileActivity extends AppCompatActivity {
     private Intent nextActivity;
     private Bitmap imageBitmap;
     private String userName;
-    private String userSurname;
-    private String genderUser;
-    private String descriptionUser;
     private String userPassword;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -51,9 +55,6 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         Intent intent = getIntent();
         userName = intent.getStringExtra("userName");
-        userSurname = intent.getStringExtra("userSurname");
-        genderUser = intent.getStringExtra("gender");
-        descriptionUser = intent.getStringExtra("userDescription");
         userPassword = intent.getStringExtra("userPassword");
         configWidgets();
     }
@@ -88,13 +89,15 @@ public class ProfileActivity extends AppCompatActivity {
         name.getEditText().setEnabled(b);
         surname.getEditText().setEnabled(b);
         description.getEditText().setEnabled(b);
-        gender.setEnabled(b);
+        //gender.setEnabled(b);
         gender.setClickable(b);
         profilePicture.setClickable(b);
 
         name.getEditText().setTextColor(Color.BLACK);
         surname.getEditText().setTextColor(Color.BLACK);
         description.getEditText().setTextColor(Color.BLACK);
+        profilePicture.setImageBitmap(getBitmap(userName + "_profile.png"));
+
     }
 
     @Override
@@ -106,11 +109,16 @@ public class ProfileActivity extends AppCompatActivity {
     private void populateData() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         //load data from database
-
+        UserRepo userDB = new UserDatabase(this);
+        List<User> users = userDB.getUser(userName,userPassword,false);
         name.getEditText().setText(userName);
-        surname.getEditText().setText(userSurname);
-        description.getEditText().setText(descriptionUser);
-        gender.check(Integer.valueOf(genderUser));
+        surname.getEditText().setText(users.get(0).getUserSurname());
+        description.getEditText().setText(users.get(0).getUserDescription());
+        gender.check(users.get(0).getGenderIndex() +1 );
+
+        File image = new File(this.getParent() +userName + "_profile.png");
+
+
     }
 
     @Override
@@ -162,30 +170,45 @@ public class ProfileActivity extends AppCompatActivity {
         name.getEditText().clearFocus();
         userName = name.getEditText().getText().toString();
         surname.getEditText().clearFocus();
-        userSurname = name.getEditText().getText().toString();
+        String userSurname = surname.getEditText().getText().toString();
         description.getEditText().clearFocus();
-        descriptionUser = description.getEditText().getText().toString();
-        genderUser = String.valueOf(gender.getCheckedRadioButtonId());
+        String descriptionUser = description.getEditText().getText().toString();
+        int genderUser = gender.getCheckedRadioButtonId() -1;
         setVisibilityColour(View.INVISIBLE, false);
         UserRepo userDataBase = new UserDatabase(this);
         List<User> user = userDataBase.getUser(userName,userPassword,false);
         User user1 = user.get(0);
         user1.setUserSurname(userSurname);
         user1.setUserDescription(descriptionUser);
-        user1.setGenderIndex(Integer.valueOf(genderUser));
-        userDataBase.updateUser(user1);//no fa el update
+        user1.setGenderIndex(genderUser);
+        userDataBase.updateUser(user1);
     }
 
     @Override
     public void onBackPressed() {
         nextActivity = new Intent(ProfileActivity.this, SearchActivity.class);
         nextActivity.putExtra("userName",userName);
-        nextActivity.putExtra("userSurname",userSurname);
-        nextActivity.putExtra("gender",genderUser);
-        nextActivity.putExtra("userDescription",descriptionUser);
         nextActivity.putExtra("userPassword",userPassword);
         startActivity(nextActivity);
         finish();
+    }
+
+
+    private Bitmap getBitmap(String filename) {
+
+        Bitmap thumbnail = null;
+
+        //look in internal storage
+
+        try {
+            File filePath = this.getFileStreamPath(filename);
+            FileInputStream fi = new FileInputStream(filePath);
+            thumbnail = BitmapFactory.decodeStream(fi);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return thumbnail;
     }
 
 }

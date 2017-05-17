@@ -97,10 +97,10 @@ public class MainActivity extends AppCompatActivity {
         String userName = userNameText.getText().toString();
         String userPassword = passwordText.getText().toString();
         if(userName.equals("")){
-            Toast.makeText(this,"Username field is empty.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,R.string.user_field_empty, Toast.LENGTH_SHORT).show();
         } else{
             if(userPassword.equals("")){
-                Toast.makeText(this,"Password field is empty.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,R.string.password_field_empty, Toast.LENGTH_SHORT).show();
 
             }else{
                 //la aplicación peta en la linia de debajo, no se como solucionarlo
@@ -109,14 +109,14 @@ public class MainActivity extends AppCompatActivity {
                 if(user.size() > 0 ){
                     OnLoginSuccess(user.get(0));
                 }else{
-                    Toast.makeText(this,"Invalid user",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,R.string.invalid_user,Toast.LENGTH_LONG).show();
                 }
             }
         }
     }
 
-    public boolean isEmail(String usertText){
-        char[] charSequence = usertText.toCharArray();
+    private boolean isEmail(String userText){
+        char[] charSequence = userText.toCharArray();
         int size = charSequence.length;
         boolean isEmail = false;
         for(int i= 0 ; i<size;i++){
@@ -133,9 +133,6 @@ public class MainActivity extends AppCompatActivity {
     public void OnLoginSuccess(User user){
         nextActivity = new Intent(MainActivity.this, SearchActivity.class);
         nextActivity.putExtra("userName",user.getUserName());
-        nextActivity.putExtra("userSurname",user.getUserSurname());
-        nextActivity.putExtra("gender",String.valueOf(user.getGenderIndex()));
-        nextActivity.putExtra("userDescription",user.getUserDescription());
         nextActivity.putExtra("userPassword",user.getUserPassword());
         startActivity(nextActivity);
         finish();

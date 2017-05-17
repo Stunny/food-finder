@@ -38,9 +38,6 @@ public class SearchActivity extends AppCompatActivity {
     private android.widget.SeekBar seekBar;
     private TextView seekBarValue;
     private String userName;
-    private String userSurname;
-    private String gender;
-    private String description;
     private String userPassword;
     private User user;
 
@@ -53,9 +50,6 @@ public class SearchActivity extends AppCompatActivity {
         configWidgets();
         Intent intent = getIntent();
         userName = intent.getStringExtra("userName");
-        userSurname = intent.getStringExtra("userSurname");
-        gender = intent.getStringExtra("gender");
-        description = intent.getStringExtra("userDescription");
         userPassword = intent.getStringExtra("userPassword");
 
     }
@@ -195,9 +189,6 @@ public class SearchActivity extends AppCompatActivity {
             case R.id.activity_search_goProfile:
                 nextActivity = new Intent(this, ProfileActivity.class);
                 nextActivity.putExtra("userName",userName);
-                nextActivity.putExtra("userSurname",userSurname);
-                nextActivity.putExtra("gender",gender);
-                nextActivity.putExtra("userDescription",description);
                 nextActivity.putExtra("userPassword",userPassword);
                 startActivity(nextActivity);
                 finish();
