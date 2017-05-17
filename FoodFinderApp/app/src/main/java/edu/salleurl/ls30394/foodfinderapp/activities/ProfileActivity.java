@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
@@ -73,6 +74,12 @@ public class ProfileActivity extends AppCompatActivity {
         gender = (RadioGroup) findViewById(R.id.profile_selectGender);
 
         setVisibilityColour(View.INVISIBLE, false);
+        imageBitmap = getBitmap(userName + "_profile.png");
+        if(imageBitmap != null){
+            profilePicture.setImageBitmap(imageBitmap);
+        }else{
+            profilePicture.setImageResource(R.mipmap.ic_profile_picture_default);
+        }
 
         populateData();
     }
@@ -90,13 +97,13 @@ public class ProfileActivity extends AppCompatActivity {
         surname.getEditText().setEnabled(b);
         description.getEditText().setEnabled(b);
         //gender.setEnabled(b);
-        gender.setClickable(b);
+        //gender.setClickable(b);
         profilePicture.setClickable(b);
 
         name.getEditText().setTextColor(Color.BLACK);
         surname.getEditText().setTextColor(Color.BLACK);
         description.getEditText().setTextColor(Color.BLACK);
-        profilePicture.setImageBitmap(getBitmap(userName + "_profile.png"));
+
 
     }
 
@@ -115,9 +122,6 @@ public class ProfileActivity extends AppCompatActivity {
         surname.getEditText().setText(users.get(0).getUserSurname());
         description.getEditText().setText(users.get(0).getUserDescription());
         gender.check(users.get(0).getGenderIndex() +1 );
-
-        File image = new File(this.getParent() +userName + "_profile.png");
-
 
     }
 
@@ -142,6 +146,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
+
     }
 
     /**
@@ -158,6 +163,7 @@ public class ProfileActivity extends AppCompatActivity {
             this.imageBitmap = imageBitmap;
             profilePicture.setImageBitmap(imageBitmap);
         }
+        saveImageToInternalStorage(imageBitmap,userName);
     }
 
     public void OnImageSelect(View view) {
@@ -209,6 +215,24 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         return thumbnail;
+    }
+    private boolean saveImageToInternalStorage(Bitmap image,String name) {
+
+        try {
+            // Use the compress method on the Bitmap object to write image to
+            // the OutputStream
+            FileOutputStream fos =
+                    this.openFileOutput( name + "_profile.png", Context.MODE_PRIVATE);
+
+            // Writing the bitmap to the output stream
+            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+            return true;
+        } catch (Exception e) {
+            Log.e("saveToInternalStorage()", e.getMessage());
+            return false;
+        }
     }
 
 }

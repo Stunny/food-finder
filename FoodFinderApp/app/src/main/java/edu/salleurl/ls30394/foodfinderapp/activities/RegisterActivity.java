@@ -91,7 +91,7 @@ source: http://stackoverflow.com/a/5086706/7060082
      * Selects default camera and takes picture
      */
 
-    public boolean saveImageToInternalStorage(Bitmap image,String name) {
+    private boolean saveImageToInternalStorage(Bitmap image,String name) {
 
         try {
             // Use the compress method on the Bitmap object to write image to
