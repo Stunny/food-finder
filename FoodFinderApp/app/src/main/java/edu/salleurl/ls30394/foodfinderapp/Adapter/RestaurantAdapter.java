@@ -68,11 +68,33 @@ public class RestaurantAdapter extends BaseAdapter
         imageView.setImageDrawable(getResources().getDrawable(getResourceID(str, "drawable", getApplicationContext())));
 
         */
+
         return itemView;
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+    }
+    private String setImageRestaurant(String tipo){
+        String value =null;
+        if(tipo.equals("Italiano")){
+
+        }else{
+            if(tipo.equals("Mejicano")){
+
+            }else{
+                if(tipo.equals("Oriental")){
+
+                }else{
+                    if(tipo.equals("Restaurante")){
+
+                    }else{
+
+                    }
+                }
+            }
+        }
+        return value;
     }
 }

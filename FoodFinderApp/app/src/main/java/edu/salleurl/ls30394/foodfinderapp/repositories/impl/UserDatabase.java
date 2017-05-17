@@ -76,10 +76,8 @@ public class UserDatabase implements UserRepo {
 
         // Preparamos la cláusula del where. Su formato es: "<nombre columna> = ?" donde ? se
         // sustituirá por el valor añadido en los argumentos.
-        String whereClause = COLUMN_NAME + "=? and " + COLUMN_SURNAME + "=? and " + COLUMN_EMAIL + "=? and " +
-                COLUMN_PASSWORD + "=? and " +  COLUMN_DESCRIPTION + "=? and " +COLUMN_GENDER+ "=?";
-        String[] whereArgs = {u.getUserName(),u.getUserSurname(),u.getUserMail(),u.getUserPassword(),
-                String.valueOf(u.getGenderIndex()),u.getUserDescription()};
+        String whereClause = COLUMN_NAME + "=? and "  + COLUMN_PASSWORD + "=?";
+        String[] whereArgs = {u.getUserName(),u.getUserPassword()};
 
         database.getWritableDatabase().update(TABLE_NAME,contentValues,whereClause,whereArgs);
         // El update anterior equivale a la query SQL:

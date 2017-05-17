@@ -1,6 +1,7 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
@@ -105,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 List<User> user = userRepo.getUser(userName,userPassword,isEmail(userName));
 
                 if(user.size() > 0 ){
-                    OnLoginSuccess();
+                    OnLoginSuccess(user.get(0));
                 }else{
                     Toast.makeText(this,"Invalid user",Toast.LENGTH_LONG).show();
                 }
@@ -128,11 +130,16 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Executed when user login has been successful
      */
-    public void OnLoginSuccess(){
+    public void OnLoginSuccess(User user){
         nextActivity = new Intent(MainActivity.this, SearchActivity.class);
+        nextActivity.putExtra("userName",user.getUserName());
+        nextActivity.putExtra("userSurname",user.getUserSurname());
+        nextActivity.putExtra("gender",String.valueOf(user.getGenderIndex()));
+        nextActivity.putExtra("userDescription",user.getUserDescription());
+        nextActivity.putExtra("userPassword",user.getUserPassword());
         startActivity(nextActivity);
         finish();
-    }
+}
 
     /**
      * Method executed when the register button on the activity is pressed.
@@ -145,8 +152,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(nextActivity);
 
         finish();
-    }
-    public  UserRepo getUserRepo(){
-        return userRepo;
     }
 }

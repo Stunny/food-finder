@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -23,10 +24,12 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
 import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
+import edu.salleurl.ls30394.foodfinderapp.model.User;
 import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RestaurantsWebService;
 
 public class SearchActivity extends AppCompatActivity {
@@ -34,6 +37,12 @@ public class SearchActivity extends AppCompatActivity {
     private EditText searchField;
     private android.widget.SeekBar seekBar;
     private TextView seekBarValue;
+    private String userName;
+    private String userSurname;
+    private String gender;
+    private String description;
+    private String userPassword;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +51,13 @@ public class SearchActivity extends AppCompatActivity {
 
         searchField = (EditText) findViewById(R.id.search_field);
         configWidgets();
+        Intent intent = getIntent();
+        userName = intent.getStringExtra("userName");
+        userSurname = intent.getStringExtra("userSurname");
+        gender = intent.getStringExtra("gender");
+        description = intent.getStringExtra("userDescription");
+        userPassword = intent.getStringExtra("userPassword");
+
     }
 
     @Override
@@ -178,6 +194,11 @@ public class SearchActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.activity_search_goProfile:
                 nextActivity = new Intent(this, ProfileActivity.class);
+                nextActivity.putExtra("userName",userName);
+                nextActivity.putExtra("userSurname",userSurname);
+                nextActivity.putExtra("gender",gender);
+                nextActivity.putExtra("userDescription",description);
+                nextActivity.putExtra("userPassword",userPassword);
                 startActivity(nextActivity);
                 finish();
                 return true;

@@ -14,8 +14,14 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
+import edu.salleurl.ls30394.foodfinderapp.model.User;
+import edu.salleurl.ls30394.foodfinderapp.repositories.UserRepo;
+import edu.salleurl.ls30394.foodfinderapp.repositories.impl.UserDatabase;
 
 /**
  * Created by Admin on 11/04/2017.
@@ -31,6 +37,11 @@ public class ProfileActivity extends AppCompatActivity {
     private RadioGroup gender;
     private Intent nextActivity;
     private Bitmap imageBitmap;
+    private String userName;
+    private String userSurname;
+    private String genderUser;
+    private String descriptionUser;
+    private String userPassword;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -38,7 +49,12 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
+        Intent intent = getIntent();
+        userName = intent.getStringExtra("userName");
+        userSurname = intent.getStringExtra("userSurname");
+        genderUser = intent.getStringExtra("gender");
+        descriptionUser = intent.getStringExtra("userDescription");
+        userPassword = intent.getStringExtra("userPassword");
         configWidgets();
     }
 
@@ -73,6 +89,7 @@ public class ProfileActivity extends AppCompatActivity {
         surname.getEditText().setEnabled(b);
         description.getEditText().setEnabled(b);
         gender.setEnabled(b);
+        gender.setClickable(b);
         profilePicture.setClickable(b);
 
         name.getEditText().setTextColor(Color.BLACK);
@@ -90,9 +107,10 @@ public class ProfileActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         //load data from database
 
-        name.getEditText().setText("angel");
-        surname.getEditText().setText("farre");
-        description.getEditText().setText("text test" + System.lineSeparator() + "with line separaTHOR :D");
+        name.getEditText().setText(userName);
+        surname.getEditText().setText(userSurname);
+        description.getEditText().setText(descriptionUser);
+        gender.check(Integer.valueOf(genderUser));
     }
 
     @Override
@@ -142,16 +160,30 @@ public class ProfileActivity extends AppCompatActivity {
     public void OnProfileSave(View view){
         //save data to databse
         name.getEditText().clearFocus();
+        userName = name.getEditText().getText().toString();
         surname.getEditText().clearFocus();
+        userSurname = name.getEditText().getText().toString();
         description.getEditText().clearFocus();
-
+        descriptionUser = description.getEditText().getText().toString();
+        genderUser = String.valueOf(gender.getCheckedRadioButtonId());
         setVisibilityColour(View.INVISIBLE, false);
+        UserRepo userDataBase = new UserDatabase(this);
+        List<User> user = userDataBase.getUser(userName,userPassword,false);
+        User user1 = user.get(0);
+        user1.setUserSurname(userSurname);
+        user1.setUserDescription(descriptionUser);
+        user1.setGenderIndex(Integer.valueOf(genderUser));
+        userDataBase.updateUser(user1);//no fa el update
     }
 
     @Override
     public void onBackPressed() {
         nextActivity = new Intent(ProfileActivity.this, SearchActivity.class);
-
+        nextActivity.putExtra("userName",userName);
+        nextActivity.putExtra("userSurname",userSurname);
+        nextActivity.putExtra("gender",genderUser);
+        nextActivity.putExtra("userDescription",descriptionUser);
+        nextActivity.putExtra("userPassword",userPassword);
         startActivity(nextActivity);
         finish();
     }
