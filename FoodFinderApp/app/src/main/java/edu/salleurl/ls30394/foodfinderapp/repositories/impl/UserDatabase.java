@@ -22,6 +22,7 @@ import edu.salleurl.ls30394.foodfinderapp.utils.Database;
 public class UserDatabase implements UserRepo {
     // Contantes con los nombres de la tabla y de las columnas de la tabla.
     private static final String TABLE_NAME = "userInfo";
+    private static final String COLUMN_ID = "_id";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_SURNAME = "surname";
     private static final String COLUMN_EMAIL = "email";
@@ -35,6 +36,45 @@ public class UserDatabase implements UserRepo {
         this.context = context;
     }
 
+
+
+    @Override
+    public int getUserId(String name, String password) {
+        //Retorna el usuario con el nombre y apellido especificado, se ha echo en caso de que no se
+        //puede dar el caso de dos usuarios con el mismo nombre
+        int userId = 0;
+        Database database = Database.getInstance(context);
+        
+        // Preparamos las columnas que queremos seleccionar. En este caso usaremos NULL para
+        // indicar que queremos recuperar la fila entera.
+        String[] selectColumns = null;
+
+        // Preparamos la cláusula del where. Su formato es: "<nombre columna> = ?" donde ? se
+        // sustituirá por el valor añadido en los argumentos.
+        String whereClause;
+
+        whereClause = COLUMN_NAME + "=? and " + COLUMN_PASSWORD + "=?";
+
+
+        String[] whereArgs = {name,password};
+
+        Cursor cursor = database.getReadableDatabase().
+                query(TABLE_NAME, selectColumns, whereClause, whereArgs, null, null, null);
+        // La query equivale en SQL a:
+        // select * from TABLE_NAME where COLUMN_NAME=name and COLUMN_SURNAME=surname;
+        // Los 3 nulls del final equivalen al GROUPBY, HAVING y ORDERBY.
+
+        // Comprobamos que se nos haya devuelto un cursor válido.
+        if (cursor != null){
+            // Movemos el cursor a la primera instancia. Si el cursor está vacío, devolverá falso.
+            if (cursor.moveToFirst()) {
+                userId = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
+            }
+            //Cerramos el cursor al terminar.
+            cursor.close();
+        }
+        return userId;
+    }
 
     @Override
     public void addUser(User u){

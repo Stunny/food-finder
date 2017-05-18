@@ -26,7 +26,7 @@ public class Database extends SQLiteOpenHelper {
     private Context context;
     private static Database instance;
     private static final String name = "users_db";
-    private static final int version = 4;
+    private static final int version = 7;
     private static SQLiteDatabase.CursorFactory factory;
 
     private Database(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -51,7 +51,6 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //TODO: Implementar los cambios cuando el usuario modifica su perfil
         Log.i("angel", "updateDone");
         // Destruir DB.
         executeSQLScript(db,R.raw.database_removal);

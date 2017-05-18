@@ -7,11 +7,11 @@ import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 
 
 public interface RestaurantRepoBD {
-    void addRestaurant(Restaurante restaurante);
-    void removeRestaurant(Restaurante restaurante);
-    void updateRestaurant(Restaurante restaurante);
-    boolean existRestaurant(String name,String address);
-    List<Restaurante> getRestaurant(String name);
-    List<Restaurante> getAllRestaurant();
+    void addRestaurant(String name,int userId);
+    void removeRestaurant(String name, int userId);
+    //void updateRestaurant(Restaurante restaurante);
+    boolean existRestaurant(String name,int userID);
+    //List<Restaurante> getRestaurant(String name);
+    List<String> getAllRestaurant();
 
 }

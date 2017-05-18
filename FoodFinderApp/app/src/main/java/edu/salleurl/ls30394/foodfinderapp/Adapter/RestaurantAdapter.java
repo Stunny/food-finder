@@ -45,8 +45,6 @@ public class RestaurantAdapter extends BaseAdapter
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final Random rnd = new Random();
-
         LayoutInflater inflater =
                 (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = inflater.inflate(R.layout.layout_restaurant_listview, parent, false);
@@ -64,11 +62,7 @@ public class RestaurantAdapter extends BaseAdapter
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.list_restaurant_image);
 
-        /*
-        final String str = "img_" + rnd.nextInt(2);
-        imageView.setImageDrawable(getResources().getDrawable(getResourceID(str, "drawable", getApplicationContext())));
-
-        */
+        setImageRestaurant(restaurante.getType(),imageView);
 
         return itemView;
     }
