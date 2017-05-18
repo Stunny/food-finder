@@ -101,7 +101,7 @@ public class ProfileActivity extends AppCompatActivity {
         for(int i = 0;i<gender.getChildCount();i++){
             gender.getChildAt(i).setClickable(b);
         }
-        gender.getCameraDistance();
+        //gender.getCameraDistance();
         profilePicture.setClickable(b);
         name.getEditText().setTextColor(Color.BLACK);
         surname.getEditText().setTextColor(Color.BLACK);
@@ -124,8 +124,7 @@ public class ProfileActivity extends AppCompatActivity {
         name.getEditText().setText(userName);
         surname.getEditText().setText(users.get(0).getUserSurname());
         description.getEditText().setText(users.get(0).getUserDescription());
-        gender.check(users.get(0).getGenderIndex() +1);
-        //((RadioButton)gender.getChildAt(users.get(0).getGenderIndex())).setChecked(true);
+        ((RadioButton)gender.getChildAt(users.get(0).getGenderIndex())).setChecked(true);
 
     }
 
