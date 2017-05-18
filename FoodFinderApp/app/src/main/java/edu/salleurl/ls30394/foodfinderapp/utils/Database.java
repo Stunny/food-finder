@@ -87,7 +87,7 @@ public class Database extends SQLiteOpenHelper {
             // TODO Handle Script Failed to Load
         } catch (SQLException e) {
             e.printStackTrace();
-                // TODO Handle Script Failed to Execute
+            // TODO Handle Script Failed to Execute
         }
     }
 

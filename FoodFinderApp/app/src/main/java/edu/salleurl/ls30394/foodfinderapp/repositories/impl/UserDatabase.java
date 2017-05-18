@@ -146,7 +146,7 @@ public class UserDatabase implements UserRepo {
 
     }
     @Override
-    public List<User> getUser(String name, String password,boolean email){
+    public List<User> getUser(String name,boolean email){
         List<User> users = new ArrayList<>();
         //Retorna el usuario con el nombre y apellido especificado, se ha echo en caso de que no se
         //puede dar el caso de dos usuarios con el mismo nombre
@@ -161,13 +161,13 @@ public class UserDatabase implements UserRepo {
         // sustituirá por el valor añadido en los argumentos.
         String whereClause;
         if(email){
-            whereClause = COLUMN_NAME + "=? and " + COLUMN_EMAIL + "=?";
+            whereClause = COLUMN_EMAIL + "=?";
 
         }else{
-            whereClause = COLUMN_NAME + "=? and " + COLUMN_PASSWORD + "=?";
+            whereClause = COLUMN_NAME + "=?";
         }
 
-        String[] whereArgs = {name,password};
+        String[] whereArgs = {name};
 
         Cursor cursor = database.getReadableDatabase().
                 query(TABLE_NAME, selectColumns, whereClause, whereArgs, null, null, null);

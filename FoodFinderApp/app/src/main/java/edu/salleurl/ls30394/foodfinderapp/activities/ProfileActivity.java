@@ -47,7 +47,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Intent nextActivity;
     private Bitmap imageBitmap;
     private String userName;
-    private String userPassword;
+
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -57,7 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         Intent intent = getIntent();
         userName = intent.getStringExtra("userName");
-        userPassword = intent.getStringExtra("userPassword");
+
         configWidgets();
     }
 
@@ -120,7 +120,7 @@ public class ProfileActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         //load data from database
         UserRepo userDB = new UserDatabase(this);
-        List<User> users = userDB.getUser(userName,userPassword,false);
+        List<User> users = userDB.getUser(userName,false);
         name.getEditText().setText(userName);
         surname.getEditText().setText(users.get(0).getUserSurname());
         description.getEditText().setText(users.get(0).getUserDescription());
@@ -185,7 +185,7 @@ public class ProfileActivity extends AppCompatActivity {
         int genderUser = gender.getCheckedRadioButtonId();
         setVisibilityColour(View.INVISIBLE, false);
         UserRepo userDataBase = new UserDatabase(this);
-        List<User> user = userDataBase.getUser(userName,userPassword,false);
+        List<User> user = userDataBase.getUser(userName,false);
         User user1 = user.get(0);
         user1.setUserSurname(userSurname);
         user1.setUserDescription(descriptionUser);
@@ -197,7 +197,6 @@ public class ProfileActivity extends AppCompatActivity {
     public void onBackPressed() {
         nextActivity = new Intent(ProfileActivity.this, SearchActivity.class);
         nextActivity.putExtra("userName",userName);
-        nextActivity.putExtra("userPassword",userPassword);
         startActivity(nextActivity);
         finish();
     }
