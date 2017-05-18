@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.ListView;
 
 import java.util.List;
@@ -22,6 +23,8 @@ public class SearchResultActivity extends AppCompatActivity {
     private RestaurantsRepo restaurantsRepo;
     private List<Restaurante> list;
 
+    //***************************OVERRIDE FUNTIONS************************************************//
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +32,13 @@ public class SearchResultActivity extends AppCompatActivity {
 
         restaurantsRepo = RestaurantsWebService.getInstance(this);
         list = restaurantsRepo.getResult();
+
+        configWidgets();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -36,16 +46,21 @@ public class SearchResultActivity extends AppCompatActivity {
         finish();
     }
 
+    //*********************************UI FUNTIONS************************************************//
+
     public void configWidgets(){
         initWidgets();
 
+        searchResultListView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     private void initWidgets() {
 
         searchResultListView = (ListView) findViewById(R.id.result_restaurants_list);
         adapter = new RestaurantAdapter(this, list);
-        searchResultListView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+
     }
+
+    //**********************MAIN BEHAVIOR FUNTIONS************************************************//
 }

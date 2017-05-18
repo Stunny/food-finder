@@ -39,11 +39,6 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
         return restaurantes.get(position);
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
     @NonNull
     @Override
     public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
@@ -53,7 +48,7 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
         if(row == null) {
 
             LayoutInflater inflater =
-                    (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             row = inflater.inflate(R.layout.row_restaurant, null);
         }
@@ -87,14 +82,11 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
                 imageView.setImageResource(R.drawable.italian);
                 break;
             case "Mejicano":
-                imageView.setImageResource(R.drawable.italian);
+                imageView.setImageResource(R.drawable.mexicano);
                 break;
             case "Oriental":
                 imageView.setImageResource(R.drawable.japones);
                 break;
-           /* case "Restaurante":
-                imageView.setImageResource(R.drawable.restaurante);
-                break;*/
             case "Hamburgueseria" :
                 imageView.setImageResource(R.drawable.hamburguesa);
                 break;
