@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
             }else{
                 //la aplicación peta en la linia de debajo, no se como solucionarlo
-                List<User> user = userRepo.getUser(userName,userPassword,isEmail(userName));
+                List<User> user = userRepo.getUser(userName,isEmail(userName));
 
                 if(user.size() > 0 ){
                     OnLoginSuccess(user.get(0));
@@ -133,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
     public void OnLoginSuccess(User user){
         nextActivity = new Intent(MainActivity.this, SearchActivity.class);
         nextActivity.putExtra("userName",user.getUserName());
-        nextActivity.putExtra("userPassword",user.getUserPassword());
         startActivity(nextActivity);
         finish();
 }

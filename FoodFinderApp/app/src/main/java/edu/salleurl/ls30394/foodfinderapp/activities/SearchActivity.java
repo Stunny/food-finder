@@ -38,8 +38,8 @@ public class SearchActivity extends AppCompatActivity {
     private android.widget.SeekBar seekBar;
     private TextView seekBarValue;
     private String userName;
-    private String userPassword;
-    private User user;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,6 @@ public class SearchActivity extends AppCompatActivity {
         configWidgets();
         Intent intent = getIntent();
         userName = intent.getStringExtra("userName");
-        userPassword = intent.getStringExtra("userPassword");
 
     }
 
@@ -189,7 +188,6 @@ public class SearchActivity extends AppCompatActivity {
             case R.id.activity_search_goProfile:
                 nextActivity = new Intent(this, ProfileActivity.class);
                 nextActivity.putExtra("userName",userName);
-                nextActivity.putExtra("userPassword",userPassword);
                 startActivity(nextActivity);
                 finish();
                 return true;
