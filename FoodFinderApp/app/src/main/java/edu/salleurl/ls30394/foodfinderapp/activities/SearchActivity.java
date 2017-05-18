@@ -17,10 +17,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -41,6 +44,7 @@ public class SearchActivity extends AppCompatActivity {
     private EditText searchField;
     private android.widget.SeekBar seekBar;
     private TextView seekBarValue;
+    private Button searchButton;
 
     private String userName;
 
@@ -53,7 +57,6 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        searchField = (EditText) findViewById(R.id.search_field);
         configWidgets();
         Intent intent = getIntent();
         userName = intent.getStringExtra("userName");
@@ -84,6 +87,7 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+
             case R.id.activity_search_goProfile:
                 nextActivity = new Intent(this, ProfileActivity.class);
                 nextActivity.putExtra("userName",userName);
@@ -118,12 +122,13 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initWidgets() {
-        //declaro los componentes
+
+        searchButton = (Button)findViewById(R.id.search_go_btn);
+
         seekBar = (android.widget.SeekBar) findViewById(R.id.seek_bar);
         seekBarValue = (TextView) findViewById(R.id.search_slider_kms);
         seekBarValue.setText("0 km");
-        //creo el listener
-        SeekBar.OnSeekBarChangeListener seekBarListener = new SeekBar.OnSeekBarChangeListener() {
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 seekBarValue.setText(String.valueOf(progress) + " km");
@@ -137,9 +142,22 @@ public class SearchActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
-        };
-        //asigno el listener al seekBar
-        seekBar.setOnSeekBarChangeListener(seekBarListener);
+        });
+
+        searchField = (EditText) findViewById(R.id.search_field);
+        searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    searchButton.performClick();
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
     }
 
     //***********************MAIN BEHAVIOR FUNCTIONS**********************************************//
@@ -172,8 +190,12 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         String aux = (String) seekBarValue.getText();
-
         int searchRadius = Integer.parseInt(aux.split(" ")[0]);
+
+        double latitude = locationService.getLocation().getLatitude();
+        double longitude = locationService.getLocation().getLongitude();
+
+        //TODO: iniciar la request de los restaurantes con latitud, longitud y radio.
 
     }
 
@@ -182,6 +204,14 @@ public class SearchActivity extends AppCompatActivity {
      * @param view
      */
     public void OnSearchClick(View view){
+
+        String aux = (String) seekBarValue.getText();
+        int searchRadius = Integer.parseInt(aux.split(" ")[0]);
+
+        String searchQuery = searchField.getText().toString();
+        Log.d(this.getClass().getName(), searchQuery);
+
+        //TODO: iniciar la request de restaurantes con el criterio escrito
 
     }
 

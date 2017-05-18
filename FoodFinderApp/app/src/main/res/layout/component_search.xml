@@ -13,25 +13,27 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:layout_marginTop="3dp"
-            android:src="@drawable/ic_location_search"
-            android:onClick="OnGeolocationSearch"/>
+            android:layout_weight="0"
+            android:onClick="OnGeolocationSearch"
+            android:src="@drawable/ic_location_search" />
 
         <EditText
             android:id="@+id/search_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Search ..."/>
+            android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:hint="Search ..." />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:layout_marginTop="3dp"
-            android:src="@drawable/ic_action_name"
-            android:onClick="clearSearchText"/>
+            android:layout_weight="0"
+            android:onClick="clearSearchText"
+            android:src="@drawable/ic_action_name" />
 
     </LinearLayout>
 

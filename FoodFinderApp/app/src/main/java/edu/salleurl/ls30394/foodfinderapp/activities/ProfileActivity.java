@@ -197,7 +197,6 @@ public class ProfileActivity extends AppCompatActivity {
     public void onBackPressed() {
         nextActivity = new Intent(ProfileActivity.this, SearchActivity.class);
         nextActivity.putExtra("userName",userName);
-        startActivity(nextActivity);
         finish();
     }
 
