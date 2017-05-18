@@ -1,11 +1,17 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
 import android.content.Intent;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import java.util.List;
 
@@ -38,7 +44,10 @@ public class SearchResultActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.activity_search_menu, menu);
+
+        return true;
     }
 
     @Override
@@ -49,6 +58,7 @@ public class SearchResultActivity extends AppCompatActivity {
     //*********************************UI FUNTIONS************************************************//
 
     public void configWidgets(){
+        initActionBar();
         initWidgets();
 
         searchResultListView.setAdapter(adapter);
@@ -59,6 +69,24 @@ public class SearchResultActivity extends AppCompatActivity {
 
         searchResultListView = (ListView) findViewById(R.id.result_restaurants_list);
         adapter = new RestaurantAdapter(this, list);
+
+    }
+
+    private void initActionBar(){
+        ActionBar actionBar = getSupportActionBar();
+        View mActionBarView = getLayoutInflater().inflate(R.layout.actionbar_search_result, null);
+        actionBar.setCustomView(mActionBarView);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+        Spinner actionbarSpinner = (Spinner) findViewById(R.id.actionbar_results_spinner);
+
+        //TODO: implementar el adaptador del spinner y asociarlo con el adaptador de restaurantes
+        //      para filtrar el tipo de restaurantes a mostrar
+
+        String[] data = {"lel", "wah"};
+        actionbarSpinner.setAdapter(
+                new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, data)
+        );
 
     }
 

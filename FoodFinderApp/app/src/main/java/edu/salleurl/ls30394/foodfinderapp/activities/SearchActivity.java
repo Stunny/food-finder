@@ -11,16 +11,20 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
@@ -53,6 +57,7 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         configWidgets();
         Intent intent = getIntent();
@@ -237,11 +242,17 @@ public class SearchActivity extends AppCompatActivity {
         restaurantsRepo.getRestaurants(searchQuery);
     }
 
+    /**
+     *
+     */
     public void onRequestSuccess(){
         nextActivity = new Intent(SearchActivity.this, SearchResultActivity.class);
         startActivity(nextActivity);
     }
 
+    /**
+     *
+     */
     public void onRequestEmptyResult(){
         Snackbar.make(findViewById(R.id.search_activity_coordinatorLayout), getString(R.string.no_results_snack), Snackbar.LENGTH_SHORT)
             .show();
