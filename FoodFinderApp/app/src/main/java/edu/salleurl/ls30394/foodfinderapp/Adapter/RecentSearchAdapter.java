@@ -10,7 +10,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
-import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 
 /**
  * Created by avoge on 29/04/2017.
@@ -48,7 +47,7 @@ public class RecentSearchAdapter extends BaseAdapter {
         LayoutInflater inflater =
                 (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View itemView  = inflater.inflate(R.layout.layout_favorite_listview,parent,false);
+        View itemView  = inflater.inflate(R.layout.row_favorite,parent,false);
 
         String recent_search = recent.get(position);
 

@@ -1,6 +1,8 @@
 package edu.salleurl.ls30394.foodfinderapp.repositories.impl;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.android.volley.Response;
@@ -16,6 +18,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.salleurl.ls30394.foodfinderapp.activities.SearchActivity;
 import edu.salleurl.ls30394.foodfinderapp.app.AppController;
 import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 import edu.salleurl.ls30394.foodfinderapp.repositories.RestaurantsRepo;
@@ -29,16 +32,30 @@ public class RestaurantsWebService implements RestaurantsRepo {
     public static final String WS_BASE_URL = "http://testapi-pprog2.azurewebsites.net/api/locations.php?method=getLocations";
     public static final String REQ_TAG = "restaurant_search";
 
-    private Context context;
-    private List<Restaurante> r;
+    private List<Restaurante> result;
 
     private static RestaurantsWebService instance;
+    private Context context;
+    private LocalBroadcastManager bManager;
 
-    public RestaurantsWebService(Context context){
+    private int pendingRequests;
+
+    /**
+     *
+     * @param context
+     */
+    private RestaurantsWebService(Context context){
         this.context = context;
+
+        bManager = LocalBroadcastManager.getInstance(context);
     }
 
-    public synchronized RestaurantsWebService getInstance(Context context){
+    /**
+     *
+     * @param context
+     * @return
+     */
+    public static synchronized RestaurantsWebService getInstance(Context context){
         if(instance == null){
             instance = new RestaurantsWebService(context);
         }
@@ -47,25 +64,35 @@ public class RestaurantsWebService implements RestaurantsRepo {
     }
 
     @Override
-    public List<Restaurante> getRestaurants(String search) {
+    public void getRestaurants(String search) {
         String requestURL = "";
         try {
             requestURL = WS_BASE_URL + "&s=" + URLEncoder.encode(search.trim(), "utf-8");
         } catch (UnsupportedEncodingException e) {}
 
         searchRestaurants(requestURL);
-        return null;
     }
 
     @Override
-    public List<Restaurante> getRestaurants(double lat, double lng, int radius) {
+    public void getRestaurants(double lat, double lng, int radius) {
         String requestURL = WS_BASE_URL + "&lat=" + Double.toString(lat) + "&lon=" + Double.toString(lng)
                 + "&dist=" + Integer.toString(radius);
-        List<Restaurante> aux = searchRestaurants(requestURL);
-        return aux;
+        searchRestaurants(requestURL);
     }
 
-    private List<Restaurante> searchRestaurants(String url){
+    /**
+     *
+     * @return
+     */
+    public List<Restaurante> getResult(){
+        return result;
+    }
+
+    /**
+     *
+     * @param url
+     */
+    private void searchRestaurants(String url){
         final String NAME = "name";
         final String TYPE = "type";
         final String LOCATION = "location";
@@ -82,8 +109,9 @@ public class RestaurantsWebService implements RestaurantsRepo {
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.i("angel", "response ok");
-                         r = parseInfo(response);
-                        //TODO: Notify data is changed on serach result activity
+                        result = parseInfo(response);
+                        pendingRequests--;
+                        notifyActivityRequestEnded();
                     }
 
                     private List<Restaurante> parseInfo(JSONArray response) {
@@ -116,12 +144,27 @@ public class RestaurantsWebService implements RestaurantsRepo {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.i("angel", "ErrorResponse");
-                        //TODO: Dont show anything
                     }
                 }
         );
+
+        pendingRequests++;
         AppController.getInstance().addToRequestQueue(request, REQ_TAG);
-        Log.i("angelTest", String.valueOf(r.size()));
-        return r;
+    }
+
+    /**
+     *
+     */
+    private void notifyActivityRequestEnded(){
+
+        Intent endOfRequestIntent;
+
+        if(result.size() == 0){
+            endOfRequestIntent = new Intent(SearchActivity.REQUEST_EMPTY_RESULT);
+        } else {
+            endOfRequestIntent = new Intent(SearchActivity.REQUEST_SUCCESS);
+        }
+
+        bManager.sendBroadcast(endOfRequestIntent);
     }
 }

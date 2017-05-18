@@ -1,29 +1,30 @@
 package edu.salleurl.ls30394.foodfinderapp.Adapter;
 
 import android.content.Context;
-import android.media.Image;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.Random;
 
 import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 import edu.salleurl.ls30394.foodfinderapp.R;
 
 
-public class RestaurantAdapter extends BaseAdapter
+public class RestaurantAdapter extends ArrayAdapter<Restaurante>
         implements AdapterView.OnItemClickListener {
+
     private Context context;
     private List<Restaurante> restaurantes;
 
     public RestaurantAdapter(Context context, List<Restaurante> restaurantes){
+        super(context, R.layout.row_restaurant);
         this.context = context;
         this.restaurantes = restaurantes;
     }
@@ -34,37 +35,45 @@ public class RestaurantAdapter extends BaseAdapter
     }
 
     @Override
-    public Object getItem(int position) {
+    public Restaurante getItem(int position) {
         return restaurantes.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater =
-                (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View itemView = inflater.inflate(R.layout.layout_restaurant_listview, parent, false);
+    public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
+
+        View row = convertView;
+
+        if(row == null) {
+
+            LayoutInflater inflater =
+                    (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            row = inflater.inflate(R.layout.row_restaurant, null);
+        }
 
         Restaurante restaurante = restaurantes.get(position);
 
-        TextView nameRestaurant = (TextView)itemView.findViewById(R.id.name_restaurant);
+        TextView nameRestaurant = (TextView)row.findViewById(R.id.name_restaurant);
         nameRestaurant.setText(restaurante.getName());
 
-        TextView localization = (TextView) itemView.findViewById(R.id.localization_restaurant);
+        TextView localization = (TextView) row.findViewById(R.id.localization_restaurant);
         localization.setText(restaurante.getAddress());
 
-        RatingBar ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
+        RatingBar ratingBar = (RatingBar) row.findViewById(R.id.ratingBar);
         ratingBar.setRating(restaurante.getReview());
 
-        ImageView imageView = (ImageView) itemView.findViewById(R.id.list_restaurant_image);
+        ImageView imageView = (ImageView) row.findViewById(R.id.list_restaurant_image);
 
         setImageRestaurant(restaurante.getType(),imageView);
 
-        return itemView;
+        return row;
     }
 
     @Override

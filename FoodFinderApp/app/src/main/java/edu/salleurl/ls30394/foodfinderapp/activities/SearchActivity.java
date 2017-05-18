@@ -1,20 +1,16 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,22 +18,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import java.io.Serializable;
-import java.util.List;
-
 import edu.salleurl.ls30394.foodfinderapp.R;
-import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
-import edu.salleurl.ls30394.foodfinderapp.model.User;
+import edu.salleurl.ls30394.foodfinderapp.repositories.RestaurantsRepo;
 import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RestaurantsWebService;
 import edu.salleurl.ls30394.foodfinderapp.service.LocationService;
 
 public class SearchActivity extends AppCompatActivity {
+
+    public static final String REQUEST_SUCCESS = "edu.salleurl.ls30394.foodfinderapp.REQUEST_SUCCESS";
+    public static final String REQUEST_EMPTY_RESULT = "edu.salleurl.ls30394.foodfinderapp.REQUEST_EMPTY_RESULT";
 
     private Intent nextActivity;
 
@@ -49,6 +43,9 @@ public class SearchActivity extends AppCompatActivity {
     private String userName;
 
     private LocationService locationService;
+    private RestaurantsRepo restaurantsRepo;
+    private BroadcastReceiver bReceiver;
+    private LocalBroadcastManager bManager;
 
     //************************OVERRIDE FUNCTIONS**************************************************//
 
@@ -62,6 +59,27 @@ public class SearchActivity extends AppCompatActivity {
         userName = intent.getStringExtra("userName");
 
         locationService = LocationService.getInstance(getApplicationContext());
+        restaurantsRepo = RestaurantsWebService.getInstance(this);
+
+        bReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch(intent.getAction()){
+                    case REQUEST_SUCCESS:
+                        onRequestSuccess();
+                        break;
+                    case REQUEST_EMPTY_RESULT:
+                        onRequestEmptyResult();
+                        break;
+                }
+            }
+        };
+
+        bManager = LocalBroadcastManager.getInstance(this);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(REQUEST_SUCCESS);
+        filter.addAction(REQUEST_EMPTY_RESULT);
+        bManager.registerReceiver(bReceiver, filter);
     }
 
     @Override
@@ -76,6 +94,12 @@ public class SearchActivity extends AppCompatActivity {
         super.onStop();
         locationService = LocationService.getInstance(getApplicationContext());
         locationService.unregisterListeners();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        bManager.unregisterReceiver(bReceiver);
     }
 
     @Override
@@ -195,7 +219,7 @@ public class SearchActivity extends AppCompatActivity {
         double latitude = locationService.getLocation().getLatitude();
         double longitude = locationService.getLocation().getLongitude();
 
-        //TODO: iniciar la request de los restaurantes con latitud, longitud y radio.
+        restaurantsRepo.getRestaurants(latitude, longitude, searchRadius);
 
     }
 
@@ -206,14 +230,21 @@ public class SearchActivity extends AppCompatActivity {
     public void OnSearchClick(View view){
 
         String aux = (String) seekBarValue.getText();
-        int searchRadius = Integer.parseInt(aux.split(" ")[0]);
 
         String searchQuery = searchField.getText().toString();
         Log.d(this.getClass().getName(), searchQuery);
 
-        //TODO: iniciar la request de restaurantes con el criterio escrito
-
+        restaurantsRepo.getRestaurants(searchQuery);
     }
 
+    public void onRequestSuccess(){
+        nextActivity = new Intent(SearchActivity.this, SearchResultActivity.class);
+        startActivity(nextActivity);
+    }
+
+    public void onRequestEmptyResult(){
+        Snackbar.make(findViewById(R.id.search_activity_coordinatorLayout), getString(R.string.no_results_snack), Snackbar.LENGTH_SHORT)
+            .show();
+    }
 
 }

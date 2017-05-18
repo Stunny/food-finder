@@ -34,4 +34,5 @@
     <string name="search_radius">Search Radius</string>
     <string name="km_seek_text_default">0 km</string>
     <string name="recent_searches">Recent Searches</string>
+    <string name="no_results_snack">No results were found</string>
 </resources>

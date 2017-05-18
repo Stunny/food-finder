@@ -10,8 +10,10 @@ import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 
 public interface RestaurantsRepo {
 
-    List<Restaurante> getRestaurants(String search);
+    void getRestaurants(String search);
 
-    List<Restaurante> getRestaurants(double lat, double lng, int radius);
+    void getRestaurants(double lat, double lng, int radius);
+
+    List<Restaurante> getResult();
 
 }
