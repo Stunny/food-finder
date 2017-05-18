@@ -46,9 +46,6 @@ public class SearchResultActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        nextActivity = new Intent(SearchResultActivity.this, SearchActivity.class);
-
-        startActivity(nextActivity);
         finish();
     }
 }

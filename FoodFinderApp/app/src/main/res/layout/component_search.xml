@@ -16,7 +16,7 @@
             android:layout_weight="0"
             android:layout_marginTop="3dp"
             android:src="@drawable/ic_location_search"
-            android:onClick="geolocationSearch"/>
+            android:onClick="OnGeolocationSearch"/>
 
         <EditText
             android:id="@+id/search_field"
@@ -31,7 +31,7 @@
             android:layout_weight="0"
             android:layout_marginTop="3dp"
             android:src="@drawable/ic_action_name"
-            android:onClick="clearSearch"/>
+            android:onClick="clearSearchText"/>
 
     </LinearLayout>
 
@@ -74,7 +74,7 @@
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="locationSearch"/>
+            android:onClick="OnSearchClick"/>
 
     </RelativeLayout>
 
