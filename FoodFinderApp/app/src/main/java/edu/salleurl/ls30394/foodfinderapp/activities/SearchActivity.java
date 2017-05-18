@@ -43,8 +43,6 @@ public class SearchActivity extends AppCompatActivity {
     private TextView seekBarValue;
 
     private String userName;
-    private String userPassword;
-    private User user;
 
     private LocationService locationService;
 
@@ -59,7 +57,6 @@ public class SearchActivity extends AppCompatActivity {
         configWidgets();
         Intent intent = getIntent();
         userName = intent.getStringExtra("userName");
-        userPassword = intent.getStringExtra("userPassword");
 
         locationService = LocationService.getInstance(getApplicationContext());
     }
@@ -90,9 +87,7 @@ public class SearchActivity extends AppCompatActivity {
             case R.id.activity_search_goProfile:
                 nextActivity = new Intent(this, ProfileActivity.class);
                 nextActivity.putExtra("userName",userName);
-                nextActivity.putExtra("userPassword",userPassword);
                 startActivity(nextActivity);
-                finish();
                 return true;
 
             case R.id.activity_search_goFavorites:
