@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -73,7 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
         description = (TextInputLayout) findViewById(R.id.profile_descWrapper);
         gender = (RadioGroup) findViewById(R.id.profile_selectGender);
 
-        setVisibilityColour(View.INVISIBLE, false);
+
         imageBitmap = getBitmap(userName + "_profile.png");
         if(imageBitmap != null){
             profilePicture.setImageBitmap(imageBitmap);
@@ -82,6 +83,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         populateData();
+        setVisibilityColour(View.INVISIBLE, false);
     }
 
     /**
@@ -96,10 +98,11 @@ public class ProfileActivity extends AppCompatActivity {
         name.getEditText().setEnabled(b);
         surname.getEditText().setEnabled(b);
         description.getEditText().setEnabled(b);
-        //gender.setEnabled(b);
-        //gender.setClickable(b);
+        for(int i = 0;i<gender.getChildCount();i++){
+            gender.getChildAt(i).setClickable(b);
+        }
+        gender.getCameraDistance();
         profilePicture.setClickable(b);
-
         name.getEditText().setTextColor(Color.BLACK);
         surname.getEditText().setTextColor(Color.BLACK);
         description.getEditText().setTextColor(Color.BLACK);
@@ -121,7 +124,8 @@ public class ProfileActivity extends AppCompatActivity {
         name.getEditText().setText(userName);
         surname.getEditText().setText(users.get(0).getUserSurname());
         description.getEditText().setText(users.get(0).getUserDescription());
-        gender.check(users.get(0).getGenderIndex() +1 );
+        gender.check(users.get(0).getGenderIndex() +1);
+        //((RadioButton)gender.getChildAt(users.get(0).getGenderIndex())).setChecked(true);
 
     }
 
@@ -179,7 +183,7 @@ public class ProfileActivity extends AppCompatActivity {
         String userSurname = surname.getEditText().getText().toString();
         description.getEditText().clearFocus();
         String descriptionUser = description.getEditText().getText().toString();
-        int genderUser = gender.getCheckedRadioButtonId() -1;
+        int genderUser = gender.getCheckedRadioButtonId();
         setVisibilityColour(View.INVISIBLE, false);
         UserRepo userDataBase = new UserDatabase(this);
         List<User> user = userDataBase.getUser(userName,userPassword,false);

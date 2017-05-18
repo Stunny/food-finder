@@ -1,6 +1,7 @@
 package edu.salleurl.ls30394.foodfinderapp.Adapter;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,25 +77,30 @@ public class RestaurantAdapter extends BaseAdapter
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
-    private String setImageRestaurant(String tipo){
-        String value =null;
-        if(tipo.equals("Italiano")){
+    private void setImageRestaurant(String type, ImageView imageView){
 
-        }else{
-            if(tipo.equals("Mejicano")){
-
-            }else{
-                if(tipo.equals("Oriental")){
-
-                }else{
-                    if(tipo.equals("Restaurante")){
-
-                    }else{
-
-                    }
-                }
-            }
+        switch (type){
+            case "Italiano":
+                imageView.setImageResource(R.drawable.italian);
+                break;
+            case "Mejicano":
+                imageView.setImageResource(R.drawable.italian);
+                break;
+            case "Oriental":
+                imageView.setImageResource(R.drawable.japones);
+                break;
+           /* case "Restaurante":
+                imageView.setImageResource(R.drawable.restaurante);
+                break;*/
+            case "Hamburgueseria" :
+                imageView.setImageResource(R.drawable.hamburguesa);
+                break;
+            case "Take Away" :
+                imageView.setImageResource(R.drawable.takeaway);
+            default:
+                imageView.setImageResource(R.drawable.restaurante);
+                break;
         }
-        return value;
+
     }
 }
