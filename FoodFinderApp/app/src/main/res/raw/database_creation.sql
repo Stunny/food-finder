@@ -14,8 +14,8 @@ CREATE TABLE favorite_restaurants(
     restaurantName TEXT NOT NULL
 );
 
-CREATE TABLE recent_places(
+CREATE TABLE recent_searches(
     _id INTEGER PRIMARY KEY AUTOINCREMENT,
-    restaurantName TEXT NOT NULL,
+    searchQuery TEXT NOT NULL,
     userId INT FOREIGN KEY
 );

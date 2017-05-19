@@ -28,6 +28,11 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
 
     private String[] typesInResult;
 
+    /**
+     *
+     * @param context
+     * @param allResultRestaurants
+     */
     public RestaurantAdapter(Context context, List<Restaurante> allResultRestaurants){
         super(context, R.layout.row_restaurant);
         this.context = context;

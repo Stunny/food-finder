@@ -18,10 +18,7 @@ import edu.salleurl.ls30394.foodfinderapp.R;
 public class RecentSearchAdapter extends BaseAdapter {
     private Context context;
     private List<String> recent;
-    /*
-        La lista tiene que ser la lista de las últimos criterios de búsqueda para que pueda volver
-        a buscarlas
-     */
+
     public RecentSearchAdapter (Context context,List<String> recent){
         this.context = context;
         this.recent = recent;
