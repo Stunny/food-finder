@@ -65,6 +65,8 @@ public class ProfileActivity extends AppCompatActivity {
      * Sets initial basic configurations
      */
     private void configWidgets() {
+        getSupportActionBar().setTitle(getString(R.string.profile));
+
         //setSupportActionBar((Toolbar) findViewById(R.id.profile_activity_toolbar));
         takePicture = (Button) findViewById(R.id.profile_take_picture);
         save = (Button) findViewById(R.id.profile_save);
@@ -217,6 +219,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         return thumbnail;
     }
+
     private boolean saveImageToInternalStorage(Bitmap image,String name) {
 
         try {

@@ -57,7 +57,34 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
         userRepo = new UserDatabase(getApplicationContext());
+
+        configWidgets();
+    }
+
+    @Override
+    public void onBackPressed() {
+        nextActivity = new Intent(RegisterActivity.this, MainActivity.class);
+
+        startActivity(nextActivity);
+        finish();
+    }
+
+/* TODO
+Opcional de seleccionar la imagen de la galeria. Necesita de onActivityresult tambien.
+source: http://stackoverflow.com/a/5086706/7060082
+    public void OnGallerySelect(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+    }
+*/
+
+    private void configWidgets(){
+        getSupportActionBar().setTitle(getString(R.string.register));
+
         profilePicture = (ImageView) findViewById(R.id.register_user_picture);
         name = (TextInputLayout)findViewById(R.id.register_nameWrapper);
         surname = (TextInputLayout)findViewById(R.id.register_surnameWrapper);
@@ -69,24 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
         description = (TextInputLayout) findViewById(R.id.register_descWrapper);
     }
 
-    @Override
-    public void onBackPressed() {
-        nextActivity = new Intent(RegisterActivity.this, MainActivity.class);
 
-        startActivity(nextActivity);
-        finish();
-    }
-
-/*
-Opcional de seleccionar la imagen de la galeria. Necesita de onActivityresult tambien.
-source: http://stackoverflow.com/a/5086706/7060082
-    public void OnGallerySelect(){
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
-    }
-*/
     /**
      * Selects default camera and takes picture
      */

@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         userRepo = new UserDatabase(getApplicationContext());
 
         configWidgets();
@@ -55,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
      * Configures the activitie's widgets
      */
     private void configWidgets() {
+
+        getSupportActionBar().hide();
 
         initWidgets();
 

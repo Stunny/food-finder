@@ -152,6 +152,8 @@ public class SearchActivity extends AppCompatActivity {
 
     private void initWidgets() {
 
+        getSupportActionBar().setTitle(R.string.rest_Search);
+
         searchButton = (Button)findViewById(R.id.search_go_btn);
 
         seekBar = (android.widget.SeekBar) findViewById(R.id.seek_bar);

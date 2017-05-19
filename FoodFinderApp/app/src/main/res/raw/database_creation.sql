@@ -17,7 +17,5 @@ CREATE TABLE favorite_restaurants(
 CREATE TABLE recent_places(
     _id INTEGER PRIMARY KEY AUTOINCREMENT,
     restaurantName TEXT NOT NULL,
-    userId INT FOREIGN KEY,
-    -- Formato de fecha ISO8601:"YYYY-MM-DD HH:MM:SS.SSS"
-    date TEXT NOT NULL
+    userId INT FOREIGN KEY
 );
