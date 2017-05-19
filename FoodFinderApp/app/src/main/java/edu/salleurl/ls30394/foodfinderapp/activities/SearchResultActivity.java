@@ -1,17 +1,15 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
-import android.content.Intent;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -23,8 +21,10 @@ import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RestaurantsWebServic
 
 public class SearchResultActivity extends AppCompatActivity {
 
+    private Spinner actionbarSpinner;
+
     private ListView searchResultListView;
-    private RestaurantAdapter adapter;
+    private RestaurantAdapter listAdapter;
 
     private RestaurantsRepo restaurantsRepo;
     private List<Restaurante> list;
@@ -61,15 +61,36 @@ public class SearchResultActivity extends AppCompatActivity {
         initActionBar();
         initWidgets();
 
-        searchResultListView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        searchResultListView.setAdapter(listAdapter);
+        listAdapter.notifyDataSetChanged();
     }
 
     private void initWidgets() {
 
         searchResultListView = (ListView) findViewById(R.id.result_restaurants_list);
-        adapter = new RestaurantAdapter(this, list);
+        listAdapter = new RestaurantAdapter(this, list);
 
+        actionbarSpinner.setAdapter(
+                new ArrayAdapter<>(
+                        this,
+                        android.R.layout.simple_dropdown_item_1line,
+                        listAdapter.getRestaurantTypes()
+                )
+        );
+
+        actionbarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 0){
+                    listAdapter.filterRestaurants(true, null);
+                } else {
+                    listAdapter.filterRestaurants(false, ((TextView)view).getText().toString());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
     }
 
     private void initActionBar(){
@@ -78,15 +99,7 @@ public class SearchResultActivity extends AppCompatActivity {
         actionBar.setCustomView(mActionBarView);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
-        Spinner actionbarSpinner = (Spinner) findViewById(R.id.actionbar_results_spinner);
-
-        //TODO: implementar el adaptador del spinner y asociarlo con el adaptador de restaurantes
-        //      para filtrar el tipo de restaurantes a mostrar
-
-        String[] data = {"lel", "wah"};
-        actionbarSpinner.setAdapter(
-                new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, data)
-        );
+        actionbarSpinner = (Spinner) findViewById(R.id.actionbar_results_spinner);
 
     }
 

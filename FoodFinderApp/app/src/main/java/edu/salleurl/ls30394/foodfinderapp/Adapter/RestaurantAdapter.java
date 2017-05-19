@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
@@ -21,22 +22,29 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
         implements AdapterView.OnItemClickListener {
 
     private Context context;
-    private List<Restaurante> restaurantes;
 
-    public RestaurantAdapter(Context context, List<Restaurante> restaurantes){
+    private List<Restaurante> allResultRestaurants;
+    private List<Restaurante> activeList;
+
+    private String[] typesInResult;
+
+    public RestaurantAdapter(Context context, List<Restaurante> allResultRestaurants){
         super(context, R.layout.row_restaurant);
         this.context = context;
-        this.restaurantes = restaurantes;
+        this.allResultRestaurants = allResultRestaurants;
+        this.activeList = new ArrayList<>(allResultRestaurants);
+
+        setResultTypes();
     }
 
     @Override
     public int getCount() {
-        return restaurantes.size();
+        return activeList.size();
     }
 
     @Override
     public Restaurante getItem(int position) {
-        return restaurantes.get(position);
+        return activeList.get(position);
     }
 
     @NonNull
@@ -53,7 +61,7 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
             row = inflater.inflate(R.layout.row_restaurant, null);
         }
 
-        Restaurante restaurante = restaurantes.get(position);
+        Restaurante restaurante = activeList.get(position);
 
         TextView nameRestaurant = (TextView)row.findViewById(R.id.name_restaurant);
         nameRestaurant.setText(restaurante.getName());
@@ -73,24 +81,30 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        //TODO: ir a la descripcion del restaurante
     }
+
+    /**
+     * Asocia un icono de tipo de restaurante a la vista del mismo
+     * @param type Tipo de restaurante
+     * @param imageView View del icono de restaurante
+     */
     private void setImageRestaurant(String type, ImageView imageView){
 
         switch (type){
-            case "Italiano":
+            case Restaurante.TYPE_ITALIAN:
                 imageView.setImageResource(R.drawable.italian);
                 break;
-            case "Mejicano":
+            case Restaurante.TYPE_MEXICAN:
                 imageView.setImageResource(R.drawable.mexicano);
                 break;
-            case "Oriental":
+            case Restaurante.TYPE_ASIAN:
                 imageView.setImageResource(R.drawable.japones);
                 break;
-            case "Hamburgueseria" :
+            case Restaurante.TYPE_BURGER :
                 imageView.setImageResource(R.drawable.hamburguesa);
                 break;
-            case "Take Away" :
+            case Restaurante.TYPE_TAKEAWAY :
                 imageView.setImageResource(R.drawable.takeaway);
             default:
                 imageView.setImageResource(R.drawable.restaurante);
@@ -98,4 +112,80 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
         }
 
     }
+
+    /**
+     * Identifica los diferentes tipos de restaurante en el resultado
+     */
+    private void setResultTypes(){
+        int size = allResultRestaurants.size();
+
+        List<String> auxTypes = new ArrayList<>();
+        auxTypes.add(0, context.getString(R.string.all));
+
+        int typesSize;
+
+        Restaurante auxRest;
+        boolean typeFound = false;
+
+        for(int i = 0; i < size; i++){
+
+            auxRest = allResultRestaurants.get(i);
+
+            if (auxTypes.size() == 0){
+                auxTypes.add(auxRest.getType());
+            } else {
+                typesSize = auxTypes.size();
+
+                for(int j = 0; j < typesSize; j++){
+                    if(auxRest.getType().equals(auxTypes.get(j))){
+                        typeFound = true;
+                    }
+                }
+
+                if(!typeFound){
+                    auxTypes.add(auxRest.getType());
+                }
+            }
+        }
+        typesInResult = auxTypes.toArray(new String[0]);
+    }
+
+    /**
+     * @return Los diferentes tipos de restaurante que hay en el resultado de la request
+     */
+    public String[] getRestaurantTypes(){
+        return typesInResult;
+    }
+
+    /**
+     * Filtra los restaurants mostrados en la lista segun el tipo
+     * @param type Tipo de restaurante
+     * @param all True si se desean todos los restaurantes resultantes
+     */
+    public void filterRestaurants(boolean all, String type){
+        if(all){
+            activeList = new ArrayList<>(allResultRestaurants);
+        }else{
+            changeSet(type);
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Cambia el conjunto de restaurantes mostrado segun su tipo
+     * @param type Tipo de restaurante por el que filtrar
+     */
+    private void changeSet(String type){
+        activeList = new ArrayList<>();
+        int size = allResultRestaurants.size();
+        Restaurante aux;
+        for(int i = 0; i < size; i++){
+            aux = allResultRestaurants.get(i);
+
+            if(type.contains(aux.getType())){
+                activeList.add(aux);
+            }
+        }
+    }
+
 }

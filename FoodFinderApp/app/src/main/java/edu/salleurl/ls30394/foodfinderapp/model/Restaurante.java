@@ -1,6 +1,16 @@
 package edu.salleurl.ls30394.foodfinderapp.model;
 
+import edu.salleurl.ls30394.foodfinderapp.R;
+
 public class Restaurante {
+
+    public static final String TYPE_GENERIC = "Restaurante";
+    public static final String TYPE_BURGER = "Hamburgueseria";
+    public static final String TYPE_ITALIAN = "Italiano";
+    public static final String TYPE_ASIAN = "Oriental";
+    public static final String TYPE_MEXICAN = "Mejicano";
+    public static final String TYPE_TAKEAWAY = "Take Away";
+
     private String name;
     private String type;
     private double latitude;
@@ -11,7 +21,7 @@ public class Restaurante {
     private float review;
     private String description;
 
-    public Restaurante(String name,String type, double lat, double lng, String address,
+    public Restaurante(String name, String type, double lat, double lng, String address,
                        String openingTime, String closingTime, float review, String description) {
         this.name = name;
         this.type = type;
