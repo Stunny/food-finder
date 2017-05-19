@@ -249,6 +249,7 @@ public class SearchActivity extends AppCompatActivity {
      */
     public void onRequestSuccess(){
         nextActivity = new Intent(SearchActivity.this, SearchResultActivity.class);
+        nextActivity.putExtra("username", userName);
         startActivity(nextActivity);
     }
 

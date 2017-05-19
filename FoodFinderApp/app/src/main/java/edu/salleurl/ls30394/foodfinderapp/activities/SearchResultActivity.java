@@ -1,9 +1,11 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +23,9 @@ import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RestaurantsWebServic
 
 public class SearchResultActivity extends AppCompatActivity {
 
+    private Intent nextActivity;
+    private String userName;
+
     private Spinner actionbarSpinner;
 
     private ListView searchResultListView;
@@ -34,6 +39,8 @@ public class SearchResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userName = getIntent().getStringExtra("username");
+
         setContentView(R.layout.activity_search_result);
 
         restaurantsRepo = RestaurantsWebService.getInstance(this);
@@ -48,6 +55,24 @@ public class SearchResultActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.activity_search_menu, menu);
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+
+            case R.id.activity_search_goProfile:
+                nextActivity = new Intent(this, ProfileActivity.class);
+                nextActivity.putExtra("userName",userName);
+                startActivity(nextActivity);
+                return true;
+
+            case R.id.activity_search_goFavorites:
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
