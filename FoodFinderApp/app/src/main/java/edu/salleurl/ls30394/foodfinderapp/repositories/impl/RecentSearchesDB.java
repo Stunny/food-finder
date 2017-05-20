@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.repositories.RecentSearchesRepo;
@@ -65,6 +66,7 @@ public class RecentSearchesDB implements RecentSearchesRepo {
             cursor.close();
         }
 
+        Collections.reverse(list);
         return list;
     }
 

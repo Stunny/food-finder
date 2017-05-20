@@ -168,19 +168,6 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
     private void configWidgets() {
         initWidgets();
 
-        searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
-                if(actionId == EditorInfo.IME_ACTION_DONE){
-                    searchButton.performClick();
-                    return true;
-                }
-
-                return false;
-            }
-        });
-
         recentSearchAdapter = new RecentSearchAdapter(this, userName);
         recentSearchesList.setAdapter(recentSearchAdapter);
         recentSearchesList.setOnItemClickListener(this);

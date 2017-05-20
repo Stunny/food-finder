@@ -129,4 +129,5 @@
     <string name="no_results_snack">No results were found</string>
     <string name="rest_Search">Restaurant Search</string>
     <string name="all">All</string>
+    <string name="search_hint">Search ...</string>
 </resources>
