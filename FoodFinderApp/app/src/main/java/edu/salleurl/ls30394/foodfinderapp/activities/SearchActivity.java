@@ -64,11 +64,10 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        configWidgets();
         Intent intent = getIntent();
         userName = intent.getStringExtra("userName");
 
+        configWidgets();
         locationService = LocationService.getInstance(getApplicationContext());
         restaurantsRepo = RestaurantsWebService.getInstance(this);
 

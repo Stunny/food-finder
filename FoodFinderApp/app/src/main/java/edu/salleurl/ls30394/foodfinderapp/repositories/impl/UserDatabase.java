@@ -39,15 +39,15 @@ public class UserDatabase implements UserRepo {
 
 
     @Override
-    public Integer getUserId(String name) {
+    public int getUserId(String name) {
         //Retorna el usuario con el nombre y apellido especificado, se ha echo en caso de que no se
         //puede dar el caso de dos usuarios con el mismo nombre
-        Integer userId = 0;
+        int userId = 0;
         Database database = Database.getInstance(context);
         
         // Preparamos las columnas que queremos seleccionar. En este caso usaremos NULL para
         // indicar que queremos recuperar la fila entera.
-        String[] selectColumns = null;
+        String[] selectColumns = {COLUMN_ID};
 
         // Preparamos la cláusula del where. Su formato es: "<nombre columna> = ?" donde ? se
         // sustituirá por el valor añadido en los argumentos.
