@@ -39,7 +39,7 @@ public class UserDatabase implements UserRepo {
 
 
     @Override
-    public int getUserId(String name, String password) {
+    public int getUserId(String name) {
         //Retorna el usuario con el nombre y apellido especificado, se ha echo en caso de que no se
         //puede dar el caso de dos usuarios con el mismo nombre
         int userId = 0;
@@ -53,10 +53,10 @@ public class UserDatabase implements UserRepo {
         // sustituirá por el valor añadido en los argumentos.
         String whereClause;
 
-        whereClause = COLUMN_NAME + "=? and " + COLUMN_PASSWORD + "=?";
+        whereClause = COLUMN_NAME + "=?";
 
 
-        String[] whereArgs = {name,password};
+        String[] whereArgs = {name};
 
         Cursor cursor = database.getReadableDatabase().
                 query(TABLE_NAME, selectColumns, whereClause, whereArgs, null, null, null);
