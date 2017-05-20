@@ -39,10 +39,10 @@ public class UserDatabase implements UserRepo {
 
 
     @Override
-    public int getUserId(String name) {
+    public Integer getUserId(String name) {
         //Retorna el usuario con el nombre y apellido especificado, se ha echo en caso de que no se
         //puede dar el caso de dos usuarios con el mismo nombre
-        int userId = 0;
+        Integer userId = 0;
         Database database = Database.getInstance(context);
         
         // Preparamos las columnas que queremos seleccionar. En este caso usaremos NULL para

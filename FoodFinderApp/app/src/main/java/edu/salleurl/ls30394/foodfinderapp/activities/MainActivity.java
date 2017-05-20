@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 List<User> user = userRepo.getUser(userName,isEmail(userName));
 
                 if(user.size() > 0 ){
+                    //Toast.makeText(this,userRepo.getUserId(user.get(0).getUserName()),Toast.LENGTH_LONG).show();
                     OnLoginSuccess(user.get(0));
                 }else{
                     Toast.makeText(this,R.string.invalid_user,Toast.LENGTH_LONG).show();

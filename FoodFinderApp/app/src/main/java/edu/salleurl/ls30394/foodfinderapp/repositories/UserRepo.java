@@ -7,7 +7,7 @@ import edu.salleurl.ls30394.foodfinderapp.model.User;
 
 public interface UserRepo {
 
-    int getUserId(String name);
+    Integer getUserId(String name);
     void addUser(User u);
     void removeUser(User u);
     void updateUser(User u);
