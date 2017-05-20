@@ -1,11 +1,11 @@
 package edu.salleurl.ls30394.foodfinderapp.Adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.List;
@@ -17,43 +17,52 @@ import edu.salleurl.ls30394.foodfinderapp.R;
  */
 
 public class RecentSearchAdapter extends ArrayAdapter<String> {
-    private Context context;
-    private List<String> recent;
 
-    public RecentSearchAdapter (Context context,List<String> recent){
+    private Context context;
+    private List<String> list;
+
+    public RecentSearchAdapter (Context context){
         super(context, android.R.layout.simple_list_item_1);
         this.context = context;
-        this.recent = recent;
+        populateList();
     }
+
     @Override
     public int getCount() {
-        return recent.size();
+        return list.size();
     }
 
     @Override
     public String getItem(int position) {
-        return recent.get(position);
+        return list.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
-        LayoutInflater inflater =
-                (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View row = convertView;
 
-        View itemView  = inflater.inflate(R.layout.row_favorite,parent,false);
+        if(row == null) {
+            LayoutInflater inflater =
+                    (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        String recent_search = recent.get(position);
+            row = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+        }
+        String recent_search = list.get(position);
 
-        TextView textView = (TextView) itemView.findViewById(R.id.textViewFavorite);
+        TextView textView = (TextView) row.findViewById(R.id.textViewFavorite);
         textView.setText(recent_search);
 
+        return row;
+    }
 
-        return itemView;
+    private void populateList() {
+
     }
 }
