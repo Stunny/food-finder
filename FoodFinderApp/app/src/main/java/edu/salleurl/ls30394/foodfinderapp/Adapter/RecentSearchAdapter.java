@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -15,11 +16,12 @@ import edu.salleurl.ls30394.foodfinderapp.R;
  * Created by avoge on 29/04/2017.
  */
 
-public class RecentSearchAdapter extends BaseAdapter {
+public class RecentSearchAdapter extends ArrayAdapter<String> {
     private Context context;
     private List<String> recent;
 
     public RecentSearchAdapter (Context context,List<String> recent){
+        super(context, android.R.layout.simple_list_item_1);
         this.context = context;
         this.recent = recent;
     }
@@ -29,7 +31,7 @@ public class RecentSearchAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public String getItem(int position) {
         return recent.get(position);
     }
 
