@@ -48,6 +48,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
     private Button searchButton;
 
     private ListView recentSearchesList;
+    private RecentSearchAdapter recentSearchAdapter;
 
     private String userName;
 
@@ -175,7 +176,8 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
             }
         });
 
-        recentSearchesList.setAdapter(new RecentSearchAdapter(this));
+        recentSearchAdapter = new RecentSearchAdapter(this, userName);
+        recentSearchesList.setAdapter(recentSearchAdapter);
         recentSearchesList.setOnItemClickListener(this);
     }
 
@@ -254,9 +256,8 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
      */
     public void OnSearchClick(View view){
         String searchQuery = searchField.getText().toString();
+        recentSearchAdapter.addRecentSearch(searchQuery);
         restaurantsRepo.getRestaurants(searchQuery);
-
-        //TODO: añadir la busqueda a recientes
     }
 
     /**
