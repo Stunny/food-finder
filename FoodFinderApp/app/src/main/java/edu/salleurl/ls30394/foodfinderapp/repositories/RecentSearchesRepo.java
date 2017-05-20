@@ -8,8 +8,8 @@ public interface RecentSearchesRepo {
 
     void addRecentSearch(int userId, String searchQuery);
 
-    String[] getRecentSearches();
+    String[] getRecentSearches(int userId);
 
-    void removeRecentSearch(String searchQuery);
+    void removeRecentSearch(int userId, String searchQuery);
 
 }

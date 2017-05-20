@@ -20,19 +20,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import edu.salleurl.ls30394.foodfinderapp.Adapter.RecentSearchAdapter;
 import edu.salleurl.ls30394.foodfinderapp.R;
 import edu.salleurl.ls30394.foodfinderapp.repositories.RestaurantsRepo;
 import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RestaurantsWebService;
 import edu.salleurl.ls30394.foodfinderapp.service.LocationService;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
     public static final String REQUEST_SUCCESS = "edu.salleurl.ls30394.foodfinderapp.REQUEST_SUCCESS";
     public static final String REQUEST_EMPTY_RESULT = "edu.salleurl.ls30394.foodfinderapp.REQUEST_EMPTY_RESULT";
@@ -43,6 +46,8 @@ public class SearchActivity extends AppCompatActivity {
     private android.widget.SeekBar seekBar;
     private TextView seekBarValue;
     private Button searchButton;
+
+    private ListView recentSearchesList;
 
     private String userName;
 
@@ -144,10 +149,34 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        String searchQuery = ((TextView)view).getText().toString();
+        restaurantsRepo.getRestaurants(searchQuery);
+
+    }
+
     //*****************UI FUNCTIONS***************************************************************//
 
     private void configWidgets() {
         initWidgets();
+
+        searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    searchButton.performClick();
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
+        recentSearchesList.setAdapter(new RecentSearchAdapter(this));
+        recentSearchesList.setOnItemClickListener(this);
     }
 
     private void initWidgets() {
@@ -176,19 +205,8 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         searchField = (EditText) findViewById(R.id.search_field);
-        searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
-                if(actionId == EditorInfo.IME_ACTION_DONE){
-                    searchButton.performClick();
-                    return true;
-                }
-
-                return false;
-            }
-        });
-
+        recentSearchesList = (ListView) findViewById(R.id.recent_searches_list);
     }
 
     //***********************MAIN BEHAVIOR FUNCTIONS**********************************************//
@@ -235,13 +253,10 @@ public class SearchActivity extends AppCompatActivity {
      * @param view
      */
     public void OnSearchClick(View view){
-
-        String aux = (String) seekBarValue.getText();
-
         String searchQuery = searchField.getText().toString();
-        Log.d(this.getClass().getName(), searchQuery);
-
         restaurantsRepo.getRestaurants(searchQuery);
+
+        //TODO: añadir la busqueda a recientes
     }
 
     /**

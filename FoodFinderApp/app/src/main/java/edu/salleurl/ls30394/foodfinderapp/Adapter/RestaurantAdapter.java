@@ -63,7 +63,7 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
             LayoutInflater inflater =
                     (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            row = inflater.inflate(R.layout.row_restaurant, null);
+            row = inflater.inflate(R.layout.row_restaurant, parent, false);
         }
 
         Restaurante restaurante = activeList.get(position);
