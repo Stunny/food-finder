@@ -11,6 +11,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
+import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RecentSearchesDB;
+import edu.salleurl.ls30394.foodfinderapp.repositories.impl.UserDatabase;
 
 /**
  * Created by avoge on 29/04/2017.
@@ -19,11 +21,19 @@ import edu.salleurl.ls30394.foodfinderapp.R;
 public class RecentSearchAdapter extends ArrayAdapter<String> {
 
     private Context context;
+    private int userId;
+
+    private RecentSearchesDB db;
+
     private List<String> list;
 
-    public RecentSearchAdapter (Context context){
+    public RecentSearchAdapter (Context context, String userName){
         super(context, android.R.layout.simple_list_item_1);
         this.context = context;
+
+        db = new RecentSearchesDB(context);
+
+        getUserId(userName);
         populateList();
     }
 
@@ -62,7 +72,26 @@ public class RecentSearchAdapter extends ArrayAdapter<String> {
         return row;
     }
 
-    private void populateList() {
+    /**
+     *
+     * @param userName
+     */
+    private void getUserId(String userName){
+        UserDatabase udb = new UserDatabase(context);
+        userId = udb.getUserId(userName);
+    }
 
+    /**
+     *
+     */
+    private void populateList() {
+        list = db.getRecentSearches(userId);
+    }
+
+    /**
+     * @param searchQuery
+     */
+    public void addRecentSearch(String searchQuery){
+        db.addRecentSearch(userId, searchQuery);
     }
 }

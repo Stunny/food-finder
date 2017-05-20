@@ -39,7 +39,7 @@ public class RecentSearchesDB implements RecentSearchesRepo {
     }
 
     @Override
-    public String[] getRecentSearches(int userId) {
+    public List<String> getRecentSearches(int userId) {
         List<String> list = new ArrayList<>();
 
         String auxRow = null;
@@ -65,7 +65,7 @@ public class RecentSearchesDB implements RecentSearchesRepo {
             cursor.close();
         }
 
-        return list.toArray(new String[0]);
+        return list;
     }
 
     @Override
