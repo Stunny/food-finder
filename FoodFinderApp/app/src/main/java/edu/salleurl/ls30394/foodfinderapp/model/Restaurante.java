@@ -1,6 +1,8 @@
 package edu.salleurl.ls30394.foodfinderapp.model;
 
-import edu.salleurl.ls30394.foodfinderapp.R;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class Restaurante {
 
@@ -10,6 +12,8 @@ public class Restaurante {
     public static final String TYPE_ASIAN = "Oriental";
     public static final String TYPE_MEXICAN = "Mejicano";
     public static final String TYPE_TAKEAWAY = "Take Away";
+
+    private static final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     private String name;
     private String type;
@@ -27,12 +31,43 @@ public class Restaurante {
         this.type = type;
         this.latitude = lat;
         this.longitude = lng;
-        this.address = address;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
+        this.address = address;
         this.review = review;
         this.description = description;
     }
+
+    public boolean isOpen(){
+        //TODO no va xd
+        if(!openingTime.equals("null") && !closingTime.equals("null")) {
+            Calendar now = Calendar.getInstance();
+            int nowHour = now.get(Calendar.HOUR_OF_DAY);
+            int nowMinute = now.get(Calendar.MINUTE);
+
+            String[] openingTimeParts = openingTime.split(":");
+            String[] closingTimeParts = closingTime.split(":");
+
+            int     openingHour = Integer.parseInt(openingTimeParts[0]),
+                    openingMinute = Integer.parseInt(openingTimeParts[1]),
+
+                    closingHour = Integer.parseInt(closingTimeParts[0]),
+                    closingMinute = Integer.parseInt(closingTimeParts[1]);
+
+            boolean afterOpening = nowHour == openingHour
+                    ? nowMinute >= openingMinute
+                    : nowHour > openingHour;
+
+            boolean beforeClosing = nowHour == closingHour
+                    ? nowMinute < closingMinute
+                    : nowHour < closingHour;
+
+            return afterOpening && beforeClosing;
+        }
+        return true;
+    }
+
+    //************************STANDARD GETTERS AND SETTERS****************************************//
 
     public String getName() {
         return name;

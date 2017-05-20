@@ -1,9 +1,12 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,10 +16,13 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.Adapter.RestaurantAdapter;
+import edu.salleurl.ls30394.foodfinderapp.Adapter.TabAdapter;
 import edu.salleurl.ls30394.foodfinderapp.R;
+import edu.salleurl.ls30394.foodfinderapp.fragments.RestaurantListFragment;
 import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 import edu.salleurl.ls30394.foodfinderapp.repositories.RestaurantsRepo;
 import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RestaurantsWebService;
@@ -28,11 +34,8 @@ public class SearchResultActivity extends AppCompatActivity {
 
     private Spinner actionbarSpinner;
 
-    private ListView searchResultListView;
-    private RestaurantAdapter listAdapter;
-
-    private RestaurantsRepo restaurantsRepo;
-    private List<Restaurante> list;
+    private RestaurantListFragment allRestaurantsFragment;
+    private RestaurantListFragment onlyOpenRestaurantsFragment;
 
     //***************************OVERRIDE FUNTIONS************************************************//
 
@@ -42,9 +45,6 @@ public class SearchResultActivity extends AppCompatActivity {
         userName = getIntent().getStringExtra("username");
 
         setContentView(R.layout.activity_search_result);
-
-        restaurantsRepo = RestaurantsWebService.getInstance(this);
-        list = restaurantsRepo.getResult();
 
         configWidgets();
     }
@@ -84,22 +84,16 @@ public class SearchResultActivity extends AppCompatActivity {
 
     public void configWidgets(){
         initActionBar();
+        initTabs();
         initWidgets();
-
-        searchResultListView.setAdapter(listAdapter);
-        listAdapter.notifyDataSetChanged();
     }
 
     private void initWidgets() {
-
-        searchResultListView = (ListView) findViewById(R.id.result_restaurants_list);
-        listAdapter = new RestaurantAdapter(this, list);
-
         actionbarSpinner.setAdapter(
                 new ArrayAdapter<>(
                         this,
                         android.R.layout.simple_dropdown_item_1line,
-                        listAdapter.getRestaurantTypes()
+                        RestaurantsWebService.getInstance(this).getRestaurantTypes()
                 )
         );
 
@@ -107,9 +101,13 @@ public class SearchResultActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 0){
-                    listAdapter.filterRestaurants(true, null);
+                    allRestaurantsFragment.getListAdapter().filterRestaurants(true, null);
+                    onlyOpenRestaurantsFragment.getListAdapter().filterRestaurants(true, null);
                 } else {
-                    listAdapter.filterRestaurants(false, ((TextView)view).getText().toString());
+                    allRestaurantsFragment.getListAdapter()
+                            .filterRestaurants(false, ((TextView)view).getText().toString());
+                    onlyOpenRestaurantsFragment.getListAdapter()
+                            .filterRestaurants(false, ((TextView)view).getText().toString());
                 }
             }
 
@@ -119,13 +117,38 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
     private void initActionBar(){
-        ActionBar actionBar = getSupportActionBar();
+
         View mActionBarView = getLayoutInflater().inflate(R.layout.actionbar_search_result, null);
+
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setCustomView(mActionBarView);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
         actionbarSpinner = (Spinner) findViewById(R.id.actionbar_results_spinner);
+    }
 
+    private void initTabs(){
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.search_result_tabs);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.search_result_viewPager);
+
+         allRestaurantsFragment = new RestaurantListFragment();
+         onlyOpenRestaurantsFragment = new RestaurantListFragment();
+
+        Bundle fragmentArgs = new Bundle();
+        fragmentArgs.putBoolean("onlyOpen", false);
+        allRestaurantsFragment.setArguments(fragmentArgs);
+
+        fragmentArgs = new Bundle();
+        fragmentArgs.putBoolean("onlyOpen", true);
+        onlyOpenRestaurantsFragment.setArguments(fragmentArgs);
+
+        ArrayList<TabAdapter.TabEntry> entries = new ArrayList<>();
+        entries.add(new TabAdapter.TabEntry(allRestaurantsFragment, getString(R.string.all_restaurants)));
+        entries.add(new TabAdapter.TabEntry(onlyOpenRestaurantsFragment, getString(R.string.only_open)));
+
+        TabAdapter adapter = new TabAdapter(getSupportFragmentManager(), entries);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     //**********************MAIN BEHAVIOR FUNTIONS************************************************//

@@ -18,6 +18,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.salleurl.ls30394.foodfinderapp.R;
 import edu.salleurl.ls30394.foodfinderapp.activities.SearchActivity;
 import edu.salleurl.ls30394.foodfinderapp.app.AppController;
 import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
@@ -33,6 +34,7 @@ public class RestaurantsWebService implements RestaurantsRepo {
     public static final String REQ_TAG = "restaurant_search";
 
     private List<Restaurante> result;
+    private String[] typesInResult;
 
     private static RestaurantsWebService instance;
     private Context context;
@@ -110,6 +112,7 @@ public class RestaurantsWebService implements RestaurantsRepo {
                     public void onResponse(JSONArray response) {
                         Log.i("angel", "response ok");
                         result = parseInfo(response);
+                        setResultTypes();
                         pendingRequests--;
                         notifyActivityRequestEnded();
                     }
@@ -166,5 +169,49 @@ public class RestaurantsWebService implements RestaurantsRepo {
         }
 
         bManager.sendBroadcast(endOfRequestIntent);
+    }
+
+    /**
+     * Identifica los diferentes tipos de restaurante en el resultado
+     */
+    private void setResultTypes(){
+        int size = result.size();
+
+        List<String> auxTypes = new ArrayList<>();
+        auxTypes.add(0, context.getString(R.string.all));
+
+        int typesSize;
+
+        Restaurante auxRest;
+        boolean typeFound = false;
+
+        for(int i = 0; i < size; i++){
+
+            auxRest = result.get(i);
+
+            if (auxTypes.size() == 0){
+                auxTypes.add(auxRest.getType());
+            } else {
+                typesSize = auxTypes.size();
+
+                for(int j = 0; j < typesSize; j++){
+                    if(auxRest.getType().equals(auxTypes.get(j))){
+                        typeFound = true;
+                    }
+                }
+
+                if(!typeFound){
+                    auxTypes.add(auxRest.getType());
+                }
+            }
+        }
+        typesInResult = auxTypes.toArray(new String[0]);
+    }
+
+    /**
+     * @return Los diferentes tipos de restaurante que hay en el resultado de la request
+     */
+    public String[] getRestaurantTypes(){
+        return typesInResult;
     }
 }

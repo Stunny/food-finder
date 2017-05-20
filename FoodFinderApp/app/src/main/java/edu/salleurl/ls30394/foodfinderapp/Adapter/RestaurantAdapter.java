@@ -26,20 +26,23 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
     private List<Restaurante> allResultRestaurants;
     private List<Restaurante> activeList;
 
-    private String[] typesInResult;
+    private boolean showOnlyOpen;
 
     /**
      *
      * @param context
      * @param allResultRestaurants
      */
-    public RestaurantAdapter(Context context, List<Restaurante> allResultRestaurants){
+    public RestaurantAdapter(Context context, List<Restaurante> allResultRestaurants, boolean showOnlyOpen){
         super(context, R.layout.row_restaurant);
         this.context = context;
         this.allResultRestaurants = allResultRestaurants;
         this.activeList = new ArrayList<>(allResultRestaurants);
+        this.showOnlyOpen = showOnlyOpen;
 
-        setResultTypes();
+        if(showOnlyOpen){
+            hideClosedRestaurants();
+        }
     }
 
     @Override
@@ -119,50 +122,6 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
     }
 
     /**
-     * Identifica los diferentes tipos de restaurante en el resultado
-     */
-    private void setResultTypes(){
-        int size = allResultRestaurants.size();
-
-        List<String> auxTypes = new ArrayList<>();
-        auxTypes.add(0, context.getString(R.string.all));
-
-        int typesSize;
-
-        Restaurante auxRest;
-        boolean typeFound = false;
-
-        for(int i = 0; i < size; i++){
-
-            auxRest = allResultRestaurants.get(i);
-
-            if (auxTypes.size() == 0){
-                auxTypes.add(auxRest.getType());
-            } else {
-                typesSize = auxTypes.size();
-
-                for(int j = 0; j < typesSize; j++){
-                    if(auxRest.getType().equals(auxTypes.get(j))){
-                        typeFound = true;
-                    }
-                }
-
-                if(!typeFound){
-                    auxTypes.add(auxRest.getType());
-                }
-            }
-        }
-        typesInResult = auxTypes.toArray(new String[0]);
-    }
-
-    /**
-     * @return Los diferentes tipos de restaurante que hay en el resultado de la request
-     */
-    public String[] getRestaurantTypes(){
-        return typesInResult;
-    }
-
-    /**
      * Filtra los restaurants mostrados en la lista segun el tipo
      * @param type Tipo de restaurante
      * @param all True si se desean todos los restaurantes resultantes
@@ -191,6 +150,28 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
                 activeList.add(aux);
             }
         }
+    }
+
+    /**
+     *
+     */
+    private void hideClosedRestaurants(){
+        //TODO: eliminar de activeList aquellos restaurantes cerrados
+        int size = activeList.size();
+        ArrayList<Integer> toBeHidden = new ArrayList<>();
+        Restaurante aux;
+
+        for(int i = 0; i < activeList.size(); i++){
+            aux = activeList.get(i);
+            if(!aux.isOpen()){
+                toBeHidden.add(i);
+            }
+        }
+
+        size = toBeHidden.size();
+
+        for(int i = 0; i < size; i++)
+            activeList.remove(toBeHidden.get(i));
     }
 
 }
