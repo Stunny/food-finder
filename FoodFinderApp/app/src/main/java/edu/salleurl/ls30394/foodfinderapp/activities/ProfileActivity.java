@@ -44,6 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextInputLayout description;
     private ImageView profilePicture;
     private RadioGroup gender;
+    private RadioButton male,female,other;
     private Intent nextActivity;
     private Bitmap imageBitmap;
     private String userName;
@@ -75,7 +76,9 @@ public class ProfileActivity extends AppCompatActivity {
         surname = (TextInputLayout)findViewById(R.id.profile_surnameWrapper);
         description = (TextInputLayout) findViewById(R.id.profile_descWrapper);
         gender = (RadioGroup) findViewById(R.id.profile_selectGender);
-
+        male = (RadioButton) findViewById(R.id.button_male);
+        female = (RadioButton)findViewById(R.id.button_female);
+        other = (RadioButton)findViewById(R.id.button_other);
 
         imageBitmap = getBitmap(userName + "_profile.png");
         if(imageBitmap != null){
@@ -100,9 +103,9 @@ public class ProfileActivity extends AppCompatActivity {
         name.getEditText().setEnabled(b);
         surname.getEditText().setEnabled(b);
         description.getEditText().setEnabled(b);
-        for(int i = 0;i<gender.getChildCount();i++){
-            gender.getChildAt(i).setClickable(b);
-        }
+        male.setClickable(b);
+        female.setClickable(b);
+        other.setClickable(b);
         //gender.getCameraDistance();
         profilePicture.setClickable(b);
         name.getEditText().setTextColor(Color.BLACK);
@@ -126,8 +129,21 @@ public class ProfileActivity extends AppCompatActivity {
         name.getEditText().setText(userName);
         surname.getEditText().setText(users.get(0).getUserSurname());
         description.getEditText().setText(users.get(0).getUserDescription());
-        ((RadioButton)gender.getChildAt(users.get(0).getGenderIndex())).setChecked(true);
-
+        RadioButton radioButton;
+        switch (users.get(0).getGenderIndex()){
+            case 0:
+                radioButton = (RadioButton)findViewById(R.id.button_male);
+                radioButton.setChecked(true);
+                break;
+            case 1:
+                radioButton = (RadioButton) findViewById(R.id.button_female);
+                radioButton.setChecked(true);
+                break;
+            case 2:
+                radioButton = (RadioButton) findViewById(R.id.button_other);
+                radioButton.setChecked(true);
+                break;
+        }
     }
 
     @Override
@@ -184,7 +200,16 @@ public class ProfileActivity extends AppCompatActivity {
         String userSurname = surname.getEditText().getText().toString();
         description.getEditText().clearFocus();
         String descriptionUser = description.getEditText().getText().toString();
-        int genderUser = gender.getCheckedRadioButtonId();
+        int genderUser;
+        if(male.isChecked()){
+            genderUser = 0;
+        }else{
+            if(female.isChecked()){
+                genderUser = 1;
+            }else{
+                genderUser = 2;
+            }
+        }
         setVisibilityColour(View.INVISIBLE, false);
         UserRepo userDataBase = new UserDatabase(this);
         List<User> user = userDataBase.getUser(userName,false);
