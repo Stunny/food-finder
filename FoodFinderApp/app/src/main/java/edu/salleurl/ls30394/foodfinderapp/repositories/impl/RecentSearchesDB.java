@@ -70,6 +70,12 @@ public class RecentSearchesDB implements RecentSearchesRepo {
 
     @Override
     public void removeRecentSearch(int userId, String searchQuery) {
+        Database db = Database.getInstance(context);
 
+        String whereClause = COLUMN_USER_ID + "=? AND " + COLUMN_SEARCH_QUERY + "=?";
+        String[] whereArgs = {Integer.toString(userId), searchQuery};
+
+        db.getWritableDatabase()
+                .delete(TABLE_NAME, whereClause, whereArgs);
     }
 }
