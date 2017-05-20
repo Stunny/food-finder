@@ -18,7 +18,7 @@ public class RecentSearchesDB implements RecentSearchesRepo {
 
     private static final String TABLE_NAME = "recent_searches";
     private static final String COLUMN_ID = "_id";
-    private static final String COLUMN_SEARCH_QUERY = "search_query";
+    private static final String COLUMN_SEARCH_QUERY = "searchQuery";
     private static final String COLUMN_USER_ID = "userId";
 
     private Context context;

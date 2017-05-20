@@ -100,6 +100,12 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
     }
 
     @Override
+    protected void onResume(){
+        super.onResume();
+        recentSearchAdapter.updateList();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         locationService = LocationService.getInstance(getApplicationContext());

@@ -26,7 +26,7 @@ public class Database extends SQLiteOpenHelper {
     private Context context;
     private static Database instance;
     private static final String name = "users_db";
-    private static final int version = 11;
+    private static final int version = 20;
     private static SQLiteDatabase.CursorFactory factory;
 
     private Database(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {

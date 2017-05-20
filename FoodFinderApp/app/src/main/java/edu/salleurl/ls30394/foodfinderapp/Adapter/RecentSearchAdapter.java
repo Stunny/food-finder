@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
+import edu.salleurl.ls30394.foodfinderapp.repositories.RecentSearchesRepo;
 import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RecentSearchesDB;
 import edu.salleurl.ls30394.foodfinderapp.repositories.impl.UserDatabase;
 
@@ -23,7 +24,7 @@ public class RecentSearchAdapter extends ArrayAdapter<String> {
     private Context context;
     private int userId;
 
-    private RecentSearchesDB db;
+    private RecentSearchesRepo db;
 
     private List<String> list;
 
@@ -66,7 +67,7 @@ public class RecentSearchAdapter extends ArrayAdapter<String> {
         }
         String recent_search = list.get(position);
 
-        TextView textView = (TextView) row.findViewById(R.id.textViewFavorite);
+        TextView textView = (TextView) row.findViewById(android.R.id.text1);
         textView.setText(recent_search);
 
         return row;
@@ -86,6 +87,11 @@ public class RecentSearchAdapter extends ArrayAdapter<String> {
      */
     private void populateList() {
         list = db.getRecentSearches(userId);
+    }
+
+    public void updateList(){
+        populateList();
+        notifyDataSetChanged();
     }
 
     /**

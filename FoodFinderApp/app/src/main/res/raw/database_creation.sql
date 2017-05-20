@@ -1,4 +1,4 @@
-CREATE TABLE userInfo(
+CREATE TABLE IF NOT EXISTS userInfo(
     _id	INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     surname TEXT NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE userInfo(
     description TEXT NOT NULL
 );
 
-CREATE TABLE restaurant (
+CREATE TABLE IF NOT EXISTS restaurant (
     _id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     type TEXT NOT NULL,
@@ -21,14 +21,17 @@ CREATE TABLE restaurant (
     description TEXT NOT NULL
 );
 
-CREATE TABLE favorite_restaurants(
-    _id INTEGER PRIMARY KEY AUTOINCREMENT,
-    userID INT FOREIGN KEY,
-    restaurantId INT FOREIGN KEY
-);
-
-CREATE TABLE recent_searches(
+CREATE TABLE IF NOT EXISTS recent_searches(
     _id INTEGER PRIMARY KEY AUTOINCREMENT,
     searchQuery TEXT NOT NULL,
-    userId INT FOREIGN KEY
+    userId INT NOT NULL,
+    FOREIGN KEY(userId) REFERENCES userInfo(_id)
+);
+
+CREATE TABLE IF NOT EXISTS favorite_restaurants(
+    _id INTEGER PRIMARY KEY AUTOINCREMENT,
+    userID INT NOT NULL,
+    restaurantId INT NOT NULL,
+    FOREIGN KEY(userID) REFERENCES userInfo(_id),
+    FOREIGN KEY(restaurantId) REFERENCES restaurant(_id)
 );
