@@ -18,8 +18,7 @@ CREATE TABLE restaurant (
     opening TEXT NOT NULL,--HH:MM
     closing TEXT NOT NULL,--HH:MM
     review FLOAT DEFAULT 0,
-    description TEXT NOT NULL,
-
+    description TEXT NOT NULL
 );
 
 CREATE TABLE favorite_restaurants(
