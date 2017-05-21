@@ -96,6 +96,8 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
         Intent intent ;
         intent = new Intent(this.context, DescriptionActivity.class);
         intent.putExtra("nameRestaurant",activeList.get(position).getName());
+        intent.putExtra("ratingValue",activeList.get(position).getReview());
+        intent.putExtra("descriptionLatina",activeList.get(position).getDescription());
         this.context.startActivity(intent);
 
     }

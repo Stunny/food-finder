@@ -20,8 +20,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:id="@+id/restaurant_name"/>
+            android:id="@+id/restaurant_name"
+            android:textColor="@color/coloBlack"
+            android:textSize="@dimen/sizeCommentTitle"
+            android:layout_marginBottom="@dimen/text_margin"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,10 +32,11 @@
                 style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/ratingBarRestaurant"
                 />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/button_map"
                 android:layout_width="wrap_content"
                 android:layout_height="46dp"
                 android:layout_weight="1"
@@ -68,13 +71,15 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/input_comment"/>
+            android:id="@+id/input_comment"
+            android:textColor="@color/coloBlack"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/send"
-            android:layout_marginLeft="@dimen/size_margin"/>
+            android:layout_marginLeft="@dimen/size_margin"
+            android:id="@+id/button_send"/>
 
     </LinearLayout>
 
