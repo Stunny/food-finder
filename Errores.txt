@@ -1,0 +1,5 @@
+searchLayout: Si seleccionas no mostrar otra vez la notificacion del gps, no se puede seleccionar el "aceptar"
+searchLayout: bloquear gelocalizacion si se seleccionan 0km de radio, o poner de radio minimo 1km
+searchLayout: la primera vez que abres la app, la opcion de "no recordar mas tarde" para activar el gps no esta
+searchLayout: la localizacion solo actualiza la lista de recent searches si encuentra resultado. es decir si metes un resultado erroneo, no hace nada. si metes despues uno correcto, actualiza la lista con el resultado erroneo y el correcto
+searchLayout: abres la app, enciendes el gps, haces unas busquedas, la cierras. Abres de nuevo la app, desactivas el gps y haces una geolocalizacion, no sale el pop up para activar la geolocalizacion, peta.
