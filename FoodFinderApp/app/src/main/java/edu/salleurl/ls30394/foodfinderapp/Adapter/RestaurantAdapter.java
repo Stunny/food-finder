@@ -94,6 +94,7 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
         //TODO: ir a la descripcion del restaurante
         Intent intent ;
         intent = new Intent(this.context, DescriptionActivity.class);
+        intent.putExtra("nameRestaurant",activeList.get(position).getName());
         this.context.startActivity(intent);
 
     }

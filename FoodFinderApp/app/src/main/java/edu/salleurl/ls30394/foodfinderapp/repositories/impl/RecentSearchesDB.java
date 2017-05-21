@@ -58,9 +58,12 @@ public class RecentSearchesDB implements RecentSearchesRepo {
         if(cursor != null){
             if(cursor.moveToFirst()){
                 do{
-                    list.add(
-                            cursor.getString(cursor.getColumnIndex(COLUMN_SEARCH_QUERY))
-                    );
+                    if(!cursor.getString(cursor.getColumnIndex(COLUMN_SEARCH_QUERY)).equals("")){
+                        list.add(
+                                cursor.getString(cursor.getColumnIndex(COLUMN_SEARCH_QUERY))
+                        );
+                    }
+
                 }while(cursor.moveToNext());
             }
             cursor.close();
