@@ -1,6 +1,7 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -56,6 +57,8 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
     private RestaurantsRepo restaurantsRepo;
     private BroadcastReceiver bReceiver;
     private LocalBroadcastManager bManager;
+
+    private ProgressDialog searchProgressDialog;
 
     //************************OVERRIDE FUNCTIONS**************************************************//
 
@@ -201,6 +204,10 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         searchField = (EditText) findViewById(R.id.search_field);
 
         recentSearchesList = (ListView) findViewById(R.id.recent_searches_list);
+
+        searchProgressDialog = new ProgressDialog(this);
+        searchProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        searchProgressDialog.setMessage(getString(R.string.search_progress));
     }
 
     //***********************MAIN BEHAVIOR FUNCTIONS**********************************************//
@@ -238,6 +245,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         double latitude = locationService.getLocation().getLatitude();
         double longitude = locationService.getLocation().getLongitude();
 
+        searchProgressDialog.show();
         restaurantsRepo.getRestaurants(latitude, longitude, searchRadius);
 
     }
@@ -249,6 +257,8 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
     public void OnSearchClick(View view){
         String searchQuery = searchField.getText().toString();
         recentSearchAdapter.addRecentSearch(searchQuery);
+
+        searchProgressDialog.show();
         restaurantsRepo.getRestaurants(searchQuery);
     }
 
@@ -256,6 +266,8 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
      *
      */
     public void onRequestSuccess(){
+        if(searchProgressDialog.isShowing()) searchProgressDialog.dismiss();
+
         nextActivity = new Intent(SearchActivity.this, SearchResultActivity.class);
         nextActivity.putExtra("username", userName);
         startActivity(nextActivity);
@@ -265,6 +277,8 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
      *
      */
     public void onRequestEmptyResult(){
+        if(searchProgressDialog.isShowing()) searchProgressDialog.dismiss();
+
         Snackbar.make(findViewById(R.id.search_activity_coordinatorLayout), getString(R.string.no_results_snack), Snackbar.LENGTH_SHORT)
             .show();
     }

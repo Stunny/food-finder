@@ -40,4 +40,5 @@
     <string name="search_hint">Search ...</string>
     <string name="all_restaurants">ALL</string>
     <string name="only_open">ONLY OPEN</string>
+    <string name="search_progress">Searching...</string>
 </resources>
