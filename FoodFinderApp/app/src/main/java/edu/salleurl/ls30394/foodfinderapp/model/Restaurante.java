@@ -1,5 +1,7 @@
 package edu.salleurl.ls30394.foodfinderapp.model;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -12,8 +14,6 @@ public class Restaurante {
     public static final String TYPE_ASIAN = "Oriental";
     public static final String TYPE_MEXICAN = "Mejicano";
     public static final String TYPE_TAKEAWAY = "Take Away";
-
-    private static final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     private String name;
     private String type;
@@ -39,7 +39,6 @@ public class Restaurante {
     }
 
     public boolean isOpen(){
-        //TODO no va xd
         if(!openingTime.equals("null") && !closingTime.equals("null")) {
             Calendar now = Calendar.getInstance();
             int nowHour = now.get(Calendar.HOUR_OF_DAY);
@@ -62,6 +61,7 @@ public class Restaurante {
                     ? nowMinute < closingMinute
                     : nowHour < closingHour;
 
+            Log.i(getClass().getName(), afterOpening && beforeClosing?"OPEN":"CLOSED");
             return afterOpening && beforeClosing;
         }
         return true;
