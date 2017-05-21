@@ -2,6 +2,7 @@ package edu.salleurl.ls30394.foodfinderapp.Adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,13 +37,13 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
     public RestaurantAdapter(Context context, List<Restaurante> allResultRestaurants, boolean showOnlyOpen){
         super(context, R.layout.row_restaurant);
         this.context = context;
-        this.allResultRestaurants = allResultRestaurants;
-        this.activeList = new ArrayList<>(allResultRestaurants);
         this.showOnlyOpen = showOnlyOpen;
 
-        if(showOnlyOpen){
-            hideClosedRestaurants();
+        this.allResultRestaurants = new ArrayList<>(allResultRestaurants);
+        if(this.showOnlyOpen){
+            removeClosedRestaurants();
         }
+        this.activeList = new ArrayList<>(allResultRestaurants);
     }
 
     @Override
@@ -142,6 +143,7 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
     private void changeSet(String type){
         activeList = new ArrayList<>();
         int size = allResultRestaurants.size();
+
         Restaurante aux;
         for(int i = 0; i < size; i++){
             aux = allResultRestaurants.get(i);
@@ -150,28 +152,30 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
                 activeList.add(aux);
             }
         }
+
+        clear();
+        addAll(activeList);
     }
 
     /**
      *
      */
-    private void hideClosedRestaurants(){
-        //TODO: eliminar de activeList aquellos restaurantes cerrados
-        int size = activeList.size();
-        ArrayList<Integer> toBeHidden = new ArrayList<>();
+    private void removeClosedRestaurants(){
+        int size = allResultRestaurants.size();
+        ArrayList<Restaurante> toBeHidden = new ArrayList<>();
         Restaurante aux;
 
-        for(int i = 0; i < activeList.size(); i++){
-            aux = activeList.get(i);
+        for(int i = 0; i < size; i++){
+            aux = allResultRestaurants.get(i);
             if(!aux.isOpen()){
-                toBeHidden.add(i);
+                toBeHidden.add(aux);
             }
         }
 
-        size = toBeHidden.size();
-
-        for(int i = 0; i < size; i++)
-            activeList.remove(toBeHidden.get(i));
+        for(Restaurante r : toBeHidden){
+            if(allResultRestaurants.remove(r))
+                Log.i("DELETED", r.getName());
+        }
     }
 
 }

@@ -83,8 +83,8 @@ public class SearchResultActivity extends AppCompatActivity {
     //*********************************UI FUNTIONS************************************************//
 
     public void configWidgets(){
-        initActionBar();
         initTabs();
+        initActionBar();
         initWidgets();
     }
 
