@@ -1,6 +1,7 @@
 package edu.salleurl.ls30394.foodfinderapp.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.salleurl.ls30394.foodfinderapp.activities.DescriptionActivity;
 import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 import edu.salleurl.ls30394.foodfinderapp.R;
 
@@ -91,6 +93,10 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //TODO: ir a la descripcion del restaurante
+        Intent intent ;
+        intent = new Intent(this.context, DescriptionActivity.class);
+        this.context.startActivity(intent);
+
     }
 
     /**
