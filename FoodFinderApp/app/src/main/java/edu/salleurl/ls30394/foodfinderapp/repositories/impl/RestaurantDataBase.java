@@ -7,14 +7,14 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
 import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
-import edu.salleurl.ls30394.foodfinderapp.repositories.RestaurantDBRepo;
+import edu.salleurl.ls30394.foodfinderapp.repositories.RestaurantsRepo;
 import edu.salleurl.ls30394.foodfinderapp.utils.Database;
 
 /**
  * Created by David GN on 20/05/2017.
  */
 
-public class RestaurantDataBase implements RestaurantDBRepo {
+public class RestaurantDataBase implements RestaurantsRepo {
 
 
     private static final String TABLE_NAME  = "restaurant";
@@ -91,11 +91,11 @@ public class RestaurantDataBase implements RestaurantDBRepo {
     }
 
     @Override
-    public boolean existRestaurant(String name) {
+    public boolean exists(String restaurantName) {
         Database database = Database.getInstance(context);
 
         String whereClause = COLUMN_NAME + "=?";
-        String [] whereArgs = {name};
+        String [] whereArgs = {restaurantName};
 
         SQLiteDatabase db = database.getReadableDatabase();
 

@@ -12,22 +12,16 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import edu.salleurl.ls30394.foodfinderapp.Adapter.RecentSearchAdapter;
@@ -162,7 +156,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         String searchQuery = ((TextView)view).getText().toString();
-        restaurantsRepo.getRestaurants(searchQuery);
+        restaurantsRepo.fetchRestaurants(searchQuery);
 
     }
 
@@ -246,7 +240,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         double longitude = locationService.getLocation().getLongitude();
 
         searchProgressDialog.show();
-        restaurantsRepo.getRestaurants(latitude, longitude, searchRadius);
+        restaurantsRepo.fetchRestaurants(latitude, longitude, searchRadius);
 
     }
 
@@ -259,7 +253,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         recentSearchAdapter.addRecentSearch(searchQuery);
 
         searchProgressDialog.show();
-        restaurantsRepo.getRestaurants(searchQuery);
+        restaurantsRepo.fetchRestaurants(searchQuery);
     }
 
     /**

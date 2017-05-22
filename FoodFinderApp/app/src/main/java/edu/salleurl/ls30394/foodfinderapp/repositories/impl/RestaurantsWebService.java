@@ -42,6 +42,28 @@ public class RestaurantsWebService implements RestaurantsRepo {
 
     private int pendingRequests;
 
+    @Override
+    public void fetchRestaurants(String search) {
+        String requestURL = "";
+        try {
+            requestURL = WS_BASE_URL + "&s=" + URLEncoder.encode(search.trim(), "utf-8");
+        } catch (UnsupportedEncodingException e) {}
+
+        searchRestaurants(requestURL);
+    }
+
+    @Override
+    public void fetchRestaurants(double lat, double lng, int radius) {
+        String requestURL = WS_BASE_URL + "&lat=" + Double.toString(lat) + "&lon=" + Double.toString(lng)
+                + "&dist=" + Integer.toString(radius);
+        searchRestaurants(requestURL);
+    }
+
+    @Override
+    public List<Restaurante> getResult(){
+        return result;
+    }
+
     /**
      *
      * @param context
@@ -65,31 +87,7 @@ public class RestaurantsWebService implements RestaurantsRepo {
         return instance;
     }
 
-    @Override
-    public void getRestaurants(String search) {
-        String requestURL = "";
-        try {
-            requestURL = WS_BASE_URL + "&s=" + URLEncoder.encode(search.trim(), "utf-8");
-        } catch (UnsupportedEncodingException e) {}
-
-        searchRestaurants(requestURL);
-    }
-
-    @Override
-    public void getRestaurants(double lat, double lng, int radius) {
-        String requestURL = WS_BASE_URL + "&lat=" + Double.toString(lat) + "&lon=" + Double.toString(lng)
-                + "&dist=" + Integer.toString(radius);
-        searchRestaurants(requestURL);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public List<Restaurante> getResult(){
-        return result;
-    }
-
+    //********************************************************************************************//
     /**
      *
      * @param url
