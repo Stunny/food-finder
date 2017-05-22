@@ -18,6 +18,7 @@ public class RestaurantDataBase implements RestaurantDBRepo {
 
 
     private static final String TABLE_NAME  = "restaurant";
+
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_TYPE = "type";
@@ -35,8 +36,8 @@ public class RestaurantDataBase implements RestaurantDBRepo {
         this.context = context;
     }
     @Override
-    public int getPrimaryKey(String name){
-        int restaurant_id = 0;
+    public int getRestaurantId(String name){
+        int restaurant_id = -1;
 
         Database database = Database.getInstance(context);
 

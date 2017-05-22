@@ -136,4 +136,6 @@
     <string name="add_a_comment">Add comments</string>
     <string name="comment">Comments</string>
     <string name="search_progress">Searching...</string>
+    <string name="added_to_favs">Added to favorites</string>
+    <string name="removed_from_favs">Removed from favorites</string>
 </resources>

@@ -35,7 +35,8 @@ public class RestaurantListFragment extends Fragment {
 
         list = RestaurantsWebService.getInstance(getActivity()).getResult();
 
-        adapter = new RestaurantAdapter(getActivity(), list, getArguments().getBoolean("onlyOpen"));
+        adapter = new RestaurantAdapter(getActivity(), list, getArguments().getBoolean("onlyOpen"),
+                getArguments().getString("username"));
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(adapter);
 

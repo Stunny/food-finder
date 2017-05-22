@@ -1,5 +1,6 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,15 +15,21 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
+import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 
 public class DescriptionActivity extends AppCompatActivity {
-    private static int clicked = 0;
-    private String name,description;
+
+    private boolean clicked;
+
+    private Restaurante restaurant;
+    private String userName;
+
     private TextView textView,textDescription;
     private RatingBar ratingBar;
-    private float review;
+
     private Button buttonMap,buttonSend;
     private ListView listView;
     private EditText editText;
@@ -31,43 +38,66 @@ public class DescriptionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        name = intent.getStringExtra("nameRestaurant");
-        review = intent.getFloatExtra("ratingValue",0f);
-        description = intent.getStringExtra("descriptionLatina");
-
-
+        restaurant = (Restaurante) intent.getSerializableExtra("restaurant");
+        userName = intent.getStringExtra("username");
 
         setContentView(R.layout.activity_description);
         configWitgets();
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(clicked){
+            //TODO: mirar si ya esta como favorito para este usuario y añadirlo a la db en caso negativo
+        } else {
+            //TODO: mirar si ya esta como favorito para el usuario, eliminarlo en caso afirmativo
+        }
+    }
 
+    private void configWitgets(){
+
+        initWidgets();
+
+        textView.setText(restaurant.getName());
+
+        textDescription.setText(restaurant.getDescription());
+
+        ratingBar.setRating(restaurant.getReview());
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(clicked == 0){
+                if(!clicked){
                     fab.setImageResource(R.mipmap.ic_love);
-                    clicked++;
+                    clicked = true;
+                    Snackbar.make(findViewById(R.id.description_layout_parent), R.string.added_to_favs,
+                            Snackbar.LENGTH_SHORT).show();
                 }else{
                     fab.setImageResource(R.mipmap.ic_not_love);
-                    clicked = 0;
+                    clicked = false;
+                    Snackbar.make(findViewById(R.id.description_layout_parent), R.string.removed_from_favs,
+                            Snackbar.LENGTH_SHORT).show();
                 }
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });
+
     }
-    private void configWitgets(){
+
+    private void initWidgets() {
+
         textView = (TextView) findViewById(R.id.restaurant_name);
-        textView.setText(name);
         textDescription = (TextView) findViewById(R.id.description_textView);
-        textDescription.setText(description);
         ratingBar = (RatingBar) findViewById(R.id.ratingBarRestaurant);
-        ratingBar.setRating(review);
+
         buttonMap = (Button) findViewById(R.id.button_map);
+
         listView = (ListView)findViewById(R.id.comments);
+
         editText = (EditText) findViewById(R.id.input_comment);
+
         buttonSend = (Button) findViewById(R.id.button_send);
     }
 }

@@ -136,10 +136,12 @@ public class SearchResultActivity extends AppCompatActivity {
 
         Bundle fragmentArgs = new Bundle();
         fragmentArgs.putBoolean("onlyOpen", false);
+        fragmentArgs.putString("username", userName);
         allRestaurantsFragment.setArguments(fragmentArgs);
 
         fragmentArgs = new Bundle();
         fragmentArgs.putBoolean("onlyOpen", true);
+        fragmentArgs.putString("username", userName);
         onlyOpenRestaurantsFragment.setArguments(fragmentArgs);
 
         ArrayList<TabAdapter.TabEntry> entries = new ArrayList<>();

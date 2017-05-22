@@ -2,11 +2,13 @@ package edu.salleurl.ls30394.foodfinderapp.model;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class Restaurante {
+@SuppressWarnings("serial")
+public class Restaurante implements Serializable{
 
     public static final String TYPE_GENERIC = "Restaurante";
     public static final String TYPE_BURGER = "Hamburgueseria";

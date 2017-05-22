@@ -25,6 +25,7 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
         implements AdapterView.OnItemClickListener {
 
     private Context context;
+    private String userName;
 
     private List<Restaurante> allResultRestaurants;
     private List<Restaurante> activeList;
@@ -36,10 +37,12 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
      * @param context
      * @param allResultRestaurants
      */
-    public RestaurantAdapter(Context context, List<Restaurante> allResultRestaurants, boolean showOnlyOpen){
+    public RestaurantAdapter(Context context, List<Restaurante> allResultRestaurants,
+                             boolean showOnlyOpen, String userName){
         super(context, R.layout.row_restaurant);
         this.context = context;
         this.showOnlyOpen = showOnlyOpen;
+        this.userName = userName;
 
         this.allResultRestaurants = new ArrayList<>(allResultRestaurants);
         if(this.showOnlyOpen){
@@ -92,12 +95,14 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //TODO: ir a la descripcion del restaurante
         Intent intent ;
         intent = new Intent(this.context, DescriptionActivity.class);
-        intent.putExtra("nameRestaurant",activeList.get(position).getName());
-        intent.putExtra("ratingValue",activeList.get(position).getReview());
-        intent.putExtra("descriptionLatina",activeList.get(position).getDescription());
+
+        Restaurante aux = activeList.get(position);
+
+        intent.putExtra("restaurant", aux);
+        intent.putExtra("username", userName);
+
         this.context.startActivity(intent);
 
     }

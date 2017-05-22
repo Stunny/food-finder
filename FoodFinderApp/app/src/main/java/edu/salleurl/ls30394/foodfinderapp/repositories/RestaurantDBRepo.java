@@ -6,10 +6,14 @@ import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 
 public interface RestaurantDBRepo {
 
-    int getPrimaryKey(String name);
+    int getRestaurantId(String name);
+
     void addRestaurant(Restaurante restaurante);
+
     void removeRestaurant(String name);
+
     boolean existRestaurant(String name);
+
     Restaurante getRestaurant(String name);
 
 }
