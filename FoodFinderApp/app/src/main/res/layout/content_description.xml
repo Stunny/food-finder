@@ -24,26 +24,26 @@
             android:textColor="@color/coloBlack"
             android:textSize="@dimen/sizeCommentTitle"
             android:layout_marginBottom="@dimen/text_margin"/>
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <RatingBar
                 style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:id="@+id/ratingBarRestaurant"
                 />
 
             <Button
                 android:id="@+id/button_map"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="46dp"
+                android:layout_weight="1"
                 android:background="@color/colorBackground"
-                android:drawableBottom="@mipmap/ic_map" />
-        </RelativeLayout>
+                android:drawableBottom="@mipmap/ic_map"
+                android:clickable="true" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -60,7 +60,8 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/comments_list">
+            android:id="@+id/comments">
+
         </ListView>
         <TextView
             android:layout_width="match_parent"
@@ -84,4 +85,7 @@
             android:id="@+id/button_send"/>
 
     </LinearLayout>
+
+
+
 </android.support.v4.widget.NestedScrollView>

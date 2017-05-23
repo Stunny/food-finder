@@ -47,7 +47,7 @@ public class DescriptionActivity extends AppCompatActivity {
         userName = intent.getStringExtra("username");
 
         setContentView(R.layout.activity_description);
-        configWitgets();
+        configWidgets();
     }
 
     @Override
@@ -77,13 +77,22 @@ public class DescriptionActivity extends AppCompatActivity {
         }
     }
 
+
+    private void onMapClicked(View view){
+        Intent intent = new Intent(this,MapsActivity.class);
+        intent.putExtra("lat",restaurant.getLatitude());
+        intent.putExtra("lng",restaurant.getLongitude());
+        this.startActivity(intent);
+
+    }
+
     //********************************************************************************************//
     //---------->UI FUNCTIONS
 
     /**
      * Configures all the UI components
      */
-    private void configWitgets(){
+    private void configWidgets(){
 
         initWidgets();
 
@@ -114,7 +123,16 @@ public class DescriptionActivity extends AppCompatActivity {
             }
         });
 
-        // Remove focus from edit text at the creatio of the activity
+        buttonMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onMapClicked(v);
+            }
+        });
+
+
+
+        // Remove focus from edit text at the creation of the activity
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
