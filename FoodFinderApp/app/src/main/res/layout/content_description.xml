@@ -41,7 +41,8 @@
                 android:layout_height="46dp"
                 android:layout_weight="1"
                 android:background="@color/colorBackground"
-                android:drawableBottom="@mipmap/ic_map" />
+                android:drawableBottom="@mipmap/ic_map"
+                android:clickable="true" />
         </LinearLayout>
 
         <TextView
