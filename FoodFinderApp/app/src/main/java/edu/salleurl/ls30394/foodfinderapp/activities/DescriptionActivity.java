@@ -149,7 +149,7 @@ public class DescriptionActivity extends AppCompatActivity {
 
         buttonMap = (Button) findViewById(R.id.button_map);
 
-        listView = (ListView)findViewById(R.id.comments);
+        listView = (ListView)findViewById(R.id.comments_list);
 
         editText = (EditText) findViewById(R.id.input_comment);
 

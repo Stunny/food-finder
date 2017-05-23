@@ -28,10 +28,6 @@
                 android:src="@drawable/italian"
                 android:id="@+id/image_restaurant"
                 android:background="@color/colorBackground"/>
-
-
-
-
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_description" />
@@ -42,7 +38,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end"
-        android:src="@mipmap/ic_love"/>
+        app:layout_anchorGravity="bottom|end"/>
 
 </android.support.design.widget.CoordinatorLayout>
