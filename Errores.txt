@@ -6,5 +6,5 @@ searchLayout: abres la app, enciendes el gps, haces unas busquedas, la cierras. 
 searchLayout: introduces un nombre para hacer la busqueda y al darle a enter, no acciona el Button, si no que introduce un salto de linia
 recomendable searchLayout: limpiar el campo de busqueda por nombre tras hacer una busqueda tanto erronea como correcta
 
-profileActivity: guarda la foto aunque no le des al Button de save.
+
 profileActivity: si denegas permisos a la camara, te la abre igual, hace la foto y no la pone como foto de perfil. Directamente si denegas permisos que vuelva al profile activity.

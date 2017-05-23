@@ -142,7 +142,7 @@ public class RestaurantDataBase implements RestaurantsRepo {
 
     @Override
     public void fetchRestaurants(String search) {
-
+        
     }
 
     @Override

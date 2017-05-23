@@ -184,7 +184,7 @@ public class ProfileActivity extends AppCompatActivity {
             this.imageBitmap = imageBitmap;
             profilePicture.setImageBitmap(imageBitmap);
         }
-        saveImageToInternalStorage(imageBitmap,userName);
+
     }
 
     public void OnImageSelect(View view) {
@@ -210,6 +210,7 @@ public class ProfileActivity extends AppCompatActivity {
                 genderUser = 2;
             }
         }
+        saveImageToInternalStorage(imageBitmap,userName);
         setVisibilityColour(View.INVISIBLE, false);
         UserRepo userDataBase = new UserDatabase(this);
         List<User> user = userDataBase.getUser(userName,false);
