@@ -72,6 +72,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/input_comment"
+            android:nextFocusUp="@id/input_comment"
+            android:nextFocusLeft="@id/input_comment"
             android:textColor="@color/coloBlack"/>
 
         <Button
