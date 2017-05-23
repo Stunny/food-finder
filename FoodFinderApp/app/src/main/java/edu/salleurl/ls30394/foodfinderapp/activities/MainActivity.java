@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 //la aplicación peta en la linia de debajo, no se como solucionarlo
                 List<User> user = userRepo.getUser(userName,isEmail(userName));
 
-                if(user.size() > 0 ){
+                if(user.size() > 0  && userPassword.equals(user.get(0).getUserPassword())){
                     OnLoginSuccess(user.get(0));
                 }else{
                     Toast.makeText(this,R.string.invalid_user,Toast.LENGTH_LONG).show();
