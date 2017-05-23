@@ -65,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
         tilPassword.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) ||
+                        (actionId == EditorInfo.IME_ACTION_DONE)) {
                     btnLogin.performClick();
                 }
                 return false;
@@ -89,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * TODO: login check
      * Method executed when the login button on the activity is pressed.
      * It executes all the functionalities that define a proper user login
      * @param view Button view

@@ -13,10 +13,12 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -200,6 +202,18 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         });
 
         searchField = (EditText) findViewById(R.id.search_field);
+
+        searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                     OnSearchClick(v);
+                    handled = true;
+                }
+                return handled;
+            }
+        });
 
         recentSearchesList = (ListView) findViewById(R.id.recent_searches_list);
 
