@@ -37,6 +37,7 @@ public class RestaurantDataBase implements RestaurantsRepo {
     public RestaurantDataBase (Context context){
         this.context = context;
     }
+
     @Override
     public int getRestaurantId(String name){
         int restaurant_id = -1;
@@ -45,7 +46,7 @@ public class RestaurantDataBase implements RestaurantsRepo {
 
         String[] selectColumns = null;
 
-        String whereClause = COLUMN_ID + "=?";
+        String whereClause = COLUMN_NAME + "=?";
 
         String [] whereArgs = {name};
 

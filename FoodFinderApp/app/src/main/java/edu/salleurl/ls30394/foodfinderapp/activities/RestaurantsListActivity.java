@@ -1,36 +1,32 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import edu.salleurl.ls30394.foodfinderapp.Adapter.RestaurantAdapter;
 import edu.salleurl.ls30394.foodfinderapp.Adapter.TabAdapter;
 import edu.salleurl.ls30394.foodfinderapp.R;
 import edu.salleurl.ls30394.foodfinderapp.fragments.RestaurantListFragment;
-import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
-import edu.salleurl.ls30394.foodfinderapp.repositories.RestaurantsRepo;
 import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RestaurantsWebService;
 
-public class SearchResultActivity extends AppCompatActivity {
+public class RestaurantsListActivity extends AppCompatActivity {
 
     private Intent nextActivity;
     private String userName;
+    private boolean isFavsActivity;
 
     private Spinner actionbarSpinner;
 
@@ -43,8 +39,9 @@ public class SearchResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userName = getIntent().getStringExtra("username");
+        isFavsActivity = getIntent().getBooleanExtra("favorites", false);
 
-        setContentView(R.layout.activity_search_result);
+        setContentView(R.layout.activity_restaurants);
 
         configWidgets();
     }
@@ -52,7 +49,10 @@ public class SearchResultActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.activity_search_menu, menu);
+        if(isFavsActivity)
+            getMenuInflater().inflate(R.menu.activity_favs_menu, menu);
+        else
+            getMenuInflater().inflate(R.menu.activity_search_menu, menu);
 
         return true;
     }
@@ -68,6 +68,10 @@ public class SearchResultActivity extends AppCompatActivity {
                 return true;
 
             case R.id.activity_search_goFavorites:
+                nextActivity = new Intent(this, RestaurantsListActivity.class);
+                nextActivity.putExtra("username", userName);
+                nextActivity.putExtra("favorites", true);
+                startActivity(nextActivity);
                 return true;
 
             default:
@@ -89,14 +93,6 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
     private void initWidgets() {
-        actionbarSpinner.setAdapter(
-                new ArrayAdapter<>(
-                        this,
-                        android.R.layout.simple_dropdown_item_1line,
-                        RestaurantsWebService.getInstance(this).getRestaurantTypes()
-                )
-        );
-
         actionbarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -136,11 +132,13 @@ public class SearchResultActivity extends AppCompatActivity {
 
         Bundle fragmentArgs = new Bundle();
         fragmentArgs.putBoolean("onlyOpen", false);
+        fragmentArgs.putBoolean("favs", isFavsActivity);
         fragmentArgs.putString("username", userName);
         allRestaurantsFragment.setArguments(fragmentArgs);
 
         fragmentArgs = new Bundle();
         fragmentArgs.putBoolean("onlyOpen", true);
+        fragmentArgs.putBoolean("favs", isFavsActivity);
         fragmentArgs.putString("username", userName);
         onlyOpenRestaurantsFragment.setArguments(fragmentArgs);
 
@@ -151,6 +149,19 @@ public class SearchResultActivity extends AppCompatActivity {
         TabAdapter adapter = new TabAdapter(getSupportFragmentManager(), entries);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
+    }
+
+    public void initSpinnerOptions(){
+        actionbarSpinner.setAdapter(
+                new ArrayAdapter<>(
+                        this,
+                        android.R.layout.simple_dropdown_item_1line,
+                        isFavsActivity
+                                ? allRestaurantsFragment.getListAdapter().getRestaurantTypes()
+                                : RestaurantsWebService.getInstance(this).getRestaurantTypes()
+                )
+        );
     }
 
     //**********************MAIN BEHAVIOR FUNTIONS************************************************//

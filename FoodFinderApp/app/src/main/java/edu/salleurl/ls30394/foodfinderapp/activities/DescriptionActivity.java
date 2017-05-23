@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
 import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
+import edu.salleurl.ls30394.foodfinderapp.repositories.impl.FavoriteDB;
 import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RestaurantDataBase;
 import edu.salleurl.ls30394.foodfinderapp.repositories.impl.UserDatabase;
 
@@ -55,6 +56,7 @@ public class DescriptionActivity extends AppCompatActivity {
 
         RestaurantDataBase rdb = new RestaurantDataBase(this);
         UserDatabase udb = new UserDatabase(this);
+        FavoriteDB fdb = new FavoriteDB(this);
 
         if(!rdb.exists(restaurant.getName())){
             rdb.addRestaurant(restaurant);
@@ -64,10 +66,14 @@ public class DescriptionActivity extends AppCompatActivity {
         int userId = udb.getUserId(userName);
 
         if(clicked){
-            //TODO: mirar si ya esta como favorito para este usuario y añadirlo a la db en caso negativo
+            if(!fdb.exists(userId, resId)){
+                fdb.addFavorite(userId, resId);
+            }
 
         } else {
-            //TODO: mirar si ya esta como favorito para el usuario, eliminarlo en caso afirmativo
+            if(fdb.exists(userId, resId)){
+                fdb.removeFavorite(resId, userId);
+            }
         }
     }
 

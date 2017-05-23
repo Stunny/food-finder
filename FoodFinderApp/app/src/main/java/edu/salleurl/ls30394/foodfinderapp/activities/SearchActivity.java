@@ -132,6 +132,10 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
                 return true;
 
             case R.id.activity_search_goFavorites:
+                nextActivity = new Intent(this, RestaurantsListActivity.class);
+                nextActivity.putExtra("username", userName);
+                nextActivity.putExtra("favorites", true);
+                startActivity(nextActivity);
                 return true;
 
             default:
@@ -263,8 +267,9 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
     public void onRequestSuccess(){
         if(searchProgressDialog.isShowing()) searchProgressDialog.dismiss();
 
-        nextActivity = new Intent(SearchActivity.this, SearchResultActivity.class);
+        nextActivity = new Intent(SearchActivity.this, RestaurantsListActivity.class);
         nextActivity.putExtra("username", userName);
+        nextActivity.putExtra("favorites", false);
         startActivity(nextActivity);
     }
 

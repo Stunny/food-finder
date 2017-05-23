@@ -148,10 +148,19 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.activity_profile_edit){
-            editContent();
+        switch(item.getItemId()){
+            case R.id.activity_profile_edit:
+                editContent();
+                return true;
+            case R.id.activity_profile_goFavorites:
+                nextActivity = new Intent(this, RestaurantsListActivity.class);
+                nextActivity.putExtra("username", userName);
+                nextActivity.putExtra("favorites", true);
+                startActivity(nextActivity);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     private void editContent() {
@@ -188,7 +197,6 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void OnImageSelect(View view) {
-        //TODO: image select functionality
         dispatchTakePictureIntent();
     }
 

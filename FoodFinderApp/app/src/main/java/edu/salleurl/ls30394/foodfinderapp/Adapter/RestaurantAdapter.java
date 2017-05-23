@@ -29,6 +29,7 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
 
     private List<Restaurante> allResultRestaurants;
     private List<Restaurante> activeList;
+    private String[] restaurantTypes;
 
     private boolean showOnlyOpen;
 
@@ -43,8 +44,9 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
         this.context = context;
         this.showOnlyOpen = showOnlyOpen;
         this.userName = userName;
-
         this.allResultRestaurants = new ArrayList<>(allResultRestaurants);
+        this.restaurantTypes = setRestaurantTypes();
+
         if(this.showOnlyOpen){
             removeClosedRestaurants();
         }
@@ -181,7 +183,7 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
 
         for(int i = 0; i < size; i++){
             aux = allResultRestaurants.get(i);
-            if(!aux.isOpen()){
+            if(aux != null && !aux.isOpen()){
                 toBeHidden.add(aux);
             }
         }
@@ -192,4 +194,39 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurante>
         }
     }
 
+    private String[] setRestaurantTypes(){
+        int size = allResultRestaurants.size();
+
+        List<String> auxTypes = new ArrayList<>();
+        auxTypes.add(0, context.getString(R.string.all));
+
+        int typesSize;
+
+        Restaurante auxRest;
+        boolean typeFound = false;
+
+        for(int i = 0; i < size; i++){
+
+            auxRest = allResultRestaurants.get(i);
+
+            if (auxTypes.size() == 0){
+                auxTypes.add(auxRest.getType());
+            } else {
+                typesSize = auxTypes.size();
+
+                for(int j = 0; j < typesSize; j++){
+                    if(auxRest.getType().equals(auxTypes.get(j))){
+                        typeFound = true;
+                    }
+                }
+
+                if(!typeFound){
+                    auxTypes.add(auxRest.getType());
+                }
+            }
+        }
+        return auxTypes.toArray(new String[0]);
+    }
+
+    public String[] getRestaurantTypes(){return restaurantTypes;}
 }

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.salleurl.ls30394.foodfinderapp.activities.SearchResultActivity">
+    tools:context="edu.salleurl.ls30394.foodfinderapp.activities.RestaurantsListActivity">
 
     <ListView
         android:id="@+id/result_restaurants_list"

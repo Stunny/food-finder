@@ -20,6 +20,8 @@ public interface RestaurantsRepo {
 
     Restaurante getRestaurant(String name);
 
+    Restaurante getRestaurant(int id);
+
     void fetchRestaurants(String search);
 
     void fetchRestaurants(double lat, double lng, int radius);

@@ -13,8 +13,11 @@ import java.util.List;
 
 import edu.salleurl.ls30394.foodfinderapp.Adapter.RestaurantAdapter;
 import edu.salleurl.ls30394.foodfinderapp.R;
+import edu.salleurl.ls30394.foodfinderapp.activities.RestaurantsListActivity;
 import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
+import edu.salleurl.ls30394.foodfinderapp.repositories.impl.FavoriteDB;
 import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RestaurantsWebService;
+import edu.salleurl.ls30394.foodfinderapp.repositories.impl.UserDatabase;
 
 /**
  * Created by avoge on 20/05/2017.
@@ -33,12 +36,22 @@ public class RestaurantListFragment extends Fragment {
 
         listView = (ListView) view.findViewById(R.id.result_restaurants_list);
 
-        list = RestaurantsWebService.getInstance(getActivity()).getResult();
+        if(getArguments().getBoolean("favs")){
+            FavoriteDB fdb = new FavoriteDB(getActivity());
+            UserDatabase udb = new UserDatabase(getActivity());
+
+            list = fdb.getAllFavorites(udb.getUserId(getArguments().getString("username")));
+
+        }else {
+            list = RestaurantsWebService.getInstance(getActivity()).getResult();
+        }
 
         adapter = new RestaurantAdapter(getActivity(), list, getArguments().getBoolean("onlyOpen"),
                 getArguments().getString("username"));
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(adapter);
+
+        ((RestaurantsListActivity)getActivity()).initSpinnerOptions();
 
         return view;
     }

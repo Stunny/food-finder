@@ -124,6 +124,14 @@ public class RestaurantsWebService implements RestaurantsRepo {
     }
 
     @Override
+    /**
+     * Not yet implemented
+     */
+    public Restaurante getRestaurant(int id){
+        return null;
+    }
+
+    @Override
     public void fetchRestaurants(String search) {
         String requestURL = "";
         try {
