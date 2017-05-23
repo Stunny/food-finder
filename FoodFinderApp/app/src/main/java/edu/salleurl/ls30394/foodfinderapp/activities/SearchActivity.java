@@ -163,7 +163,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
 
         String searchQuery = ((TextView)view).getText().toString();
         restaurantsRepo.fetchRestaurants(searchQuery);
-
+        searchProgressDialog.show();
     }
 
     //*****************UI FUNCTIONS***************************************************************//
@@ -268,11 +268,14 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
      */
     public void OnSearchClick(View view){
         String searchQuery = searchField.getText().toString();
-        recentSearchAdapter.addRecentSearch(searchQuery);
-        searchField.setText("");
+        if(!searchQuery.equals("")) {
+            recentSearchAdapter.addRecentSearch(searchQuery);
+            recentSearchAdapter.notifyDataSetChanged();
+            searchField.setText("");
 
-        searchProgressDialog.show();
-        restaurantsRepo.fetchRestaurants(searchQuery);
+            searchProgressDialog.show();
+            restaurantsRepo.fetchRestaurants(searchQuery);
+        }
     }
 
     /**
