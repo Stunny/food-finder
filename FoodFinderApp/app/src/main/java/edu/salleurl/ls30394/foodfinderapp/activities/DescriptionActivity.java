@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -48,6 +49,8 @@ public class DescriptionActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_description);
         configWitgets();
+
+
     }
 
     @Override
@@ -111,6 +114,9 @@ public class DescriptionActivity extends AppCompatActivity {
                 }
             }
         });
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+        );
 
     }
 
