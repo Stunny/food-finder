@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.List;
+
 import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 import edu.salleurl.ls30394.foodfinderapp.repositories.RestaurantsRepo;
 import edu.salleurl.ls30394.foodfinderapp.utils.Database;
@@ -136,5 +138,20 @@ public class RestaurantDataBase implements RestaurantsRepo {
             cursor.close();
         }
         return restaurante;
+    }
+
+    @Override
+    public void fetchRestaurants(String search) {
+
+    }
+
+    @Override
+    public void fetchRestaurants(double lat, double lng, int radius) {
+
+    }
+
+    @Override
+    public List<Restaurante> getResult() {
+        return null;
     }
 }

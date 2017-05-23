@@ -43,27 +43,83 @@ public class RestaurantsWebService implements RestaurantsRepo {
     private int pendingRequests;
 
     @Override
+    /**
+     * Adds a restaurant to the webservice's result restaurant list
+     */
     public void addRestaurant(Restaurante restaurante) {
-
+        if(result != null && !result.contains(restaurante))
+            result.add(restaurante);
     }
 
     @Override
+    /**
+     * Removes the first occurance of a restaurant with the specified name in the webservice's result list
+     */
     public void removeRestaurant(String name) {
+        if(result != null){
+            int size = result.size();
 
+            for (int i = 0; i < size; i++){
+                if(result.get(i).getName().equals(name)) {
+                    result.remove(i);
+                    break;
+                }
+            }
+        }
     }
 
     @Override
+    /**
+     * Checks if the webservice's result list contains a restaurant with the specified name
+     */
     public boolean exists(String restaurantName) {
-        return false;
+        if(result == null) return false;
+
+        int size = result.size();
+        boolean found = false;
+
+        for(int i = 0; i < size; i++){
+            if(result.get(i).getName().equals(restaurantName)){
+                found = true;
+            }
+        }
+
+        return found;
     }
 
     @Override
+    /**
+     * Returns the position in the webservice's result list of the first occurance of a restaurant with
+     * the specified.
+     * If result is null, returns -1
+     * If not found, returns -2
+     */
     public int getRestaurantId(String name) {
-        return 0;
+        if(result == null) return -1;
+
+        int size = result.size();
+        for(int i = 0; i < size; i ++){
+            if(result.get(i).getName().equals(name))
+                return i;
+        }
+
+        return -2;
     }
 
     @Override
+    /**
+     * Returns the first occurance of a restaurant with the specified name in the webservice's result list
+     * If result list is null or restaurant is not inside it, returns null
+     */
     public Restaurante getRestaurant(String name) {
+        if(result == null) return null;
+
+        int size = result.size();
+        for(int i = 0; i < size; i++){
+            if(result.get(i).getName().equals(name))
+                return result.get(i);
+        }
+
         return null;
     }
 
