@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
 import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
+import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RestaurantDataBase;
+import edu.salleurl.ls30394.foodfinderapp.repositories.impl.UserDatabase;
 
 public class DescriptionActivity extends AppCompatActivity {
 
@@ -34,6 +36,8 @@ public class DescriptionActivity extends AppCompatActivity {
     private ListView listView;
     private EditText editText;
 
+    //********************************************************************************************//
+    //---------->OVERRIDE FUNCTIONS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,13 +52,31 @@ public class DescriptionActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+
+        RestaurantDataBase rdb = new RestaurantDataBase(this);
+        UserDatabase udb = new UserDatabase(this);
+
+        if(!rdb.exists(restaurant.getName())){
+            rdb.addRestaurant(restaurant);
+        }
+
+        int resId = rdb.getRestaurantId(restaurant.getName());
+        int userId = udb.getUserId(userName);
+
         if(clicked){
             //TODO: mirar si ya esta como favorito para este usuario y añadirlo a la db en caso negativo
+
         } else {
             //TODO: mirar si ya esta como favorito para el usuario, eliminarlo en caso afirmativo
         }
     }
 
+    //********************************************************************************************//
+    //---------->UI FUNCTIONS
+
+    /**
+     * Configures all the UI components
+     */
     private void configWitgets(){
 
         initWidgets();
@@ -86,6 +108,9 @@ public class DescriptionActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Initializes all the UI components into the class' attributes
+     */
     private void initWidgets() {
 
         textView = (TextView) findViewById(R.id.restaurant_name);

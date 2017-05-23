@@ -115,7 +115,7 @@ public class RestaurantDataBase implements RestaurantsRepo {
 
         String[] selectColumns = null;
 
-        String whereClause = COLUMN_ID + "=?";
+        String whereClause = COLUMN_NAME + "=?";
 
         String[] whereArgs = {name};
 
@@ -140,17 +140,59 @@ public class RestaurantDataBase implements RestaurantsRepo {
         return restaurante;
     }
 
+    public Restaurante getRestaurant(int id){
+
+        Restaurante restaurante = null;
+
+        Database database = Database.getInstance(context);
+
+        String[] selectColumns = null;
+
+        String whereClause = COLUMN_ID + "=?";
+
+        String[] whereArgs = {Integer.toString(id)};
+
+        Cursor cursor = database.getReadableDatabase()
+                .query(TABLE_NAME,selectColumns,whereClause,whereArgs,null,null,null);
+
+        if(cursor != null){
+            if(cursor.moveToFirst()){
+                String nameRest = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+                String type = cursor.getString(cursor.getColumnIndex(COLUMN_TYPE));
+                float lat = cursor.getFloat(cursor.getColumnIndex(COLUMN_LAT));
+                float lng = cursor.getFloat(cursor.getColumnIndex(COLUMN_LNG));
+                String address = cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS));
+                String opening = cursor.getString(cursor.getColumnIndex(COLUMN_OPENING));
+                String closing = cursor.getString(cursor.getColumnIndex(COLUMN_CLOSING));
+                float review = cursor.getFloat(cursor.getColumnIndex(COLUMN_REVIEW));
+                String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
+                restaurante = new Restaurante(nameRest,type,lat,lng,address,opening,closing,review,description);
+            }
+            cursor.close();
+        }
+        return restaurante;
+    }
+
     @Override
+    /**
+     * Not yet implemented
+     */
     public void fetchRestaurants(String search) {
         
     }
 
     @Override
+    /**
+     * Not yet implemented
+     */
     public void fetchRestaurants(double lat, double lng, int radius) {
 
     }
 
     @Override
+    /**
+     * Not yet imlemented
+     */
     public List<Restaurante> getResult() {
         return null;
     }

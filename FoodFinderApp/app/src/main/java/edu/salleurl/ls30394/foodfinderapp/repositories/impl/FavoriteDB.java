@@ -1,7 +1,14 @@
 package edu.salleurl.ls30394.foodfinderapp.repositories.impl;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 import edu.salleurl.ls30394.foodfinderapp.repositories.FavoriteRepo;
 import edu.salleurl.ls30394.foodfinderapp.utils.Database;
 
@@ -21,20 +28,68 @@ public class FavoriteDB implements FavoriteRepo {
     }
 
     @Override
-    public void addRestaurant(int user_id, int restaurant_id) {
+    public void addFavorite(int userId, int restaurantId) {
         Database database = Database.getInstance(context);
 
+        ContentValues contentValues = new ContentValues();
 
+        contentValues.put(COLUMN_USER, userId);
+        contentValues.put(COLUMN_RESTAURANT, restaurantId);
+
+        database.getWritableDatabase().insert(TABLE_NAME, null, contentValues);
 
     }
 
     @Override
-    public void removeRestaurant(int restaurant_id, int user_id) {
+    public void removeFavorite(int restaurantId, int userId) {
+        Database db = Database.getInstance(context);
 
+        String whereClause = COLUMN_USER + "=? AND "+COLUMN_RESTAURANT +"=?";
+        String[] whereArgs = {Integer.toString(restaurantId), Integer.toString(userId)};
+
+        db.getWritableDatabase().delete(TABLE_NAME, whereClause, whereArgs);
     }
 
     @Override
-    public int[] getAllRestaurants(int user_id) {
-        return new int[0];
+    public List<Restaurante> getAllFavorites(int userId) {
+        Database db = Database.getInstance(context);
+        RestaurantDataBase rdb = new RestaurantDataBase(context);
+
+        List<Restaurante> auxList = new ArrayList<>();
+
+        String[] selectColumns = null;
+
+        String whereClause = COLUMN_USER + "=?";
+        String[] whereArgs = {Integer.toString(userId)};
+
+        Cursor cursor = db.getReadableDatabase()
+                .query(true, TABLE_NAME, selectColumns, whereClause, whereArgs, null, null, null, null);
+
+        if(cursor != null){
+            if(cursor.moveToFirst()){
+                do{
+                    auxList.add(rdb.getRestaurant(cursor.getInt(cursor.getColumnIndex(COLUMN_RESTAURANT))));
+                }while(cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        return auxList;
+    }
+
+    @Override
+    public boolean exists(int userId, int restaurantId) {
+        Database db = Database.getInstance(context);
+
+        String whereClause = COLUMN_USER + "=? AND "+COLUMN_RESTAURANT + "=?";
+        String[] whereArgs = {Integer.toString(userId), Integer.toString(restaurantId)};
+
+        long count = DatabaseUtils.queryNumEntries(
+                db.getReadableDatabase(),
+                TABLE_NAME,
+                whereClause,
+                whereArgs
+        );
+
+        return count > 0;
     }
 }
