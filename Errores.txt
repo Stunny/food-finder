@@ -4,7 +4,6 @@ searchLayout: la primera vez que abres la app, la opcion de "no recordar mas tar
 searchLayout: la localizacion solo actualiza la lista de recent searches si encuentra resultado. es decir si metes un resultado erroneo, no hace nada. si metes despues uno correcto, actualiza la lista con el resultado erroneo y el correcto
 searchLayout: abres la app, enciendes el gps, haces unas busquedas, la cierras. Abres de nuevo la app, desactivas el gps y haces una geolocalizacion, no sale el pop up para activar la geolocalizacion, peta.
 searchLayout: introduces un nombre para hacer la busqueda y al darle a enter, no acciona el Button, si no que introduce un salto de linia
-recomendable searchLayout: limpiar el campo de busqueda por nombre tras hacer una busqueda tanto erronea como correcta
 
 
 profileActivity: si denegas permisos a la camara, te la abre igual, hace la foto y no la pone como foto de perfil. Directamente si denegas permisos que vuelva al profile activity.
