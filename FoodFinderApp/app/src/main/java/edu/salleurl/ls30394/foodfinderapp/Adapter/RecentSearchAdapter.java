@@ -98,6 +98,10 @@ public class RecentSearchAdapter extends ArrayAdapter<String> {
      * @param searchQuery
      */
     public void addRecentSearch(String searchQuery){
+        if(db.exists(userId, searchQuery))
+            db.removeRecentSearch(userId, searchQuery);
+
         db.addRecentSearch(userId, searchQuery);
+        updateList();
     }
 }

@@ -14,4 +14,6 @@ public interface RecentSearchesRepo {
 
     void removeRecentSearch(int userId, String searchQuery);
 
+    boolean exists(int userId, String searchQuery);
+
 }

@@ -163,6 +163,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
 
         String searchQuery = ((TextView)view).getText().toString();
         restaurantsRepo.fetchRestaurants(searchQuery);
+        recentSearchAdapter.addRecentSearch(searchQuery);
         searchProgressDialog.show();
     }
 

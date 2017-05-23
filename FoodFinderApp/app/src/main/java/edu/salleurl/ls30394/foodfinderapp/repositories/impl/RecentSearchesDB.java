@@ -3,6 +3,7 @@ package edu.salleurl.ls30394.foodfinderapp.repositories.impl;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,6 +38,23 @@ public class RecentSearchesDB implements RecentSearchesRepo {
         values.put(COLUMN_USER_ID, userId);
 
         db.getWritableDatabase().insert(TABLE_NAME, null, values);
+    }
+
+    @Override
+    public boolean exists(int userId, String searchQuery){
+        Database db = Database.getInstance(context);
+
+        String whereClause = COLUMN_USER_ID + "=? AND "+COLUMN_SEARCH_QUERY+"=?";
+        String[] whereArgs = {Integer.toString(userId), searchQuery};
+
+        long count = DatabaseUtils.queryNumEntries(
+                db.getReadableDatabase(),
+                TABLE_NAME,
+                whereClause,
+                whereArgs
+        );
+
+        return count > 0;
     }
 
     @Override
