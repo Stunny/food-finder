@@ -78,13 +78,7 @@ public class DescriptionActivity extends AppCompatActivity {
     }
 
 
-    private void onMapClicked(View view){
-        Intent intent = new Intent(this,MapsActivity.class);
-        intent.putExtra("lat",restaurant.getLatitude());
-        intent.putExtra("lng",restaurant.getLongitude());
-        this.startActivity(intent);
 
-    }
 
     //********************************************************************************************//
     //---------->UI FUNCTIONS
@@ -172,5 +166,13 @@ public class DescriptionActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.input_comment);
 
         buttonSend = (Button) findViewById(R.id.button_send);
+    }
+
+    private void onMapClicked(View view){
+        Intent intent = new Intent(this,MapsActivity.class);
+        intent.putExtra("lat",restaurant.getLatitude());
+        intent.putExtra("lng",restaurant.getLongitude());
+        this.startActivity(intent);
+
     }
 }
