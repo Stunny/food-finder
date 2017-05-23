@@ -43,6 +43,31 @@ public class RestaurantsWebService implements RestaurantsRepo {
     private int pendingRequests;
 
     @Override
+    public void addRestaurant(Restaurante restaurante) {
+
+    }
+
+    @Override
+    public void removeRestaurant(String name) {
+
+    }
+
+    @Override
+    public boolean exists(String restaurantName) {
+        return false;
+    }
+
+    @Override
+    public int getRestaurantId(String name) {
+        return 0;
+    }
+
+    @Override
+    public Restaurante getRestaurant(String name) {
+        return null;
+    }
+
+    @Override
     public void fetchRestaurants(String search) {
         String requestURL = "";
         try {
