@@ -197,7 +197,6 @@ public class RestaurantsWebService implements RestaurantsRepo {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.i("angel", "response ok");
                         result = parseInfo(response);
                         setResultTypes();
                         pendingRequests--;
@@ -223,7 +222,6 @@ public class RestaurantsWebService implements RestaurantsRepo {
 
                                 restaurantList.add(r);
                             }
-                            Log.i("mecagondios", String.valueOf(restaurantList.size()));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -233,7 +231,7 @@ public class RestaurantsWebService implements RestaurantsRepo {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i("angel", "ErrorResponse");
+
                     }
                 }
         );

@@ -140,8 +140,6 @@ public class UserDatabase implements UserRepo {
 
         long count = DatabaseUtils.queryNumEntries(sqLiteOpenHelper, TABLE_NAME, whereClause, whereArgs);
 
-        Log.i("angelTest", String.valueOf(count));
-
         return count>0;//es lo mismo que el if que habia antes
 
     }

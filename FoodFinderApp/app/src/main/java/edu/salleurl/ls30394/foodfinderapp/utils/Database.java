@@ -45,13 +45,11 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i("angel", "DBCreation");
         executeSQLScript(db, R.raw.database_creation);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.i("angel", "updateDone");
         // Destruir DB.
         executeSQLScript(db,R.raw.database_removal);
         // Crear DB.
