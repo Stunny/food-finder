@@ -1,5 +1,6 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,16 +9,25 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import edu.salleurl.ls30394.foodfinderapp.R;
 import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
@@ -30,6 +40,9 @@ import edu.salleurl.ls30394.foodfinderapp.repositories.impl.UserDatabase;
 
 public class DescriptionActivity extends AppCompatActivity {
 
+    private static final String COMMENT_KEY_USER = "user";
+    private static final String COMMENT_KEY_TEXT = "comment";
+
     private boolean favIsClicked;
 
     private Restaurante restaurant;
@@ -41,10 +54,12 @@ public class DescriptionActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private ImageView actionBarImage;
 
-    private Button buttonMap,buttonSend;
+    private Button buttonMap, buttonSend;
 
     private ListView commentsList;
+    private SimpleAdapter commentsAdapter;
     private TextInputEditText commentsInput;
+    private List<Map<String, String>> comments;
 
     //********************************************************************************************//
     //---------->OVERRIDE FUNCTIONS
@@ -132,8 +147,6 @@ public class DescriptionActivity extends AppCompatActivity {
 
         ratingBar.setRating(restaurant.getReview());
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-
         initFAB();
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -160,12 +173,20 @@ public class DescriptionActivity extends AppCompatActivity {
             }
         });
 
+        commentsInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if(actionId == EditorInfo.IME_ACTION_SEND){
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    buttonSend.performClick();
+                    handled = true;
+                }
 
-
-/*
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-        );*/
+                return handled;
+            }
+        });
 
     }
 
@@ -201,20 +222,45 @@ public class DescriptionActivity extends AppCompatActivity {
         buttonMap = (Button) findViewById(R.id.button_map);
 
         commentsList = (ListView)findViewById(R.id.comments);
-
+        comments = new ArrayList<>();
+        commentsAdapter = new SimpleAdapter(
+                this,
+                comments,
+                android.R.layout.simple_list_item_2,
+                new String[]{COMMENT_KEY_USER, COMMENT_KEY_TEXT},
+                new int[]{android.R.id.text1, android.R.id.text2}
+        );
         commentsInput = (TextInputEditText) findViewById(R.id.input_comment);
+        commentsList.setAdapter(commentsAdapter);
 
         buttonSend = (Button) findViewById(R.id.button_send);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
     }
 
     //********************************************************************************************//
     //---------->MAIN BEHAVIOR FUNCTIONS
 
-    private void onMapButtonClicked(View view){
+    public void onMapButtonClicked(View view){
         nextActivity = new Intent(this, MapsActivity.class);
         nextActivity.putExtra("lat",restaurant.getLatitude());
         nextActivity.putExtra("lng",restaurant.getLongitude());
         startActivity(nextActivity);
 
+    }
+
+    public void onSendCommentClicked(View view){
+        String commentText = commentsInput.getText().toString();
+
+        if(!commentText.equals("")) {
+            commentsInput.setText("");
+
+            Map<String, String> comment = new HashMap<>();
+            comment.put(COMMENT_KEY_USER, userName);
+            comment.put(COMMENT_KEY_TEXT, commentText);
+
+            comments.add(comment);
+            commentsAdapter.notifyDataSetChanged();
+        }
     }
 }

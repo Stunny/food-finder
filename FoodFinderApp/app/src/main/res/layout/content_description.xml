@@ -81,6 +81,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/input_comment"
+                android:inputType="text"
+                android:imeOptions="actionSend"
+                android:maxLines="1"
                 android:hint="@string/add_a_comment"
                 android:nextFocusUp="@id/input_comment"
                 android:nextFocusLeft="@id/input_comment"
@@ -89,6 +92,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
+            android:onClick="onSendCommentClicked"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/send"
