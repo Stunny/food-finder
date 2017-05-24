@@ -1,14 +1,9 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.LocationManager;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.view.Menu;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,22 +11,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import edu.salleurl.ls30394.foodfinderapp.R;
-import edu.salleurl.ls30394.foodfinderapp.service.LocationService;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private float lat;
-    private float lng;
+    private double lat;
+    private double lng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Intent intent = getIntent();
-        lat = intent.getFloatExtra("lat",0.0f);
-        lng = intent.getFloatExtra("lng",0.0f);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_maps);
@@ -55,11 +45,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        Intent intent = getIntent();
+        lat = intent.getDoubleExtra("lat",0.0);
+        lng = intent.getDoubleExtra("lng",0.0);
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(lat, lng);
-        mMap.addMarker(new MarkerOptions().position(sydney));
+
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney,17));
+        mMap.addMarker(new MarkerOptions().position(sydney));
+
+    }    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_search_menu, menu);
+        return true;
     }
 
 }

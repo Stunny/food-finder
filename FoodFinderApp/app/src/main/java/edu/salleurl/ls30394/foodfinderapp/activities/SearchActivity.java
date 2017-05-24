@@ -7,12 +7,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +31,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.content.DialogInterface;
+
 
 import edu.salleurl.ls30394.foodfinderapp.Adapter.RecentSearchAdapter;
 import edu.salleurl.ls30394.foodfinderapp.R;
@@ -149,6 +156,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
+        Log.i("angel", "onRequestPermissionsResult");
         switch (requestCode) {
             case LocationService.MY_PERMISSIONS_REQUEST_LOCATION:
                 if (grantResults.length > 0
@@ -242,18 +250,39 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
      */
     public void OnGeolocationSearch(View view) {
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    LocationService.MY_PERMISSIONS_REQUEST_LOCATION);
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    LocationService.MY_PERMISSIONS_REQUEST_LOCATION);
-            return;
+        if (!(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+            checkGPS();
+        }else{
+             onStart();
         }
+    }
+
+    private void checkGPS() {
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+
+        if (!manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ){
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                            //TODO: LANZAR launchGeoSearch AL TERMINARSE LA ACTIVIDAD DE ACTIVAR EL GPS SI LO HA ENCENDIDO
+                            //launchGeoSearch();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            dialog.cancel();
+                        }
+                    });
+            final AlertDialog alert = builder.create();
+            alert.show();
+        }
+    }
+
+    private void launchGeoSearch() {
 
         String aux = (String) seekBarValue.getText();
         int searchRadius = Integer.parseInt(aux.split(" ")[0]);
@@ -263,7 +292,6 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
 
         searchProgressDialog.show();
         restaurantsRepo.fetchRestaurants(latitude, longitude, searchRadius);
-
     }
 
     /**
