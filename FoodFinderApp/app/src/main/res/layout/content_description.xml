@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="fill_vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="edu.salleurl.ls30394.foodfinderapp.activities.DescriptionActivity"
     tools:showIn="@layout/activity_description">
 
     <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -24,7 +28,7 @@
             android:textColor="@color/coloBlack"
             android:textSize="@dimen/sizeCommentTitle"
             android:layout_marginBottom="@dimen/text_margin"/>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -33,17 +37,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ratingBarRestaurant"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
                 />
 
             <Button
                 android:id="@+id/button_map"
                 android:layout_width="wrap_content"
                 android:layout_height="46dp"
-                android:layout_weight="1"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
                 android:background="@color/colorBackground"
                 android:drawableBottom="@mipmap/ic_map"
                 android:clickable="true" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -55,6 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/coloBlack"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/comment"
             android:textSize="@dimen/sizeCommentTitle"/>
         <ListView
@@ -63,25 +72,27 @@
             android:id="@+id/comments">
 
         </ListView>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/add_a_comment"
-            android:textColor="@color/coloBlack" />
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/input_comment"
-            android:nextFocusUp="@id/input_comment"
-            android:nextFocusLeft="@id/input_comment"
-            android:textColor="@color/coloBlack"/>
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/input_comment"
+                android:hint="@string/add_a_comment"
+                android:nextFocusUp="@id/input_comment"
+                android:nextFocusLeft="@id/input_comment"
+                android:textColor="@color/coloBlack"/>
+
+        </android.support.design.widget.TextInputLayout>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/send"
-            android:layout_marginLeft="@dimen/size_margin"
+            android:layout_gravity="end"
             android:id="@+id/button_send"/>
 
     </LinearLayout>

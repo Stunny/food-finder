@@ -4,11 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -28,14 +34,17 @@ public class DescriptionActivity extends AppCompatActivity {
 
     private Restaurante restaurant;
     private String userName;
+    private Intent nextActivity;
 
     private TextView textView,textDescription;
     private RatingBar ratingBar;
     private FloatingActionButton fab;
+    private ImageView actionBarImage;
 
     private Button buttonMap,buttonSend;
-    private ListView listView;
-    private EditText editText;
+
+    private ListView commentsList;
+    private TextInputEditText commentsInput;
 
     //********************************************************************************************//
     //---------->OVERRIDE FUNCTIONS
@@ -77,13 +86,34 @@ public class DescriptionActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-    private void onMapClicked(View view){
-        Intent intent = new Intent(this,MapsActivity.class);
-        intent.putExtra("lat",restaurant.getLatitude());
-        intent.putExtra("lng",restaurant.getLongitude());
-        this.startActivity(intent);
+        getMenuInflater().inflate(R.menu.activity_search_menu, menu);
+        return true;
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+
+            case R.id.activity_search_goProfile:
+                nextActivity = new Intent(this, ProfileActivity.class);
+                nextActivity.putExtra("userName",userName);
+                startActivity(nextActivity);
+                return true;
+
+            case R.id.activity_search_goFavorites:
+                nextActivity = new Intent(this, RestaurantsListActivity.class);
+                nextActivity.putExtra("username", userName);
+                nextActivity.putExtra("favorites", true);
+                startActivity(nextActivity);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     //********************************************************************************************//
@@ -126,16 +156,16 @@ public class DescriptionActivity extends AppCompatActivity {
         buttonMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onMapClicked(v);
+                onMapButtonClicked(v);
             }
         });
 
 
 
-        // Remove focus from edit text at the creation of the activity
+/*
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-        );
+        );*/
 
     }
 
@@ -161,16 +191,30 @@ public class DescriptionActivity extends AppCompatActivity {
      */
     private void initWidgets() {
 
+        setSupportActionBar((Toolbar)findViewById(R.id.search_result_toolbar));
+        getSupportActionBar().setTitle("");
+
         textView = (TextView) findViewById(R.id.restaurant_name);
         textDescription = (TextView) findViewById(R.id.description_textView);
         ratingBar = (RatingBar) findViewById(R.id.ratingBarRestaurant);
 
         buttonMap = (Button) findViewById(R.id.button_map);
 
-        listView = (ListView)findViewById(R.id.comments_list);
+        commentsList = (ListView)findViewById(R.id.comments);
 
-        editText = (EditText) findViewById(R.id.input_comment);
+        commentsInput = (TextInputEditText) findViewById(R.id.input_comment);
 
         buttonSend = (Button) findViewById(R.id.button_send);
+    }
+
+    //********************************************************************************************//
+    //---------->MAIN BEHAVIOR FUNCTIONS
+
+    private void onMapButtonClicked(View view){
+        nextActivity = new Intent(this, MapsActivity.class);
+        nextActivity.putExtra("lat",restaurant.getLatitude());
+        nextActivity.putExtra("lng",restaurant.getLongitude());
+        startActivity(nextActivity);
+
     }
 }
