@@ -245,6 +245,7 @@ public class DescriptionActivity extends AppCompatActivity {
         nextActivity = new Intent(this, MapsActivity.class);
         nextActivity.putExtra("lat",restaurant.getLatitude());
         nextActivity.putExtra("lng",restaurant.getLongitude());
+        nextActivity.putExtra("userName", userName);
         startActivity(nextActivity);
 
     }
