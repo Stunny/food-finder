@@ -100,7 +100,6 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
 
     @Override
     protected void onStart() {
-        Log.i("angel", "onStart");
         super.onStart();
         locationService = LocationService.getInstance(getApplicationContext());
         locationService.registerListeners(this);
