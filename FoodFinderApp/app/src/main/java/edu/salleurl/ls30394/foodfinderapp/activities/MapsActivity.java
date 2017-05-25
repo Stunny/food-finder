@@ -3,7 +3,9 @@ package edu.salleurl.ls30394.foodfinderapp.activities;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -13,11 +15,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import edu.salleurl.ls30394.foodfinderapp.R;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private double lat;
     private double lng;
+    private Intent nextActivity;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = getIntent();
         lat = intent.getDoubleExtra("lat",0.0);
         lng = intent.getDoubleExtra("lng",0.0);
+        userName = intent.getStringExtra("userName");
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(lat, lng);
 
@@ -60,6 +65,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_search_menu, menu);
         return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+
+            case R.id.activity_search_goProfile:
+                nextActivity = new Intent(this, ProfileActivity.class);
+                nextActivity.putExtra("userName",userName);
+                startActivity(nextActivity);
+                return true;
+
+            case R.id.activity_search_goFavorites:
+                nextActivity = new Intent(this, RestaurantsListActivity.class);
+                nextActivity.putExtra("username", userName);
+                nextActivity.putExtra("favorites", true);
+                startActivity(nextActivity);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }
