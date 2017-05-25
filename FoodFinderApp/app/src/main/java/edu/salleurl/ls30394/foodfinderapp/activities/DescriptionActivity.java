@@ -6,18 +6,16 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -238,6 +236,30 @@ public class DescriptionActivity extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
     }
 
+    /**
+     * Es necesario ir modificando la altura de la lista debido a que está contenida dentro de una
+     * NestedScrollView, lo que conlleva que la lista no se muestre correctamente
+     *
+     * Fuente: https://kennethflynn.wordpress.com/2012/09/12/putting-android-listviews-in-scrollviews/
+     */
+    private void updateCommentListViewHeight(){
+
+        if(commentsAdapter == null || commentsList == null) return;
+
+        int totalHeight = 0;
+
+        for (int i = 0; i < commentsAdapter.getCount(); i++) {
+            View listItem = commentsAdapter.getView(i, null, commentsList);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = commentsList.getLayoutParams();
+        params.height = totalHeight + (commentsList.getDividerHeight() * (commentsAdapter.getCount() - 1));
+        commentsList.setLayoutParams(params);
+        commentsList.requestLayout();
+    }
+
     //********************************************************************************************//
     //---------->MAIN BEHAVIOR FUNCTIONS
 
@@ -256,11 +278,12 @@ public class DescriptionActivity extends AppCompatActivity {
             commentsInput.setText("");
 
             Map<String, String> comment = new HashMap<>();
-            comment.put(COMMENT_KEY_USER, userName);
+            comment.put(COMMENT_KEY_USER, "@"+userName+":");
             comment.put(COMMENT_KEY_TEXT, commentText);
 
             comments.add(comment);
             commentsAdapter.notifyDataSetChanged();
+            updateCommentListViewHeight();
         }
     }
 }
