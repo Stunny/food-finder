@@ -156,7 +156,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        Log.i("angel", "onRequestPermissionsResult");
+        //Log.i("angel", "onRequestPermissionsResult");
         switch (requestCode) {
             case LocationService.MY_PERMISSIONS_REQUEST_LOCATION:
                 if (grantResults.length > 0
@@ -285,7 +285,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
     private void launchGeoSearch() {
 
         String aux = (String) seekBarValue.getText();
-        int searchRadius = Integer.parseInt(aux.split(" ")[0]);
+        int searchRadius = Integer.parseInt(aux.split("")[0]);
 
         double latitude = locationService.getLocation().getLatitude();
         double longitude = locationService.getLocation().getLongitude();
