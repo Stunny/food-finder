@@ -23,7 +23,7 @@
     <string name="km_seek_text">%1$d km</string>
     <string name="search">Search</string>
     <string name="error_name">Field name can\'t be empty!</string>
-    <string name="error_title">Error message...</string>
+    <string name="error_title">Error message…</string>
     <string name="error_surname">Field surname can\'t be empty!</string>
     <string name="error_email">Email field can\'t be empty!</string>
     <string name="error_password">Password field can\'t be empty!</string>
@@ -129,14 +129,18 @@
     <string name="no_results_snack">No results were found</string>
     <string name="rest_Search">Restaurant Search</string>
     <string name="all">All</string>
-    <string name="search_hint">Search ...</string>
+    <string name="search_hint">Search …</string>
     <string name="all_restaurants">ALL</string>
     <string name="only_open">ONLY OPEN</string>
     <string name="send">Send</string>
     <string name="add_a_comment">Add comments</string>
     <string name="comment">Comments</string>
-    <string name="search_progress">Searching...</string>
+    <string name="search_progress">Searching…</string>
     <string name="added_to_favs">Added to favorites</string>
     <string name="removed_from_favs">Removed from favorites</string>
     <string name="title_activity_maps" translatable="false">Map</string>
+    <string name="GPS_error">Your GPS seems to be disabled, do you want to enable it?</string>
+    <string name="confirm">Yes</string>
+    <string name="deny">No</string>
+    <string name="GPS_on">GPS activated</string>
 </resources>
