@@ -149,12 +149,12 @@ public class DescriptionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!favIsClicked){
-                    fab.setImageResource(R.mipmap.ic_love);
+                    fab.setImageResource(R.drawable.ic_love);
                     favIsClicked = true;
                     Snackbar.make(findViewById(R.id.description_layout_parent), R.string.added_to_favs,
                             Snackbar.LENGTH_SHORT).show();
                 }else{
-                    fab.setImageResource(R.mipmap.ic_not_love);
+                    fab.setImageResource(R.drawable.ic_not_love);
                     favIsClicked = false;
                     Snackbar.make(findViewById(R.id.description_layout_parent), R.string.removed_from_favs,
                             Snackbar.LENGTH_SHORT).show();
@@ -202,10 +202,10 @@ public class DescriptionActivity extends AppCompatActivity {
         UserRepo udb = new UserDatabase(this);
 
         if(!rdb.exists(restaurant.getName())){
-            fab.setImageResource(R.mipmap.ic_not_love);
+            fab.setImageResource(R.drawable.ic_not_love);
             favIsClicked = false;
         } else if(fdb.exists(udb.getUserId(userName), rdb.getRestaurantId(restaurant.getName()))){
-            fab.setImageResource(R.mipmap.ic_love);
+            fab.setImageResource(R.drawable.ic_love);
             favIsClicked = true;
         }
     }

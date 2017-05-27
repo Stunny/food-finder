@@ -58,4 +58,6 @@
     <string name="mockup_user">\@user:</string>
     <string name="mockup_comment">comment</string>
     <string name="search_cant_empty">Search field can\'t be empty</string>
+    <string name="incorrect_user_or_pw">Incorrect username or password</string>
+    <string name="register_ok">Register successful</string>
 </resources>

@@ -71,17 +71,6 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
-/* TODO
-Opcional de seleccionar la imagen de la galeria. Necesita de onActivityresult tambien.
-source: http://stackoverflow.com/a/5086706/7060082
-    public void OnGallerySelect(){
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
-    }
-*/
-
     private void configWidgets(){
         getSupportActionBar().setTitle(getString(R.string.register));
 
@@ -146,7 +135,6 @@ source: http://stackoverflow.com/a/5086706/7060082
     }
 
     public void OnImageSelect(View view) {
-        //TODO: image select functionality
         dispatchTakePictureIntent();
     }
 
@@ -156,7 +144,6 @@ source: http://stackoverflow.com/a/5086706/7060082
         View radioButton = radioGroup.findViewById(radioButtonID);
         genderIndex = radioGroup.indexOfChild(radioButton);
 
-        //TODO: comprobacion de campos de registro
         if (String.valueOf(name.getEditText().getText()).equals("")){
             showError(getString(R.string.error_name), getString(R.string.error_title));
         }else if (String.valueOf(surname.getEditText().getText()).equals("")) {
@@ -179,7 +166,6 @@ source: http://stackoverflow.com/a/5086706/7060082
     }
 
     public void OnRegisterSuccess(){
-        //TODO: almacenar datos de usuario
         User user = new User(name.getEditText().getText().toString(),
                 surname.getEditText().getText().toString(),
                 email.getEditText().getText().toString(),
@@ -192,8 +178,8 @@ source: http://stackoverflow.com/a/5086706/7060082
             userRepo.addUser(user);
             imageBitmap = ((BitmapDrawable)profilePicture.getDrawable()).getBitmap();
             saveImageToInternalStorage(imageBitmap,user.getUserName());
-            Toast.makeText(this,"Register successfully", Toast.LENGTH_SHORT).show();
-            //TODO: change MainActivity by first app activity
+            Toast.makeText(this, R.string.register_ok, Toast.LENGTH_SHORT).show();
+
             nextActivity = new Intent(RegisterActivity.this, MainActivity.class);
             startActivity(nextActivity);
             finish();

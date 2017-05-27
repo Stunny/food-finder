@@ -84,7 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
         if(imageBitmap != null){
             profilePicture.setImageBitmap(imageBitmap);
         }else{
-            profilePicture.setImageResource(R.mipmap.ic_profile_picture_default);
+            profilePicture.setImageResource(R.drawable.ic_profile_picture_default);
         }
 
         populateData();

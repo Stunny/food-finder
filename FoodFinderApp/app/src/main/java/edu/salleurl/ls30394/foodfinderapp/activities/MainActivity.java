@@ -2,6 +2,7 @@ package edu.salleurl.ls30394.foodfinderapp.activities;
 
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -98,19 +99,21 @@ public class MainActivity extends AppCompatActivity {
         String userName = userNameText.getText().toString();
         String userPassword = passwordText.getText().toString();
         if(userName.equals("")){
-            Toast.makeText(this,R.string.user_field_empty, Toast.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(R.id.loginView), R.string.user_field_empty, Snackbar.LENGTH_SHORT).show();
         } else{
             if(userPassword.equals("")){
-                Toast.makeText(this,R.string.password_field_empty, Toast.LENGTH_SHORT).show();
-
+                Snackbar.make(findViewById(R.id.loginView), R.string.password_field_empty, Snackbar.LENGTH_SHORT).show();
             }else{
-                //la aplicación peta en la linia de debajo, no se como solucionarlo
                 List<User> user = userRepo.getUser(userName,isEmail(userName));
 
-                if(user.size() > 0  && userPassword.equals(user.get(0).getUserPassword())){
-                    OnLoginSuccess(user.get(0));
+                if(user.size() > 0){
+                    if(user.get(0).getUserPassword().equals(userPassword))
+                        OnLoginSuccess(user.get(0));
+                    else{
+                        Snackbar.make(findViewById(R.id.loginView), R.string.incorrect_user_or_pw, Snackbar.LENGTH_SHORT).show();
+                    }
                 }else{
-                    Toast.makeText(this,R.string.invalid_user,Toast.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.loginView), R.string.incorrect_user_or_pw, Snackbar.LENGTH_SHORT).show();
                 }
             }
         }
