@@ -1,12 +1,10 @@
 package edu.salleurl.ls30394.foodfinderapp.activities;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -53,7 +51,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         lat = intent.getDoubleExtra("lat",0.0);
         lng = intent.getDoubleExtra("lng",0.0);
         userName = intent.getStringExtra("userName");
-        // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(lat, lng);
 
 

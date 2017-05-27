@@ -4,11 +4,13 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -17,7 +19,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,8 +32,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.content.DialogInterface;
-
+import android.widget.Toast;
 
 import edu.salleurl.ls30394.foodfinderapp.Adapter.RecentSearchAdapter;
 import edu.salleurl.ls30394.foodfinderapp.R;
@@ -40,7 +40,7 @@ import edu.salleurl.ls30394.foodfinderapp.repositories.RestaurantsRepo;
 import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RestaurantsWebService;
 import edu.salleurl.ls30394.foodfinderapp.service.LocationService;
 
-public class SearchActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
+public class SearchActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     public static final String REQUEST_SUCCESS = "edu.salleurl.ls30394.foodfinderapp.REQUEST_SUCCESS";
     public static final String REQUEST_EMPTY_RESULT = "edu.salleurl.ls30394.foodfinderapp.REQUEST_EMPTY_RESULT";
@@ -81,7 +81,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         bReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                switch(intent.getAction()){
+                switch (intent.getAction()) {
                     case REQUEST_SUCCESS:
                         onRequestSuccess();
                         break;
@@ -107,7 +107,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         recentSearchAdapter.updateList();
     }
@@ -120,7 +120,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         super.onDestroy();
         bManager.unregisterReceiver(bReceiver);
     }
@@ -133,11 +133,11 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
             case R.id.activity_search_goProfile:
                 nextActivity = new Intent(this, ProfileActivity.class);
-                nextActivity.putExtra("userName",userName);
+                nextActivity.putExtra("userName", userName);
                 startActivity(nextActivity);
                 return true;
 
@@ -156,7 +156,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        Log.i("angel", "onRequestPermissionsResult");
+        //Log.i("angel", "onRequestPermissionsResult");
         switch (requestCode) {
             case LocationService.MY_PERMISSIONS_REQUEST_LOCATION:
                 if (grantResults.length > 0
@@ -170,7 +170,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        String searchQuery = ((TextView)view).getText().toString();
+        String searchQuery = ((TextView) view).getText().toString();
         restaurantsRepo.fetchRestaurants(searchQuery);
         recentSearchAdapter.addRecentSearch(searchQuery);
         searchProgressDialog.show();
@@ -190,7 +190,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
 
         getSupportActionBar().setTitle(R.string.rest_Search);
 
-        searchButton = (Button)findViewById(R.id.search_go_btn);
+        searchButton = (Button) findViewById(R.id.search_go_btn);
 
         seekBar = (android.widget.SeekBar) findViewById(R.id.seek_bar);
         seekBarValue = (TextView) findViewById(R.id.search_slider_kms);
@@ -217,8 +217,8 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
-                if(actionId == EditorInfo.IME_ACTION_SEARCH){
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     OnSearchClick(v);
                     handled = true;
@@ -253,37 +253,66 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         if (!(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
             checkGPS();
-        }else{
-             onStart();
+        } else {
+            onStart();
         }
     }
 
     private void checkGPS() {
-        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if (!manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ){
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+            builder.setMessage(R.string.GPS_error)
                     .setCancelable(false)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                         public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                            //TODO: LANZAR launchGeoSearch AL TERMINARSE LA ACTIVIDAD DE ACTIVAR EL GPS SI LO HA ENCENDIDO
-                            //launchGeoSearch();
+                            Intent gps = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivityForResult(gps, 1);
                         }
                     })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.deny, new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                             dialog.cancel();
                         }
                     });
             final AlertDialog alert = builder.create();
             alert.show();
+        } else {
+            launchGeoSearch();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String provider = locationManager.getBestProvider(criteria, false);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location location = locationManager.getLastKnownLocation(provider);
+
+        if (location != null) {
+            launchGeoSearch();
+        } else {
+            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            //TODO: ACTUALIZAR EL VALOR DE LOCATION
+            //locationManager.requestSingleUpdate(provider, null);
+            launchGeoSearch();
         }
     }
 
     private void launchGeoSearch() {
-
         String aux = (String) seekBarValue.getText();
         int searchRadius = Integer.parseInt(aux.split(" ")[0]);
 
@@ -291,6 +320,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         double longitude = locationService.getLocation().getLongitude();
 
         searchProgressDialog.show();
+
         restaurantsRepo.fetchRestaurants(latitude, longitude, searchRadius);
     }
 
@@ -307,6 +337,8 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
 
             searchProgressDialog.show();
             restaurantsRepo.fetchRestaurants(searchQuery);
+        }else{
+            Toast.makeText(this, "Search field can't be empty", Toast.LENGTH_SHORT).show();
         }
     }
 
