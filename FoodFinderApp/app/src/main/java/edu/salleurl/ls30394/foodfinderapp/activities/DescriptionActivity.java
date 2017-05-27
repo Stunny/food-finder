@@ -71,8 +71,8 @@ public class DescriptionActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
 
         RestaurantDataBase rdb = new RestaurantDataBase(this);
         UserDatabase udb = new UserDatabase(this);
