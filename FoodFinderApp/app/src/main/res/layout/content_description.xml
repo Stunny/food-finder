@@ -48,7 +48,7 @@
 
             <ImageButton
                 android:onClick="onMapButtonClicked"
-                android:background="#B2FF59"
+                android:background="@drawable/roundbutton"
                 android:src="@drawable/ic_map"
                 android:id="@+id/button_map"
                 android:layout_width="wrap_content"

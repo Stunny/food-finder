@@ -338,7 +338,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
             searchProgressDialog.show();
             restaurantsRepo.fetchRestaurants(searchQuery);
         }else{
-            Toast.makeText(this, "Search field can't be empty", Toast.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(R.id.search_activity_coordinatorLayout), R.string.search_cant_empty, Snackbar.LENGTH_SHORT).show();
         }
     }
 

@@ -145,4 +145,5 @@
     <string name="GPS_on">GPS activated</string>
     <string name="mockup_user">\@user:</string>
     <string name="mockup_comment">comment</string>
+    <string name="search_cant_empty">Search field can\'t be empty</string>
 </resources>
