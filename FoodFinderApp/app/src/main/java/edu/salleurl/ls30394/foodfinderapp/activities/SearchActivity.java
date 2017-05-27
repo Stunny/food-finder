@@ -305,9 +305,10 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         if (location != null) {
             launchGeoSearch();
         } else {
+            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             //TODO: ACTUALIZAR EL VALOR DE LOCATION
             //locationManager.requestSingleUpdate(provider, null);
-            //launchGeoSearch();
+            launchGeoSearch();
         }
     }
 
