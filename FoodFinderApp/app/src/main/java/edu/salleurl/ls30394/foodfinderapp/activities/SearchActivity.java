@@ -320,7 +320,6 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         double longitude = locationService.getLocation().getLongitude();
 
         searchProgressDialog.show();
-
         restaurantsRepo.fetchRestaurants(latitude, longitude, searchRadius);
     }
 
