@@ -55,4 +55,6 @@
     <string name="confirm">Si</string>
     <string name="deny">No</string>
     <string name="GPS_on">GPS activado</string>
+    <string name="mockup_user">\@user:</string>
+    <string name="mockup_comment">comment</string>
 </resources>

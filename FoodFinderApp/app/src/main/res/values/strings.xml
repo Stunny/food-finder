@@ -143,4 +143,6 @@
     <string name="confirm">Yes</string>
     <string name="deny">No</string>
     <string name="GPS_on">GPS activated</string>
+    <string name="mockup_user">\@user:</string>
+    <string name="mockup_comment">comment</string>
 </resources>
