@@ -3,30 +3,31 @@ package edu.salleurl.ls30394.foodfinderapp.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import edu.salleurl.ls30394.foodfinderapp.Adapter.CommentsAdapter;
 import edu.salleurl.ls30394.foodfinderapp.R;
 import edu.salleurl.ls30394.foodfinderapp.model.Restaurante;
 import edu.salleurl.ls30394.foodfinderapp.repositories.FavoriteRepo;
@@ -52,12 +53,9 @@ public class DescriptionActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private ImageView actionBarImage;
 
-    private Button buttonMap, buttonSend;
-
-    private ListView commentsList;
-    private SimpleAdapter commentsAdapter;
+    private RecyclerView commentsList;
+    private CommentsAdapter commentsAdapter;
     private TextInputEditText commentsInput;
-    private List<Map<String, String>> comments;
 
     //********************************************************************************************//
     //---------->OVERRIDE FUNCTIONS
@@ -164,13 +162,6 @@ public class DescriptionActivity extends AppCompatActivity {
             }
         });
 
-        buttonMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onMapButtonClicked(v);
-            }
-        });
-
         commentsInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -178,13 +169,27 @@ public class DescriptionActivity extends AppCompatActivity {
                 if(actionId == EditorInfo.IME_ACTION_SEND){
                     InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    buttonSend.performClick();
+                    onSendCommentClicked(v);
                     handled = true;
                 }
 
                 return handled;
             }
         });
+
+        commentsList.setAdapter(commentsAdapter);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        layoutManager.setAutoMeasureEnabled(true);
+
+        commentsList.setLayoutManager(layoutManager);
+
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(commentsList.getContext(),DividerItemDecoration.VERTICAL);
+        commentsList.addItemDecoration(dividerItemDecoration);
+        commentsList.setNestedScrollingEnabled(false);
+        commentsList.setHasFixedSize(false);
 
     }
 
@@ -217,52 +222,20 @@ public class DescriptionActivity extends AppCompatActivity {
         textDescription = (TextView) findViewById(R.id.description_textView);
         ratingBar = (RatingBar) findViewById(R.id.ratingBarRestaurant);
 
-        buttonMap = (Button) findViewById(R.id.button_map);
+        commentsList = (RecyclerView) findViewById(R.id.comments);
+        commentsAdapter = new CommentsAdapter(this, userName);
 
-        commentsList = (ListView)findViewById(R.id.comments);
-        comments = new ArrayList<>();
-        commentsAdapter = new SimpleAdapter(
-                this,
-                comments,
-                android.R.layout.simple_list_item_2,
-                new String[]{COMMENT_KEY_USER, COMMENT_KEY_TEXT},
-                new int[]{android.R.id.text1, android.R.id.text2}
-        );
-        commentsInput = (TextInputEditText) findViewById(R.id.input_comment);
-        commentsList.setAdapter(commentsAdapter);
-
-        buttonSend = (Button) findViewById(R.id.button_send);
+        commentsInput = (TextInputEditText)findViewById(R.id.input_comment);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-    }
-
-    /**
-     * Es necesario ir modificando la altura de la lista debido a que está contenida dentro de una
-     * NestedScrollView, lo que conlleva que la lista no se muestre correctamente
-     *
-     * Fuente: https://kennethflynn.wordpress.com/2012/09/12/putting-android-listviews-in-scrollviews/
-     */
-    private void updateCommentListViewHeight(){
-
-        if(commentsAdapter == null || commentsList == null) return;
-
-        int totalHeight = 0;
-
-        for (int i = 0; i < commentsAdapter.getCount(); i++) {
-            View listItem = commentsAdapter.getView(i, null, commentsList);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = commentsList.getLayoutParams();
-        params.height = totalHeight + (commentsList.getDividerHeight() * (commentsAdapter.getCount() - 1));
-        commentsList.setLayoutParams(params);
-        commentsList.requestLayout();
     }
 
     //********************************************************************************************//
     //---------->MAIN BEHAVIOR FUNCTIONS
 
+    /**
+     * @param view
+     */
     public void onMapButtonClicked(View view){
         nextActivity = new Intent(this, MapsActivity.class);
         nextActivity.putExtra("lat",restaurant.getLatitude());
@@ -272,19 +245,17 @@ public class DescriptionActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * @param view
+     */
     public void onSendCommentClicked(View view){
         String commentText = commentsInput.getText().toString();
+        commentsInput.setText("");
 
-        if(!commentText.equals("")) {
-            commentsInput.setText("");
+        if(commentText.equals(""))return;
 
-            Map<String, String> comment = new HashMap<>();
-            comment.put(COMMENT_KEY_USER, "@"+userName+":");
-            comment.put(COMMENT_KEY_TEXT, commentText);
+        commentsAdapter.addComment(commentText);
+        commentsAdapter.notifyDataSetChanged();
 
-            comments.add(comment);
-            commentsAdapter.notifyDataSetChanged();
-            updateCommentListViewHeight();
-        }
     }
 }

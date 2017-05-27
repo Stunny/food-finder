@@ -139,4 +139,6 @@
     <string name="added_to_favs">Added to favorites</string>
     <string name="removed_from_favs">Removed from favorites</string>
     <string name="title_activity_maps">Map</string>
+    <string name="mockup_user">\@user:</string>
+    <string name="mockup_comment">comment</string>
 </resources>

@@ -3,14 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/description_nsv"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_gravity="fill_vertical"
+    android:paddingBottom="?attr/actionBarSize"
+    android:fitsSystemWindows="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="edu.salleurl.ls30394.foodfinderapp.activities.DescriptionActivity"
     tools:showIn="@layout/activity_description">
 
+
     <LinearLayout
+        android:id="@+id/content_linear"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:layout_width="match_parent"
@@ -41,14 +46,16 @@
                 android:layout_alignParentStart="true"
                 />
 
-            <Button
+            <ImageButton
+                android:onClick="onMapButtonClicked"
+                android:background="#B2FF59"
+                android:src="@drawable/ic_map"
                 android:id="@+id/button_map"
                 android:layout_width="wrap_content"
-                android:layout_height="46dp"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:background="@color/colorBackground"
-                android:drawableBottom="@mipmap/ic_map"
                 android:clickable="true" />
         </RelativeLayout>
 
@@ -66,41 +73,62 @@
             android:layout_marginBottom="16dp"
             android:text="@string/comment"
             android:textSize="@dimen/sizeCommentTitle"/>
-        <ListView
+
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:isScrollContainer="false"
+            android:nestedScrollingEnabled="false"
             android:id="@+id/comments">
 
-        </ListView>
+        </android.support.v7.widget.RecyclerView>
 
-        <android.support.design.widget.TextInputLayout
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/input_comment"
-                android:inputType="text"
-                android:imeOptions="actionSend"
-                android:maxLines="1"
-                android:hint="@string/add_a_comment"
-                android:nextFocusUp="@id/input_comment"
-                android:nextFocusLeft="@id/input_comment"
-                android:textColor="@color/coloBlack"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <Button
-            android:onClick="onSendCommentClicked"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/send"
-            android:layout_gravity="end"
-            android:id="@+id/button_send"/>
+            android:orientation="horizontal">
 
+            <ImageButton
+                android:onClick="onSendCommentClicked"
+                android:src="@drawable/ic_action_comment"
+                android:background="@drawable/roundbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:padding="5dp"
+                android:text="@string/send"
+                android:layout_gravity="end"
+                android:id="@+id/button_send"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_alignParentStart="true"
+                android:layout_toLeftOf="@id/button_send"
+                android:layout_toStartOf="@id/button_send"
+                android:layout_marginEnd="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/input_comment"
+                    android:inputType="text"
+                    android:imeOptions="actionSend"
+                    android:maxLines="1"
+                    android:hint="@string/add_a_comment"
+                    android:nextFocusUp="@id/input_comment"
+                    android:nextFocusLeft="@id/input_comment"
+                    android:textColor="@color/coloBlack"/>
+
+            </android.support.design.widget.TextInputLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="70dp"/>
     </LinearLayout>
-
-
 
 </android.support.v4.widget.NestedScrollView>
