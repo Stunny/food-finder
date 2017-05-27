@@ -39,6 +39,7 @@ import edu.salleurl.ls30394.foodfinderapp.R;
 import edu.salleurl.ls30394.foodfinderapp.repositories.RestaurantsRepo;
 import edu.salleurl.ls30394.foodfinderapp.repositories.impl.RestaurantsWebService;
 import edu.salleurl.ls30394.foodfinderapp.service.LocationService;
+import edu.salleurl.ls30394.foodfinderapp.utils.LocationListener;
 
 public class SearchActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -305,9 +306,8 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         if (location != null) {
             launchGeoSearch();
         } else {
-            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            //TODO: ACTUALIZAR EL VALOR DE LOCATION
-            //locationManager.requestSingleUpdate(provider, null);
+            LocationListener locationListener = new LocationListener();
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             launchGeoSearch();
         }
     }
