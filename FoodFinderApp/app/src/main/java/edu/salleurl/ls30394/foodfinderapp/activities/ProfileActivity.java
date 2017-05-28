@@ -52,6 +52,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
+    //********************************************************************************************//
+    //---------->OVERRIDE FUNCTIONS
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +64,56 @@ public class ProfileActivity extends AppCompatActivity {
 
         configWidgets();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_profile_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.activity_profile_edit:
+                editContent();
+                return true;
+            case R.id.activity_profile_goFavorites:
+                nextActivity = new Intent(this, RestaurantsListActivity.class);
+                nextActivity.putExtra("username", userName);
+                nextActivity.putExtra("favorites", true);
+                startActivity(nextActivity);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /**
+     * Transforms the picture taken into a bitmap
+     * @param requestCode image code
+     * @param resultCode checking if OK
+     * @param data bitmap in the extras, corresponding to our image
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            this.imageBitmap = imageBitmap;
+            profilePicture.setImageBitmap(imageBitmap);
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        nextActivity = new Intent(ProfileActivity.this, SearchActivity.class);
+        nextActivity.putExtra("userName",userName);
+        finish();
+    }
+
+    //********************************************************************************************//
+    //---------->UI FUNCTIONS
 
     /**
      * Sets initial basic configurations
@@ -115,12 +168,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_profile_menu, menu);
-        return true;
-    }
-
+    /**
+     *
+     */
     private void populateData() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         //load data from database
@@ -146,22 +196,8 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.activity_profile_edit:
-                editContent();
-                return true;
-            case R.id.activity_profile_goFavorites:
-                nextActivity = new Intent(this, RestaurantsListActivity.class);
-                nextActivity.putExtra("username", userName);
-                nextActivity.putExtra("favorites", true);
-                startActivity(nextActivity);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+    //********************************************************************************************//
+    //---------->MAIN BEHAVIOR FUNCTIONS
 
     private void editContent() {
         setVisibilityColour(View.VISIBLE, true);
@@ -179,22 +215,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Transforms the picture taken into a bitmap
-     * @param requestCode image code
-     * @param resultCode checking if OK
-     * @param data bitmap in the extras, corresponding to our image
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            this.imageBitmap = imageBitmap;
-            profilePicture.setImageBitmap(imageBitmap);
-        }
-
-    }
 
     public void OnImageSelect(View view) {
         dispatchTakePictureIntent();
@@ -228,14 +248,6 @@ public class ProfileActivity extends AppCompatActivity {
         user1.setGenderIndex(genderUser);
         userDataBase.updateUser(user1);
     }
-
-    @Override
-    public void onBackPressed() {
-        nextActivity = new Intent(ProfileActivity.this, SearchActivity.class);
-        nextActivity.putExtra("userName",userName);
-        finish();
-    }
-
 
     private Bitmap getBitmap(String filename) {
 

@@ -21,6 +21,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Intent nextActivity;
     private String userName;
 
+    //********************************************************************************************//
+    //---------->OVERRIDE FUNCTIONS
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -33,6 +36,37 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
         mapFragment.setRetainInstance(true);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_search_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+
+            case R.id.activity_search_goProfile:
+                nextActivity = new Intent(this, ProfileActivity.class);
+                nextActivity.putExtra("userName",userName);
+                startActivity(nextActivity);
+                return true;
+
+            case R.id.activity_search_goFavorites:
+                nextActivity = new Intent(this, RestaurantsListActivity.class);
+                nextActivity.putExtra("username", userName);
+                nextActivity.putExtra("favorites", true);
+                startActivity(nextActivity);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    //********************************************************************************************//
+    //---------->MAIN BEHAVIOR FUNCTIONS
 
 
     /**
@@ -58,31 +92,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney,17));
         mMap.addMarker(new MarkerOptions().position(sydney));
 
-    }    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_search_menu, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-
-            case R.id.activity_search_goProfile:
-                nextActivity = new Intent(this, ProfileActivity.class);
-                nextActivity.putExtra("userName",userName);
-                startActivity(nextActivity);
-                return true;
-
-            case R.id.activity_search_goFavorites:
-                nextActivity = new Intent(this, RestaurantsListActivity.class);
-                nextActivity.putExtra("username", userName);
-                nextActivity.putExtra("favorites", true);
-                startActivity(nextActivity);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
 }

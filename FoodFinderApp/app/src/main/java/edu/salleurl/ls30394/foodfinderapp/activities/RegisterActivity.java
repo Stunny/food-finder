@@ -52,6 +52,8 @@ public class RegisterActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int PICK_IMAGE = 100;
 
+    //********************************************************************************************//
+    //---------->OVERRIDE FUNCTIONS
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,25 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Transforms the picture taken into a bitmap
+     * @param requestCode image code
+     * @param resultCode checking if OK
+     * @param data bitmap in the extras, corresponding to our image
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            this.imageBitmap = imageBitmap;
+            profilePicture.setImageBitmap(imageBitmap);
+        }
+    }
+
+    //********************************************************************************************//
+    //---------->UI FUNCTIONS
+
     private void configWidgets(){
         getSupportActionBar().setTitle(getString(R.string.register));
 
@@ -84,6 +105,9 @@ public class RegisterActivity extends AppCompatActivity {
         radioGroup = (RadioGroup) findViewById(R.id.register_selectGender);
         description = (TextInputLayout) findViewById(R.id.register_descWrapper);
     }
+
+    //********************************************************************************************//
+    //---------->MAIN BEHAVIOR FUNCTIONS
 
 
     /**
@@ -115,23 +139,6 @@ public class RegisterActivity extends AppCompatActivity {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
         bitmap = ((BitmapDrawable) profilePicture.getDrawable()).getBitmap();
-    }
-
-
-    /**
-     * Transforms the picture taken into a bitmap
-     * @param requestCode image code
-     * @param resultCode checking if OK
-     * @param data bitmap in the extras, corresponding to our image
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            this.imageBitmap = imageBitmap;
-            profilePicture.setImageBitmap(imageBitmap);
-        }
     }
 
     public void OnImageSelect(View view) {

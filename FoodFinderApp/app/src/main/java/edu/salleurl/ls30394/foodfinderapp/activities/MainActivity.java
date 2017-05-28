@@ -39,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     private UserRepo userRepo;
 
-
+    //********************************************************************************************//
+    //---------->OVERRIDE FUNCTIONS
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
         configWidgets();
     }
+
+    //********************************************************************************************//
+    //---------->UI FUNCTIONS
 
     /**
      * Configures the activitie's widgets
@@ -89,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btnLogin);
 
     }
+
+    //********************************************************************************************//
+    //---------->MAIN BEHAVIOR FUNCTIONS
 
     /**
      * Method executed when the login button on the activity is pressed.

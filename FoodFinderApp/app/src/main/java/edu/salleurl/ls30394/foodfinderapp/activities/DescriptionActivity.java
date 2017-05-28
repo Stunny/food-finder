@@ -137,6 +137,8 @@ public class DescriptionActivity extends AppCompatActivity {
 
         initWidgets();
 
+        setActionBarImage();
+
         textView.setText(restaurant.getName());
 
         textDescription.setText(restaurant.getDescription());
@@ -218,6 +220,8 @@ public class DescriptionActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar)findViewById(R.id.search_result_toolbar));
         getSupportActionBar().setTitle("");
 
+        actionBarImage = (ImageView)findViewById(R.id.image_restaurant);
+
         textView = (TextView) findViewById(R.id.restaurant_name);
         textDescription = (TextView) findViewById(R.id.description_textView);
         ratingBar = (RatingBar) findViewById(R.id.ratingBarRestaurant);
@@ -228,6 +232,39 @@ public class DescriptionActivity extends AppCompatActivity {
         commentsInput = (TextInputEditText)findViewById(R.id.input_comment);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
+    }
+
+    /**
+     * Initializes the collapsing toolbar image
+     */
+    private void setActionBarImage(){
+
+        int imgSrc;
+
+        switch(restaurant.getType()){
+
+            case Restaurante.TYPE_ASIAN:
+                imgSrc = R.drawable.description_asian;
+                break;
+            case Restaurante.TYPE_BURGER:
+                imgSrc = R.drawable.descxxription_burger;
+                break;
+            case Restaurante.TYPE_ITALIAN:
+                imgSrc = R.drawable.description_italian;
+                break;
+
+            case Restaurante.TYPE_MEXICAN:
+                imgSrc = R.drawable.description_mexican;
+                break;
+            case Restaurante.TYPE_TAKEAWAY:
+                imgSrc = R.drawable.description_takeaway;
+                break;
+
+            default:
+                imgSrc = R.drawable.restaurant;
+        }
+
+        actionBarImage.setImageResource(imgSrc);
     }
 
     //********************************************************************************************//
