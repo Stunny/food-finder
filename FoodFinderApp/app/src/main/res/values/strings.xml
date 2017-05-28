@@ -8,7 +8,6 @@
     <string name="select_from_gallerie">Select from gallery</string>
     <string name="name">Name</string>
     <string name="user_field_empty">Username field is empty.</string>
-    <string name="invalid_user">Invalid user.</string>
     <string name="surname">Surname</string>
     <string name="email">Email</string>
     <string name="confirm_password">Confirm Password</string>
@@ -23,7 +22,7 @@
     <string name="km_seek_text">%1$d km</string>
     <string name="search">Search</string>
     <string name="error_name">Field name can\'t be empty!</string>
-    <string name="error_title">Error message…</string>
+    <string name="error_title">Error</string>
     <string name="error_surname">Field surname can\'t be empty!</string>
     <string name="error_email">Email field can\'t be empty!</string>
     <string name="error_password">Password field can\'t be empty!</string>

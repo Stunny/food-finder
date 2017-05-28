@@ -22,7 +22,7 @@
     <string name="search">Buscar</string>
 
     <string name="error_name">El campo del nombre no puede estar vacio!</string>
-    <string name="error_title">Mensage de error…</string>
+    <string name="error_title">Error</string>
     <string name="error_surname">El campo del apellido no puede estar vacio!</string>
     <string name="error_email">El campo del email no puede estar vacio!</string>
     <string name="error_password">El campo de la contraseña no puede estar vacio!</string>
@@ -36,9 +36,9 @@
     <string name="recent_searches">Busquedas Recientes</string>
     <string name="no_results_snack">No se han encontrado resultados.</string>
     <string name="rest_Search">Busqueda de restaurantes</string>
-    <string name="all">All</string>
+    <string name="all">Todos</string>
     <string name="search_hint">Buscar…</string>
-    <string name="all_restaurants">ALL</string>
+    <string name="all_restaurants">Todos</string>
     <string name="only_open">Solo abierto</string>
     <string name="search_progress">Buscando…</string>
     <string name="added_to_favs">Añadido a Favoritos</string>
@@ -46,7 +46,6 @@
     <string name="comment">Comentarios</string>
     <string name="action_settings">Opciones</string>
     <string name="add_a_comment">Añadir Comentarios</string>
-    <string name="invalid_user">Usuario no valido</string>
     <string name="password_field_empty">El campo de la contraseña esta vacio.</string>
     <string name="send">Enviar</string>
     <string name="title_activity_description"></string>
@@ -58,6 +57,6 @@
     <string name="mockup_user">\@user:</string>
     <string name="mockup_comment">comment</string>
     <string name="search_cant_empty">Search field can\'t be empty</string>
-    <string name="incorrect_user_or_pw">Incorrect username or password</string>
+    <string name="incorrect_user_or_pw">Usuario y/o contraseña incorrectos</string>
     <string name="register_ok">Register successful</string>
 </resources>
